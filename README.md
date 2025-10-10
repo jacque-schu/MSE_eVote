@@ -1,33 +1,32 @@
+# Grundlegende Git-Befehle
 
+- **git init**  
+  Initialisiert ein neues Git-Repository im aktuellen Verzeichnis.
 
-Die wichtigsten Git-Befehle dienen der Versionsverwaltung und Organisation von Projekten in einem Repository.​
+- **git clone <URL>**  
+  Kopiert ein bestehendes Repository von einem Remote-Server.
 
-git init
-Initialisiert ein neues Git-Repository im aktuellen Verzeichnis.​
+- **git add <Datei>**  
+  Fügt Änderungen einer Datei dem kommenden Commit hinzu.
 
-git clone <URL>
-Kopiert ein bestehendes Repository von einem Remote-Server.​
+- **git commit -m "<Nachricht>"**  
+  Speichert die Änderungen im Repository mit einer Nachricht.
 
-git add <Datei>
-Fügt Änderungen einer Datei dem kommenden Commit hinzu.​
+- **git status**  
+  Zeigt den aktuellen Zustand der Arbeitskopie und der Staging-Area an.
 
-git commit -m "<Nachricht>"
-Speichert die hinzugefügten Änderungen im Repository mit einer Nachricht.​
+- **git push**  
+  Überträgt Commits vom lokalen Repository ins entfernte Repository.
 
-git status
-Zeigt den aktuellen Zustand der Arbeitskopie und der Staging-Area an.​
+- **git pull**  
+  Holt und integriert Änderungen vom entfernten Repository in das lokale.
 
-git push
-Überträgt Commits vom lokalen Repository ins entfernte Repository.​
+- **git branch**  
+  Listet lokale Branches auf, erstellt oder löscht Branches.
 
-git pull
-Holt und integriert Änderungen vom entfernten Repository in das lokale.​
+- **git checkout <Branch>**  
+  Wechselt zu einem anderen Branch oder stellt Dateien wieder her.
 
-git branch
-Listet lokale Branches auf, erstellt oder löscht Branches.​
-
-git checkout <Branch>
-Wechselt zu einem anderen Branch oder stellt Dateien wieder her.​
-
-git merge <Branch>
-Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.​
+- **git merge <Branch>**  
+  Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
+​
