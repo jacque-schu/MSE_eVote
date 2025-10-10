@@ -1,0 +1,18 @@
+# Ignoriere alle Logdateien
+*.log
+
+# Ignoriere temporäre Dateien
+*.tmp
+
+# Ignoriere das Verzeichnis "node_modules" (für Node.js-Projekte)
+node_modules/
+
+# Ignoriere das Verzeichnis ".env"
+.env
+
+# Ignoriere das Verzeichnis "build" (z.B. für Frontend-Projekte)
+build/
+
+# Ignoriere Python-Caches
+__pycache__/
+*.py[cod]
