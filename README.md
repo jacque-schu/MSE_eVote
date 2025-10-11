@@ -1,4 +1,6 @@
-# 2.Grundlegende Git-Befehle
+# Übung 1: Erstellen eines Git-Handouts für Anfänger
+
+## 2.Grundlegende Git-Befehle
 
 - **git init**  
   Initialisiert ein neues Git-Repository im aktuellen Verzeichnis.
@@ -30,3 +32,63 @@
 - **git merge <Branch>**  
   Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
 ​
+
+## 5. Nützliche Git-Tools und Plattformen
+
+
+### 5.1 GitHub
+
+**GitHub** ist eine bekannte Plattform zur Verwaltung von Git-Repositories in der Cloud. 
+Sie bietet nicht nur Speicherplatz für Code, sondern auch viele Funktionen zur Teamarbeit und Projektorganisation.
+
+#### Hauptfunktionen
+- **Remote-Repositories:** Speicherung des Codes in der Cloud, um von überall darauf zugreifen zu können.  
+- **Pull Requests:** Entwickler können Änderungen vorschlagen, die dann von anderen überprüft („reviewed“) und freigegeben werden.  
+- **Code Review:** Kommentare und Diskussionen direkt an Codezeilen möglich – ideal zur Qualitätssicherung.  
+- **Issues & Projektverwaltung:** Aufgaben, Bugs und Ideen können als „Issues“ erfasst, kommentiert und priorisiert werden.  
+- **GitHub Actions:** Automatisierung von Prozessen wie Tests, Builds oder Deployments (CI/CD).  
+- **Wikis & Pages:** Möglichkeit, Dokumentationen oder Websites direkt im Repository zu pflegen.
+
+#### Vorteile
+- Weltweit verbreitet 
+- Gute Integration in IDEs wie PyCharm, IntelliJ und VS Code  
+- Kostenlos für öffentliche und private Projekte  
+- Ideal für Open-Source- und Teamprojekte
+
+### 5.2 GitLab
+
+**GitLab** ist eine leistungsfähige Alternative zu GitHub und besonders beliebt in Unternehmen, 
+die eigene Server betreiben möchten.
+
+#### Hauptfunktionen
+- Git-Repository-Verwaltung mit Rechten und Rollen
+- **Self-Hosting** möglich → Daten bleiben im eigenen Netzwerk  
+- **Wiki, Issue Tracker und Boards** ähnlich wie GitHub  
+- **Merge Requests** statt Pull Requests (gleiche Idee)
+
+#### Vorteile
+- Datenschutzfreundlich, da lokal installierbar  
+- Umfassende Automatisierungs- und Sicherheitsfunktionen
+- Ideal für Unternehmen mit strengen Compliance-Richtlinien
+
+
+###  5.3 Grafische Git-Tools
+
+Neben den Online-Plattformen gibt es Desktop-Anwendungen, die Git-Befehle visuell darstellen und besonders für Einsteiger hilfreich sind.
+
+#### Sourcetree
+- Kostenloses Git-Tool von Atlassian  
+- Zeigt Commits, Branches und Merges als übersichtlichen Verlauf (Commit-Graph)  
+- Ideal, um ohne Terminal zu arbeiten  
+- Unterstützt GitHub, GitLab und Bitbucket  
+
+#### GitKraken
+- Moderne, optisch ansprechende Benutzeroberfläche  
+- Visualisierung von Branches, Commits und Merges  
+- Integrierter Code-Editor und GitHub-/GitLab-/Bitbucket-Anbindung  
+- Besonders beliebt bei Teams, die visuell arbeiten möchten
+
+#### GitHub Desktop
+- Offizielles GUI-Tool von GitHub.  
+- Einfaches Klonen, Committen, Branch-Wechseln und Pushen ohne Terminal.  
+- Integration mit GitHub.com für Pull Requests und Issues.
