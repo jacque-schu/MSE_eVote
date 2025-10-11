@@ -33,3 +33,16 @@
 
 # 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
+Branches sind Entwicklungszweige, die parallel in einem Versionskontrollsystem wie Git entwickelt werden.
+Ein Branch ermöglicht es, unabhängig vom Haupt-(main/master)Branch neue Features, Bugfixes oder experimentelle Funktionen zu entwickeln, ohne dabei den stabilen Code (main branch) zu beeinflussen.
+
+Eine typische Nutzung sieht oft wie folgt aus:
+
+Main Branch: Dies ist die stabile Produktionsversion.
+Feature Branches: Dient zur Entwicklung neuer Features.
+Bugfix Branches: Dient zur Behebung von Fehlern, ohne dabei die Hauptentwicklung zu stören.
+Release Branches: Dient zur Vorbereitung neuer Releases (Veröffentlichungen).
+
+Branches können nach Fertigstellung wieder in den Hauptbranch gemerged werden.
+Mergen bedeutet, dass zwei Branches im Versionskontrollsystem Git miteinander zusammengeführt werden. 
+Dabei werden die Änderungen, die in einem Branch gemacht werden, in den anderen Branch integriert.
