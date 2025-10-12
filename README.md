@@ -33,7 +33,7 @@
   Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
 ​
 
-# 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
+## 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
 Branches sind Entwicklungszweige, die parallel in einem Versionskontrollsystem wie Git entwickelt werden.
 Ein Branch ermöglicht es, unabhängig vom Haupt-(main/master)Branch neue Features, Bugfixes oder experimentelle Funktionen zu entwickeln, ohne dabei den stabilen Code (main branch) zu beeinflussen.
