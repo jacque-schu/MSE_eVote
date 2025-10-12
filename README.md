@@ -31,7 +31,6 @@
 
 - **git merge <Branch>**  
   Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
-​
 
 # 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
