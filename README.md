@@ -1,6 +1,6 @@
 # Übung 1: Erstellen eines Git-Handouts für Anfänger
 
-# 2.Grundlegende Git-Befehle
+## 2.Grundlegende Git-Befehle
 
 - **git init**  
   Initialisiert ein neues Git-Repository im aktuellen Verzeichnis.
