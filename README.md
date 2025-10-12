@@ -37,7 +37,7 @@
 
 ### 3.1 Branches
 Branches sind Entwicklungszweige, die parallel in einem Versionskontrollsystem wie Git entwickelt werden.
-Ein Branch ermöglicht es, unabhängig vom Haupt-(main/master)Branch neue Features, Bugfixes oder experimentelle Funktionen zu entwickeln, ohne dabei den stabilen Code (main branch) zu beeinflussen.
+Ein Branch ermöglicht es, unabhängig vom Haupt-(main/master) Branch neue Features, Bugfixes oder experimentelle Funktionen zu entwickeln, ohne dabei den stabilen Code (main branch) zu beeinflussen.
 
 Eine typische Nutzung sieht oft wie folgt aus:
 
