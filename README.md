@@ -33,8 +33,9 @@
   Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
 ​
 
-## 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
+## 3. Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
+### 3.1 Branches
 Branches sind Entwicklungszweige, die parallel in einem Versionskontrollsystem wie Git entwickelt werden.
 Ein Branch ermöglicht es, unabhängig vom Haupt-(main/master)Branch neue Features, Bugfixes oder experimentelle Funktionen zu entwickeln, ohne dabei den stabilen Code (main branch) zu beeinflussen.
 
@@ -49,7 +50,7 @@ Branches können nach Fertigstellung wieder in den Hauptbranch gemerged werden.
 Mergen bedeutet, dass zwei Branches im Versionskontrollsystem Git miteinander zusammengeführt werden. 
 Dabei werden die Änderungen, die in einem Branch gemacht werden, in den anderen Branch integriert.
 
-
+### 3.2 Merge-Konflikte
 Merge-Konflikte entstehen, wenn in unterschiedlichen Branches dieselben Codebereiche geändert wurden.
 In diesem Fall kann Git nicht automatisch entscheiden, welche Änderungen bleiben.
 Ein Merge-Konflikt muss manuell gelöst werden.
