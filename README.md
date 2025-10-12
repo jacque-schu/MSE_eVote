@@ -1,6 +1,6 @@
 # Übung 1: Erstellen eines Git-Handouts für Anfänger
 
-## 2.Grundlegende Git-Befehle
+# 2.Grundlegende Git-Befehle
 
 - **git init**  
   Initialisiert ein neues Git-Repository im aktuellen Verzeichnis.
@@ -31,7 +31,6 @@
 
 - **git merge <Branch>**  
   Führt Änderungen eines anderen Branches mit dem aktuellen zusammen.
-​
 
 # 3.Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
