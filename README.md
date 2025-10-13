@@ -46,7 +46,7 @@ Bugfix Branches: Dient zur Behebung von Fehlern, ohne dabei die Hauptentwicklung
 Release Branches: Dient zur Vorbereitung neuer Releases (Veröffentlichungen).
 
 Branches können nach Fertigstellung wieder in den Hauptbranch gemerged werden.
-Mergen bedeutet, dass zwei Branches im Versionskontrollsystem Git miteinander zusammengeführt werden. 
+Mergen bedeutet, dass zwei Branches im Versionskontrollsystem Git miteinander zusammengeführt werden.
 Dabei werden die Änderungen, die in einem Branch gemacht werden, in den anderen Branch integriert.
 
 ### 3.2 Merge-Konflikte
@@ -60,13 +60,55 @@ Git zeigt die Konflikte beim merge an.
 Die Konfliktstellen sind dabei im Code markiert.
 Die Entwickler müssen entscheiden, welche Änderungen übernommen oder kombiniert werden.
 Erst nach der Auflösung des Konflikts wird der Code committet.
-Anschließend können Tests dabei helfen, eine korrekte Lösung sicherzustellen. 
+Anschließend können Tests dabei helfen, eine korrekte Lösung sicherzustellen.
+
+## 4. Git mit PyCharm benutzen
+
+
+### 4.1 PyCharm mit GitHub verbinden
+
+![Login via GitHub](images/Image1.png)
+
+Nach dem Login via GitHub sind auf der linken Seite der Accountname und auf der rechten Seite die zugehörigen Repositories sichtbar.
+
+![Mit GitHub verbunden](images/Image2.png)
+
+### 4.2 Ein Git-Repository über PyCharm initialisieren
+
+Beim Erstellen eines neuen Projekts in PyCharm kann ein Git-Repository mit erstellt werden.
+
+![Git-Repository erstellen](images/Image3.png)
+
+In diesem Fall wird lokal ein .git Ordner erstellt.
+Dieser Ordner enthält alle Informationen, die Git braucht, um ein Projekt zu verwalten:
+- **Den Versionsverlauf** (Commits, Branches, Tags)
+- **Die Konfiguration** (z. B. Name, Remote-URLs)
+- **Den Index** (Staging Area)
+- **Die Objekte** (Dateien in komprimierter Form)
+
+### 4.3 Arbeiten in einem lokalen Repository
+
+Das lokale Repository befindet sich auf dem eigenen Rechner. Hier können Änderungen vorgenommen werden, ohne dass jemand anderes darauf Zugriff hat.
+
+### 4.4 Arbeiten in einem remote Repository
+
+Ein remote Repository liegt auf einem anderen Server (z.B. bei GitHub) und dient z.B. der Zusammenarbeit an einem Projekt.
+
+### 4.5 Das PyCharm-Projekt mit GitHub verbinden
+
+![Projekt über GitHub teilen](images/Image4.png)
+
+Nachdem das Projekt mit GitHub geteilt wurde, kann es dort z.B. für eine Zusammenarbeit veröffentlicht werden.
+
+![Repository in GitHub](images/Image5.png)
+
+
 ## 5. Nützliche Git-Tools und Plattformen
 
 
 ### 5.1 GitHub
 
-**GitHub** ist eine bekannte Plattform zur Verwaltung von Git-Repositories in der Cloud. 
+**GitHub** ist eine bekannte Plattform zur Verwaltung von Git-Repositories in der Cloud.
 Sie bietet nicht nur Speicherplatz für Code, sondern auch viele Funktionen zur Teamarbeit und Projektorganisation.
 
 #### Hauptfunktionen
@@ -78,14 +120,14 @@ Sie bietet nicht nur Speicherplatz für Code, sondern auch viele Funktionen zur 
 - **Wikis & Pages:** Möglichkeit, Dokumentationen oder Websites direkt im Repository zu pflegen.
 
 #### Vorteile
-- Weltweit verbreitet 
+- Weltweit verbreitet
 - Gute Integration in IDEs wie PyCharm, IntelliJ und VS Code  
 - Kostenlos für öffentliche und private Projekte  
 - Ideal für Open-Source- und Teamprojekte
 
 ### 5.2 GitLab
 
-**GitLab** ist eine leistungsfähige Alternative zu GitHub und besonders beliebt in Unternehmen, 
+**GitLab** ist eine leistungsfähige Alternative zu GitHub und besonders beliebt in Unternehmen,
 die eigene Server betreiben möchten.
 
 #### Hauptfunktionen
