@@ -11,30 +11,30 @@ Jede Änderung („Commit“) wird mit einer eindeutigen ID (Hash) versehen und 
 Die Daten werden lokal gespeichert und können mit einem zentralen Server (z. B. GitHub, GitLab oder Bitbucket) synchronisiert werden.
 
 Wichtige Begriffe:
-- Repository (Repo): Der Speicherort des Projekts, enthält alle Versionen und Dateien.
-- Branch: Ein Entwicklungszweig, in dem unabhängig am Code gearbeitet werden kann.
-- Commit: Eine gespeicherte Änderung am Projektzustand.
-- Merge: Das Zusammenführen verschiedener Entwicklungszweige.
-- Remote: Ein Server, mit dem das lokale Repository abgeglichen wird (z. B. GitHub).
+- **Repository (Repo)**: Der Speicherort des Projekts, enthält alle Versionen und Dateien.
+- **Branch**: Ein Entwicklungszweig, in dem unabhängig am Code gearbeitet werden kann.
+- **Commit**: Eine gespeicherte Änderung am Projektzustand.
+- **Merge**: Das Zusammenführen verschiedener Entwicklungszweige.
+- **Remote**: Ein Server, mit dem das lokale Repository abgeglichen wird (z. B. GitHub).
 
 ### 1.3 Vorteile der Verwendung von Git
-a) **Versionskontrolle**
+**a) Versionskontrolle**
 
 Jede Änderung im Projekt wird dokumentiert. Frühere Versionen können jederzeit wiederhergestellt werden – Fehler oder fehlerhafte Updates lassen sich einfach rückgängig machen.
 
-b) **Zusammenarbeit im Team**
+**b) Zusammenarbeit im Team**
 
 Mehrere Entwickler*innen können gleichzeitig an verschiedenen Teilen eines Projekts arbeiten, ohne sich gegenseitig zu stören. Durch Branches werden parallele Entwicklungen ermöglicht.
 
-c) **Nachvollziehbarkeit und Transparenz**
+**c) Nachvollziehbarkeit und Transparenz**
 
 Git speichert, wer, wann und was geändert hat. Dadurch bleibt die Entwicklungshistorie vollständig nachvollziehbar und überprüfbar.
 
-d) **Sicherheit und Redundanz**
+**d) Sicherheit und Redundanz**
 
 Da jede lokale Kopie eines Git-Repositories eine vollständige Version des Projekts enthält, geht kein Code verloren – selbst wenn der Server ausfällt.
 
-e) **Integration mit Plattformen**
+**e) Integration mit Plattformen**
 
 Plattformen wie GitHub, GitLab oder Bitbucket bieten zusätzliche Funktionen wie Pull Requests, Issue Tracking oder Continuous Integration, die die Zusammenarbeit und Qualitätssicherung weiter verbessern.
 
