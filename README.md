@@ -62,14 +62,22 @@ Die Entwickler müssen entscheiden, welche Änderungen übernommen oder kombinie
 Erst nach der Auflösung des Konflikts wird der Code committet.
 Anschließend können Tests dabei helfen, eine korrekte Lösung sicherzustellen.
 
-## 4. Git mit Pycharm benutzen
+## 4. Git mit PyCharm benutzen
 
-### 4.1 Pycharm mit GitHub verbinden
 
-Nach dem Log In via GitHub sind auf der linken Seite der Accountname und auf der rechten Seite die zugehörigen Repositories sichtbar.
+### 4.1 PyCharm mit GitHub verbinden
+
+![Login via GitHub](images/Image1.png)
+
+Nach dem Login via GitHub sind auf der linken Seite der Accountname und auf der rechten Seite die zugehörigen Repositories sichtbar.
+
+![Mit GitHub verbunden](images/Image2.png)
 
 ### 4.2 Ein Git-Repository über PyCharm initialisieren
+
 Beim Erstellen eines neuen Projekts in PyCharm kann ein Git-Repository mit erstellt werden.
+
+![Git-Repository erstellen](images/Image3.png)
 
 In diesem Fall wird lokal ein .git Ordner erstellt.
 Dieser Ordner enthält alle Informationen, die Git braucht, um ein Projekt zu verwalten:
@@ -79,13 +87,20 @@ Dieser Ordner enthält alle Informationen, die Git braucht, um ein Projekt zu ve
 - **Die Objekte** (Dateien in komprimierter Form)
 
 ### 4.3 Arbeiten in einem lokalen Repository
+
 Das lokale Repository befindet sich auf dem eigenen Rechner. Hier können Änderungen vorgenommen werden, ohne dass jemand anderes darauf Zugriff hat.
-4.4 Arbeiten in einem remote Repository
+
+### 4.4 Arbeiten in einem remote Repository
+
 Ein remote Repository liegt auf einem anderen Server (z.B. bei GitHub) und dient z.B. der Zusammenarbeit an einem Projekt.
+
 ### 4.5 Das PyCharm-Projekt mit GitHub verbinden
 
+![Projekt über GitHub teilen](images/Image4.png)
 
 Nachdem das Projekt mit GitHub geteilt wurde, kann es dort z.B. für eine Zusammenarbeit veröffentlicht werden.
+
+![Repository in GitHub](images/Image5.png)
 
 
 ## 5. Nützliche Git-Tools und Plattformen
