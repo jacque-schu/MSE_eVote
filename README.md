@@ -1,5 +1,43 @@
 # Übung 1: Erstellen eines Git-Handouts für Anfänger
 
+## 1. Was ist Git und warum sollte es verwendet werden?
+### 1.1 Einführung
+Git ist ein verteiltes Versionsverwaltungssystem, das ursprünglich von Linus Torvalds (dem Entwickler des Linux-Kernels) im Jahr 2005 entwickelt wurde.
+Es dient dazu, Quellcode und andere Dateien effizient zu verwalten, Änderungen nachzuvollziehen und eine strukturierte Zusammenarbeit in Entwicklungsteams zu ermöglichen.
+
+### 1.2 Funktionsweise
+Git speichert nicht einfach einzelne Dateiversionen, sondern verfolgt Änderungen im Verlauf eines Projekts.
+Jede Änderung („Commit“) wird mit einer eindeutigen ID (Hash) versehen und kann jederzeit nachvollzogen oder rückgängig gemacht werden.
+Die Daten werden lokal gespeichert und können mit einem zentralen Server (z. B. GitHub, GitLab oder Bitbucket) synchronisiert werden.
+
+Wichtige Begriffe:
+- Repository (Repo): Der Speicherort des Projekts, enthält alle Versionen und Dateien.
+- Branch: Ein Entwicklungszweig, in dem unabhängig am Code gearbeitet werden kann.
+- Commit: Eine gespeicherte Änderung am Projektzustand.
+- Merge: Das Zusammenführen verschiedener Entwicklungszweige.
+- Remote: Ein Server, mit dem das lokale Repository abgeglichen wird (z. B. GitHub).
+
+### 1.3 Vorteile der Verwendung von Git
+a) Versionskontrolle
+Jede Änderung im Projekt wird dokumentiert. Frühere Versionen können jederzeit wiederhergestellt werden – Fehler oder fehlerhafte Updates lassen sich einfach rückgängig machen.
+
+b) Zusammenarbeit im Team
+Mehrere Entwickler*innen können gleichzeitig an verschiedenen Teilen eines Projekts arbeiten, ohne sich gegenseitig zu stören. Durch Branches werden parallele Entwicklungen ermöglicht.
+
+c) Nachvollziehbarkeit und Transparenz
+Git speichert, wer, wann und was geändert hat. Dadurch bleibt die Entwicklungshistorie vollständig nachvollziehbar und überprüfbar.
+
+d) Sicherheit und Redundanz
+Da jede lokale Kopie eines Git-Repositories eine vollständige Version des Projekts enthält, geht kein Code verloren – selbst wenn der Server ausfällt.
+
+e) Integration mit Plattformen
+Plattformen wie GitHub, GitLab oder Bitbucket bieten zusätzliche Funktionen wie Pull Requests, Issue Tracking oder Continuous Integration, die die Zusammenarbeit und Qualitätssicherung weiter verbessern.
+
+### 1.4 Fazit
+Git ist ein zentrales Werkzeug moderner Softwareentwicklung.
+Es ermöglicht strukturierte Teamarbeit, sichert den Entwicklungsverlauf und schafft Transparenz im gesamten Projektlebenszyklus.
+Durch seine Effizienz, Zuverlässigkeit und weite Verbreitung ist Git heute der De-facto-Standard für Versionskontrolle in nahezu allen Entwicklungsumgebungen.
+
 ## 2.Grundlegende Git-Befehle
 
 - **git init**  
