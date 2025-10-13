@@ -205,3 +205,10 @@ Neben den Online-Plattformen gibt es Desktop-Anwendungen, die Git-Befehle visuel
 - Offizielles GUI-Tool von GitHub.  
 - Einfaches Klonen, Committen, Branch-Wechseln und Pushen ohne Terminal.  
 - Integration mit GitHub.com für Pull Requests und Issues.
+
+## Dokumentation der Zusammenarbeit ##
+- Was ist Git und warum sollte es verwendet werden? : Jacqueline Schulz
+- Grundlegende Git-Befehle (z. B. git init, git add, git commit, git push): Heike Fritz
+- Branches und ihre Nutzung, Umgang mit Merge-Konflikten: Fabian Meintzer
+- Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository: Mareike Starker
+- Nützliche Git-Tools und Pla ormen (z. B. GitHub): Fabian Scholl
