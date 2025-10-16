@@ -40,11 +40,7 @@ jobs:                     # Ein Workflow besteht aus einem oder mehreren "Jobs"
 
     - name: Lint with flake8
       run: |
-      # Bricht den Build ab, falls es Syntaxfehler oder undefinierte Namen gibt
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      # Führt eine zweite flake8-Prüfung aus, die alle Fehler als Warnungen behandelt
-      # (exit-zero sorgt dafür, dass der Build nicht fehlschlägt)
-      # Dabei werden maximale Komplexität und Zeilenlänge begrenzt.
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       # Schritt 4: Führt eine Code-Qualitätsprüfung mit flake8 durch.
 
