@@ -6,7 +6,7 @@ name: Python application  # Der Name des Workflows (wird in GitHub angezeigt)
 on:                       # Hier wird festgelegt, wann der Workflow ausgeführt wird
   push:                   # → bei jedem Push ...
     branches: [ "main" ]  # ... auf den main-Branch
-  pull_request:            # → und bei jedem Pull Request ...
+  pull_request:           # → und bei jedem Pull Request ...
     branches: [ "main" ]  # ... der den main-Branch betrifft
 
 permissions:              # Standard-Berechtigungen des Workflows
@@ -22,9 +22,10 @@ jobs:                     # Ein Workflow besteht aus einem oder mehreren "Jobs"
       # Schritt 1: Checkt den Code aus dem Repository aus, damit er in der Pipeline verfügbar ist.
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
+        cache: "pip"  # Beschleunigt den Build durch Caching der Python-Abhängigkeiten
       # Schritt 2: Installiert die gewünschte Python-Version (hier 3.10) in der Umgebung.
 
     - name: Install dependencies
@@ -39,11 +40,11 @@ jobs:                     # Ein Workflow besteht aus einem oder mehreren "Jobs"
 
     - name: Lint with flake8
       run: |
-      #Bricht den Build ab, falls es Syntaxfehler oder undefinierte Namen gibt
+      # Bricht den Build ab, falls es Syntaxfehler oder undefinierte Namen gibt
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Führt eine zweite flake8-Prüfung aus, die alle Fehler als Warnungen behandelt
-        # (exit-zero sorgt dafür, dass der Build nicht fehlschlägt)
-        # Dabei werden maximale Komplexität und Zeilenlänge begrenzt.
+      # Führt eine zweite flake8-Prüfung aus, die alle Fehler als Warnungen behandelt
+      # (exit-zero sorgt dafür, dass der Build nicht fehlschlägt)
+      # Dabei werden maximale Komplexität und Zeilenlänge begrenzt.
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       # Schritt 4: Führt eine Code-Qualitätsprüfung mit flake8 durch.
 
