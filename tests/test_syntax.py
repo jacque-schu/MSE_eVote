@@ -1,5 +1,8 @@
 # Test, der die Syntax von Dateien prüft
 
+import pytest
+import pathlib
+
 def test_all_python_files_syntax():
     for file in pathlib.Path(".").rglob("*.py"):
         try:
