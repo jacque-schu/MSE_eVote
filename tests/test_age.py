@@ -1,8 +1,7 @@
-# Kurzes Programm zur Altersabfrage
+def prompt_age():
+    return int(input("Bitte gib dein Alter ein: "))
 
-alter = int(input("Bitte gib dein Alter ein: "))
-
-if alter < 18:
-    print("Minderjährig: Ja")
-else:
-    print("Minderjährig: Nein")
+def test_prompt_age(monkeypatch):
+    # Simuliere, dass der Benutzer "25" eingibt
+    monkeypatch.setattr('builtins.input', lambda prompt="": "25")
+    assert prompt_age() == 25
