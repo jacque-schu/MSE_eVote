@@ -260,3 +260,14 @@ Am Ende lief der Workflow erfolgreich durch. Der Code wird nun automatisch gepr�
 ### 1.6 Fazit 
 Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, aber effektive Continuous-Integration-Pipeline für Python-Projekte einrichtet. Auch wenn anfangs kleinere Fehler auftraten, führten sie zu einem besseren Verständnis für YAML-Strukturen, Testkonventionen und Versionskontrolle mit Git.
 
+# Übung 3: Systemarchitektur Ihres Projektes modellieren 
+
+### 1. Event Storming durchführen
+### 2. Domänenmodell erstellen
+### 3. Bounded Contexts identifizieren
+### 4. Entitäten und Aggregates definieren
+### 5. Domain Services und Repositories
+### 6. Implementierungsstrategie
+
+
+
