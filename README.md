@@ -299,28 +299,28 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 
 **Entitäten und Aggregate implementieren**
 
-- Bürgerverwaltung (Aggregate Root: Bürger) 
-Klasse Bürger 
-Attribute: buergerID, name, adresse, geburtsdatum, e-mail, registrierungsstatus, authentifizierungsdaten 
+- Bürgervewaltung (Aggregate Root: Bürger) <br>
+Klasse Bürger <br>
+Attribute: buergerID, name, adresse, geburtsdatum, e-mail, registrierungsstatus, authentifizierungsdaten <br>
 Methoden: registriere(), authentifiziere(), datenAktualisieren()  
 
-- Abstimmungsmanagement (Aggregate Root: Abstimmung) 
-Klasse Abstimmung 
-Attribute: abstimmungsID, titel, Beschreibung, startDatum, endDatum, teilnehmerliste, stimmen, status 
+- Abstimmungsübersicht (Aggregate Root: Abstimmung) <br>
+Klasse Abstimmung <br>
+Attribute: abstimmungsID, titel, Beschreibung, startDatum, endDatum, teilnehmerliste, stimmen, status <br>
 Methoden: erstellen(), starten(), beenden(), aktualisieren(), ergebnisAuszählen()  
 
-- Stimme (Aggregate Root: Stimme) 
-Klasse Stimme 
-Attribute: buergerId, option, zeitpunkt 
+- Stimme (Aggregate Root: Stimme) <br>
+Klasse Stimme <br>
+Attribute: buergerId, option, zeitpunkt <br>
 Methoden: validiere(), saveStimme()  
 
-- Ergebnis-Aggregat (Aggregate Root: Abstimmungsübersicht) 
-Klasse Abstimmungsübersicht 
-Attribute: ErgebnisID, AbstimmungsID, Gesamtergebnis, Ergebnisdetails, Zeitpunkt der Ergebniserstellung 
+- Ergebnis (Aggregate Root: Ergebnis) <br>
+Klasse Abstimmungsübersicht <br>
+Attribute: ErgebnisID, AbstimmungsID, Gesamtergebnis, Ergebnisdetails, Zeitpunkt der Ergebniserstellung <br>
 Methoden: getGesamtergebnis(), getErgebnisDetails()
 
 **Domain Services implementieren**
-- AuthentifizierungsService: z.B. Nutzer authentifizieren, Token erstellen und prüfen, Nutzungsstatus abfragen 
+- AuthentifizierungsService: z.B. Nutzer authentifizieren, Nutzungsstatus abfragen 
 - RegistrierungsService: Neue Nutzer registrieren, Bestätigungsprozesse steuern 
 - AbstimmungsService: Abstimmungen verwalten, Abstimmungen erstellen/abschließen 
 - AbstimmungsUebersichtsService: Verwaltung und Bereitstellung der Ansicht von Abstimmungen 
