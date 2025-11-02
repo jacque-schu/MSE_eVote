@@ -299,22 +299,22 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 
 **Entitäten und Aggregate implementieren**
 
-Bürgerverwaltung (Aggregate Root: Bürger) 
+- Bürgerverwaltung (Aggregate Root: Bürger) 
 Klasse Bürger 
 Attribute: buergerID, name, adresse, geburtsdatum, e-mail, registrierungsstatus, authentifizierungsdaten 
 Methoden: registriere(), authentifiziere(), datenAktualisieren()  
 
-Abstimmungsmanagement (Aggregate Root: Abstimmung) 
+- Abstimmungsmanagement (Aggregate Root: Abstimmung) 
 Klasse Abstimmung 
 Attribute: abstimmungsID, titel, Beschreibung, startDatum, endDatum, teilnehmerliste, stimmen, status 
 Methoden: erstellen(), starten(), beenden(), aktualisieren(), ergebnisAuszählen()  
 
-Stimme (Aggregate Root: Stimme) 
+- Stimme (Aggregate Root: Stimme) 
 Klasse Stimme 
 Attribute: buergerId, option, zeitpunkt 
 Methoden: validiere(), saveStimme()  
 
-Ergebnis-Aggregat (Aggregate Root: Abstimmungsübersicht) 
+- Ergebnis-Aggregat (Aggregate Root: Abstimmungsübersicht) 
 Klasse Abstimmungsübersicht 
 Attribute: ErgebnisID, AbstimmungsID, Gesamtergebnis, Ergebnisdetails, Zeitpunkt der Ergebniserstellung 
 Methoden: getGesamtergebnis(), getErgebnisDetails()
