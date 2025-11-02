@@ -274,8 +274,8 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 **Bürgerverwaltung (Aggregate Root)**
 - Entität: Bürger 
 - Aggregate: Bürger (enthält alle Daten des Bürgers zur Registrierung, Aktivierung, E-Mail-Bestätigung, Statuswechsel)
-- Attribute: Bürger-ID, Name, E-Mail, Passwort(-Hash), Status (aktiv/gesperrt), Datum der Registrierung, E-Mail-Bestätigung (als Value Object), Adressdaten 
-- Methoden: registrieren(), aktivieren(), sperren(), bestätigung_versenden(), bestätigung_validieren()
+- Attribute: Bürger-ID, Name, Adresse, Geburtsdatum, E-Mail, Status (aktiv/gesperrt), (Datum der Registrierung, E-Mail-Bestätigung (als Value Object), Passwort(-Hash))
+- Methoden: registriere(), aktivieren(), sperren(), bestätigung_versenden(), bestätigung_validieren()
 
 **Abstimmungsmanagement (Aggregate Root)**
 - Entität: Abstimmung 
@@ -294,6 +294,12 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 - Aggregate: Abstimmungsübersicht (bzw. Ergebnis)
 - Attribute: Liste der aktuellen Abstimmungen (Titel, Beschreibung, Frist, Status), ggf. Ergebnisse pro Abstimmung (Anzahl Stimmen je Option) 
 - Methoden: abstimmungsuebersicht_anzeigen(), ergebnis_berechnen(), filtern(), sortieren()
+
+### Implementierungsstrategie
+
+...
+
+
 
 
 
