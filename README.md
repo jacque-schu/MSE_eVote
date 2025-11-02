@@ -297,7 +297,42 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 
 ### Implementierungsstrategie
 
-...
+**Entitäten und Aggregate implementieren**
+
+Bürgerverwaltung (Aggregate Root: Bürger) 
+Klasse Bürger 
+Attribute: buergerID, name, adresse, geburtsdatum, e-mail, registrierungsstatus, authentifizierungsdaten 
+Methoden: registriere(), authentifiziere(), datenAktualisieren()  
+
+Abstimmungsmanagement (Aggregate Root: Abstimmung) 
+Klasse Abstimmung 
+Attribute: abstimmungsID, titel, Beschreibung, startDatum, endDatum, teilnehmerliste, stimmen, status 
+Methoden: erstellen(), starten(), beenden(), aktualisieren(), ergebnisAuszählen()  
+
+Stimme (Aggregate Root: Stimme) 
+Klasse Stimme 
+Attribute: buergerId, option, zeitpunkt 
+Methoden: validiere(), saveStimme()  
+
+Ergebnis-Aggregat (Aggregate Root: Abstimmungsübersicht) 
+Klasse Abstimmungsübersicht 
+Attribute: ErgebnisID, AbstimmungsID, Gesamtergebnis, Ergebnisdetails, Zeitpunkt der Ergebniserstellung 
+Methoden: getGesamtergebnis(), getErgebnisDetails()
+
+**Domain Services implementieren**
+- AuthentifizierungsService: z.B. Nutzer authentifizieren, Token erstellen und prüfen, Nutzungsstatus abfragen 
+- RegistrierungsService: Neue Nutzer registrieren, Bestätigungsprozesse steuern 
+- AbstimmungsService: Abstimmungen verwalten, Abstimmungen erstellen/abschließen 
+- AbstimmungsUebersichtsService: Verwaltung und Bereitstellung der Ansicht von Abstimmungen 
+- PolicyService: Prüfen von Berechtigungen und Regeln (z. B. wer darf abstimmen) 
+- ErgebnisberechnungsService: Stimmen zählen und Ergebnis berechnen 
+- ErgebnisvalidierungsService: Validierung und Regelauswertung der Ergebnisse 
+- ErgebnisanzeigeService: Formattierung und Aufbereitung der Ergebnisanzeige für Nutzer
+
+**Repositories implementieren**
+- BürgerverwaltungsRepository
+- AbstimmungsRepository
+- ErgebnisRepository
 
 
 
