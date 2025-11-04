@@ -262,12 +262,80 @@ Der Aufbau dieses Workflows zeigt, wie man mit GitHub Actions eine einfache, abe
 
 # Übung 3: Systemarchitektur des Projektes modellieren 
 
-### 1. Event Storming durchführen
-### 2. Domänenmodell erstellen
-### 3. Bounded Contexts identifizieren
-### 4. Entitäten und Aggregates definieren
-### 5. Domain Services und Repositories
-### 6. Implementierungsstrategie
+**Übersicht der:**
+- Entitäten, Aggregate & Werte
+- Bounded Contexts (BC)
+- Domain Services und Repositories
+
+<img width="756" height="1174" alt="image" src="https://github.com/user-attachments/assets/0ae0560e-4541-446c-8bc7-239230fcfc51" />
+
+### Entitäten und Aggregates
+
+**Bürgerverwaltung (Aggregate Root)**
+- Entität: Bürger 
+- Aggregate: Bürger (enthält alle Daten des Bürgers zur Registrierung, Aktivierung, E-Mail-Bestätigung, Statuswechsel)
+- Attribute: Bürger-ID, Name, Adresse, Geburtsdatum, E-Mail, Status (aktiv/gesperrt), (Datum der Registrierung, E-Mail-Bestätigung (als Value Object), Passwort(-Hash))
+- Methoden: registriere(), aktivieren(), sperren(), bestätigung_versenden(), bestätigung_validieren()
+
+**Abstimmungsmanagement (Aggregate Root)**
+- Entität: Abstimmung 
+- Aggregate: Abstimmung (enthält alle Daten zu einer Abstimmung, inkl. Frist und Status)
+- Attribute: Abstimmungs-ID, Titel, Beschreibung, Frist (Value Object: Start-/Enddatum), Status (offen/geschlossen/archiviert) 
+- Methoden: abstimmung_erstellen(), abstimmung_schließen(), frist_prüfen(), beschreibung_aktualisieren()
+
+**(Teilnahme) / Stimme (Aggregate Root)**
+- Entität: Stimme 
+- Aggregate: Stimme (fasst die Stimmabgabe eines Bürgers für eine Abstimmung zusammen)
+- Attribute: Stimmen-ID, Bürger-ID (Referenz), Abstimmungs-ID (Referenz), Auswahl/Option, Zeitstempel 
+- Methoden: abgeben(), ändern(), widerrufen() 
+
+**Abstimmungsübersicht / Abstimmungsübersicht / Ergebnis-Aggregat (Aggregate Root)**
+- Entität: Abstimmungsübersicht 
+- Aggregate: Abstimmungsübersicht (bzw. Ergebnis)
+- Attribute: Liste der aktuellen Abstimmungen (Titel, Beschreibung, Frist, Status), ggf. Ergebnisse pro Abstimmung (Anzahl Stimmen je Option) 
+- Methoden: abstimmungsuebersicht_anzeigen(), ergebnis_berechnen(), filtern(), sortieren()
+
+### Implementierungsstrategie
+
+**Entitäten und Aggregate implementieren**
+
+- Bürgervewaltung (Aggregate Root: Bürger) <br>
+Klasse Bürger <br>
+Attribute: buergerID, name, adresse, geburtsdatum, e-mail, registrierungsstatus, authentifizierungsdaten <br>
+Methoden: registriere(), authentifiziere(), datenAktualisieren()  
+
+- Abstimmungsübersicht (Aggregate Root: Abstimmung) <br>
+Klasse Abstimmung <br>
+Attribute: abstimmungsID, titel, Beschreibung, startDatum, endDatum, teilnehmerliste, stimmen, status <br>
+Methoden: erstellen(), starten(), beenden(), aktualisieren(), ergebnisAuszählen()  
+
+- Stimme (Aggregate Root: Stimme) <br>
+Klasse Stimme <br>
+Attribute: buergerId, option, zeitpunkt <br>
+Methoden: validiere(), saveStimme()  
+
+- Ergebnis (Aggregate Root: Ergebnis) <br>
+Klasse Abstimmungsübersicht <br>
+Attribute: ErgebnisID, AbstimmungsID, Gesamtergebnis, Ergebnisdetails, Zeitpunkt der Ergebniserstellung <br>
+Methoden: getGesamtergebnis(), getErgebnisDetails()
+
+**Domain Services implementieren**
+- AuthentifizierungsService: z.B. Nutzer authentifizieren, Nutzungsstatus abfragen 
+- RegistrierungsService: Neue Nutzer registrieren, Bestätigungsprozesse steuern 
+- AbstimmungsService: Abstimmungen verwalten, Abstimmungen erstellen/abschließen 
+- AbstimmungsUebersichtsService: Verwaltung und Bereitstellung der Ansicht von Abstimmungen 
+- PolicyService: Prüfen von Berechtigungen und Regeln (z. B. wer darf abstimmen) 
+- ErgebnisberechnungsService: Stimmen zählen und Ergebnis berechnen 
+- ErgebnisvalidierungsService: Validierung und Regelauswertung der Ergebnisse 
+- ErgebnisanzeigeService: Formattierung und Aufbereitung der Ergebnisanzeige für Nutzer
+
+**Repositories implementieren**
+- BürgerverwaltungsRepository
+- AbstimmungsRepository
+- ErgebnisRepository
+
+
+
 
 
 
