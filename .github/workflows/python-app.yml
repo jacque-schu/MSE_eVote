@@ -12,53 +12,32 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show repo tree (debug)
-        run: |
-          pwd
-          ls -la
-          echo "---- requirements.txt ----"
-          test -f requirements.txt && cat requirements.txt || echo "requirements.txt NOT FOUND"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.10"
 
-      # Optional: Cache (kannst du vorübergehend auskommentieren, falls verdächtig)
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
-
-      - name: Install dependencies
+      # >>> HART UND EINFACH: Pakete direkt installieren
+      - name: Install runtime + test deps
         run: |
           python -m pip install --upgrade pip
-          # Installiere aus requirements.txt (falls vorhanden)
-          if [ -f requirements.txt ]; then
-            python -m pip install -r requirements.txt
-          fi
-          # Sicherheitshalber httpx nachinstallieren (falls requirements.txt veraltet war)
-          python -m pip install httpx
-          # Test-/Lint-Tools
+          python -m pip install fastapi "uvicorn[standard]" jinja2 httpx
           python -m pip install pytest ruff pytest-cov
 
-      - name: Show installed packages (debug)
+      # Debug: zeig, dass FastAPI & httpx wirklich da sind
+      - name: Verify installed packages
         run: |
-          python -m pip show fastapi || true
-          python -m pip show httpx || true
+          python - <<'PY'
+          import sys, pkgutil
+          print("Python:", sys.version)
+          for m in ["fastapi","starlette","uvicorn","httpx","jinja2"]:
+              print(m, "installed:", bool(pkgutil.find_loader(m)))
+          PY
           python -m pip list
 
       - name: Lint (ruff)
@@ -71,5 +50,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-${{ matrix.python-version }}
+          name: coverage
           path: coverage.xml
