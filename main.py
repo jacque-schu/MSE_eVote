@@ -20,3 +20,6 @@ def home(request: Request):
             "subtitle": "Einfach abstimmen. Klar auswerten."
         }
     )
+@app.get("/health")
+def health():
+    return {"status": "ok"}
