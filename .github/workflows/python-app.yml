@@ -1,57 +1,57 @@
-# Dieser GitHub Actions Workflow automatisiert das Bauen, Testen und Linting (Codeprüfung) einer Python-Anwendung.
-# Er wird ausgeführt, wenn auf den main-Branch gepusht oder ein Pull Request erstellt wird.
+name: CI
 
-name: Python application  # Der Name des Workflows (wird in GitHub angezeigt)
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-on:                       # Hier wird festgelegt, wann der Workflow ausgeführt wird
-  push:                   # → bei jedem Push ...
-    branches: [ "main" ]  # ... auf den main-Branch
-  pull_request:           # → und bei jedem Pull Request ...
-    branches: [ "main" ]  # ... der den main-Branch betrifft
+permissions:
+  contents: read
 
-permissions:              # Standard-Berechtigungen des Workflows
-  contents: read          # Der Workflow darf Repository-Inhalte lesen (z. B. Quellcode auschecken)
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
 
-jobs:                     # Ein Workflow besteht aus einem oder mehreren "Jobs"
-  build:                  # Der Name dieses Jobs ist "build"
+    steps:
+      - uses: actions/checkout@v4
 
-    runs-on: ubuntu-latest  # Der Job läuft auf der neuesten Ubuntu-Version (virtuelle GitHub-Umgebung)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    steps:                  # Schritte, die nacheinander ausgeführt werden
-    - uses: actions/checkout@v4
-      # Schritt 1: Checkt den Code aus dem Repository aus, damit er in der Pipeline verfügbar ist.
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
-        cache: "pip"  # Beschleunigt den Build durch Caching der Python-Abhängigkeiten
-      # Schritt 2: Installiert die gewünschte Python-Version (hier 3.10) in der Umgebung.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest ruff pytest-cov
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      # Schritt 3: Installiert Abhängigkeiten.
-      #  - Zuerst wird pip aktualisiert.
-      #  - Dann werden flake8 (zum Linting) und pytest (zum Testen) installiert.
-      #  - Falls eine requirements.txt-Datei vorhanden ist, werden die dort aufgelisteten Pakete installiert.
+      - name: Lint (ruff)
+        run: |
+          ruff check .
+          # Optional: auto-fix in PRs (nur als Info, nicht failen)
+          # ruff check . --fix
 
-    - name: Lint with flake8
-      run: |
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      # Schritt 4: Führt eine Code-Qualitätsprüfung mit flake8 durch.
-      # Bricht den Build ab, falls es Syntaxfehler oder undefinierte Namen gibt
-      # Führt eine zweite flake8-Prüfung aus, die alle Fehler als Warnungen behandelt
-      # (exit-zero sorgt dafür, dass der Build nicht fehlschlägt)
-      # Dabei werden maximale Komplexität und Zeilenlänge begrenzt.
+      - name: Tests
+        run: |
+          pytest -q --maxfail=1 --disable-warnings --cov=./ --cov-report=xml
 
-
-    - name: Test with pytest
-      run: |
-        pytest
-      # Schritt 5: Führt alle Tests mit pytest aus.
-      # pytest sucht automatisch nach Dateien, die mit "test_" beginnen,
-      # und führt sie aus, um sicherzustellen, dass der Code korrekt funktioniert.
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.python-version }}
+          path: coverage.xml
