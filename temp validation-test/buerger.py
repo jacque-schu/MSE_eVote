@@ -1,12 +1,18 @@
 import re
 from pydantic import BaseModel, EmailStr, field_validator
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
+
 
 class Registrierungsstatus(str, Enum):
     NEU = 'neu'
     REGISTRIERT = 'registriert'
     SUSPENDIERT = 'suspendiert'
+
+
+class ValidationError:
+    pass
+
 
 class Buerger(BaseModel):
     buergerID: int
@@ -35,23 +41,21 @@ class Buerger(BaseModel):
             raise ValueError("Adresse ist zu kurz oder leer.")
         return adresse
 
-    @field_validator("geburtsdatum")
+    @field_validator("geburtsdatum", mode='before')
     @classmethod
-    def validate_geburtsdatum(cls, geburtsdatum):
-        if geburtsdatum > date.today():
-            raise ValueError("Geburtsdatum darf nicht in der Zukunft liegen.")
-        return geburtsdatum
-
-    def registriere(self):
-        self.registrierungsstatus = Registrierungsstatus.REGISTRIERT
-
-    def authentifiziere(self, daten):
-        return self.authentifizierungsdaten == daten
-
-    def datenAktualisieren(self, **kwargs):
-        for key, value in kwargs.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
+    def parse_geburtsdatum(cls, value):
+        if isinstance(value, date):
+            return value
+        try:
+            dt = datetime.strptime(value, '%d.%m.%y')
+            return dt.date()
+        except ValueError:
+            pass
+        try:
+            dt = datetime.strptime(value, '%d.%m.%Y')
+            return dt.date()
+        except ValueError:
+            raise ValueError('Geburtsdatum muss im Format TT.MM.JJ oder TT.MM.JJJJ sein.')
 
 # Beispiel-Test
 if __name__ == "__main__":

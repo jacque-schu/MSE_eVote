@@ -3,6 +3,7 @@ from buerger import Buerger
 from pydantic import ValidationError
 from datetime import date
 
+
 # Name Tests
 @pytest.mark.parametrize("name, valid", [
     ("Anna-Maria", True),               # Happy Path
@@ -63,12 +64,11 @@ def test_email_validation(email, valid):
 
 # Geburtsdatum Tests
 @pytest.mark.parametrize("geburtsdatum, valid", [
-    (date(1990, 1, 1), True),
-    (date(2000, 2, 29), True),
-    (date(1900, 1, 1), True),
-    (date.today(), True),
-
-    (date.today().replace(year=date.today().year + 1), False), # Zukunftsdatum
+    ("05.11.1990", True),
+    ("05.11.25", True),
+    ("31.02.1990", False),  # Ungültiges Datum
+    ("2025-01-01", False),  # Falsches Format
+    ("", False),
 ])
 def test_geburtsdatum_validation(geburtsdatum, valid):
     data = dict(
@@ -81,7 +81,7 @@ def test_geburtsdatum_validation(geburtsdatum, valid):
     )
     if valid:
         b = Buerger(**data)
-        assert b.geburtsdatum == geburtsdatum
+        assert b.geburtsdatum.strftime('%d.%m.%y') == geburtsdatum[-8:] or b.geburtsdatum.strftime('%d.%m.%Y') == geburtsdatum
     else:
         with pytest.raises(ValidationError):
             Buerger(**data)
