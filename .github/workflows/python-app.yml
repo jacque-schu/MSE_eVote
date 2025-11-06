@@ -54,7 +54,12 @@ jobs:
           for m in ["fastapi","starlette","uvicorn","httpx","jinja2","pytest"]:
               print(f"{m:10} installed:", bool(pkgutil.find_loader(m)))
           PY
+          
+     # Zuerst Ruff automatisch die Fixes ausführen lassen (inkl. E401)
+      - name: Lint (ruff)
+        run: ruff check . --fix
 
+     # Danach den Check erneut (ohne Fix), um Fehler sichtbar zu machen (optional)
       - name: Lint (ruff)
         run: ruff check .
 

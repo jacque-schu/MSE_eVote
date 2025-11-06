@@ -334,8 +334,24 @@ Methoden: getGesamtergebnis(), getErgebnisDetails()
 - AbstimmungsRepository
 - ErgebnisRepository
 
+# Übung 4: Advanced Java, Test-Driven Design (TDD) und LLM-gestütztes Entwickeln
 
+### 2. Testfälle mit LLM generieren und validieren (TDD Schritt 1)
 
+Der erste zentrale Teil unserer Domänenlogik ist die Registrierung eines neuen Bürgers (BC: Bürgerverwaltung). 
+Die Tests wurden mittels LLM-gesteuerter Generierung von Testfällen erstellt, mit Fokus auf Validierungsmethoden, 
+insbesondere zur:
+Eingabevalidierung von Name, Adresse, Geburtsdatum und Email.
 
+Die Tests decken folgende Kategorien ab:
+Happy Path: Typische zulässige Eingaben
+Edge Cases: Grenzfälle, z.B. sehr kurze oder lange Namen, Sonderfälle bei Datum, etc.
+Negative Tests: Ungültige Eingaben wie Zahlen im Namen, spezielle Sonderzeichen, falsche Formate
 
+Für die Namensvalidierung wurde ergänzend eine Regex eingeführt, die nur Buchstaben (auch Unicode), 
+Leerzeichen und Bindestriche erlaubt – dabei wird auch geprüft, dass Namen nicht mit Bindestrich beginnen oder enden.
 
+Die Geburtsdatumseingabe wurde an das Format „TT.MM.JJ“ angepasst und per Eigen-Parser im Validator behandelt, 
+sodass Strings korrekt in Python date konvertiert und validiert werden.
+
+### 3. Implementierung der Domänenlogik (TDD Schritt 2) mit LLM-Pair-Programming
