@@ -355,3 +355,24 @@ Die Geburtsdatumseingabe wurde an das Format „TT.MM.JJ“ angepasst und per Ei
 sodass Strings korrekt in Python date konvertiert und validiert werden.
 
 ### 3. Implementierung der Domänenlogik (TDD Schritt 2) mit LLM-Pair-Programming
+
+
+### 6. Kritische Reflektion zu TDD, DDD und LLM-gestützte Entwicklung
+- **Testgetriebene Entwicklung** (TDD) führt zu einem strukturierteren und fehlerärmeren Entwicklungsprozess, 
+da Anforderungen frühzeitig überprüft werden. Sie verbessert die Codequalität und erleichtert Refactoring, 
+erfordert jedoch anfangs mehr Aufwand und stößt bei komplexen Systemen an Grenzen, wenn geeignete Tests 
+schwer vorab zu definieren sind. <br>
+
+- **Domain-Driven Design (DDD)** unterstützt das Team dabei, eine gemeinsame Sprache und klare Struktur im Projekt 
+zu etablieren. Durch die Aufteilung in klar abgegrenzte Domänen wissen alle Beteiligten jederzeit, in welchem 
+Bereich sie arbeiten und welche Logik betroffen ist. Dies erleichtert Abstimmung, Testabdeckung und Wartbarkeit. 
+Gleichzeitig erfordert DDD eine konsequente Einhaltung der definierten Domänengrenzen, um die Übersicht zu bewahren. <br>
+
+- **Large Language Models (LLMs)** beschleunigen die Entwicklung, etwa durch Codegenerierung oder Ideenvorschläge, bergen 
+jedoch das Risiko unkritischer Übernahme. Eine reflektierte Nutzung ist daher essenziell, um die generierten 
+Vorschläge sinnvoll in den eigenen Kontext zu integrieren. LLMs eignen sich besonders für standardisierte Aufgaben, 
+weniger für komplexe, domänenspezifische Logik. <br>
+
+Fazit:
+TDD, DDD und LLMs ergänzen sich, wenn ihre jeweiligen Stärken gezielt genutzt und ihre Grenzen beachtet werden. 
+Ein bewusster Umgang mit LLMs trägt dazu bei, Codequalität, Verständlichkeit und Teamkonsistenz nachhaltig zu sichern.
