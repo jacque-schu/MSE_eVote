@@ -1,9 +1,10 @@
-import re
-from pydantic import BaseModel, EmailStr, field_validator
-from datetime import date, datetime
-from enum import Enum
+import re #Für reguläre Ausdrücke (z.B. zur Namensprüfung)
+from pydantic import BaseModel, EmailStr, field_validator #Für das Erstellen von Datenmodellen mit Validierung
+from datetime import date, datetime #Für Datumsverarbeitung
+from enum import Enum #Für die Definition von Aufzählungstypen (z.B. Status)
 
-
+# Eine Enum-Klasse, die drei mögliche Zustände für einen Bürger definiert
+# Wird als Typ für das Feld registrierungsstatus verwendet
 class Registrierungsstatus(str, Enum):
     NEU = 'neu'
     REGISTRIERT = 'registriert'
