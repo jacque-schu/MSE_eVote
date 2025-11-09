@@ -63,6 +63,15 @@ jobs:
       - name: Lint (ruff)
         run: ruff check .
 
+      - name: Ensure static dirs exist
+        run: |
+          mkdir -p apps/static
+          mkdir -p MSE_eVote/apps/static
+
+      - name: Run tests
+        run: pytest -q --maxfail=1 --disable-warnings --cov=./ --cov-report=xml
+
+
       - name: Run tests
         run: pytest -q --maxfail=1 --disable-warnings --cov=./ --cov-report=xml
 
@@ -72,11 +81,6 @@ jobs:
         with:
           name: coverage
           path: coverage.xml
-
-      - name: Ensure static dirs exist
-        run: |
-          mkdir -p apps/static
-          mkdir -p MSE_eVote/apps/static
 
 
 
