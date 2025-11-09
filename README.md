@@ -343,10 +343,10 @@ Die Tests wurden mittels LLM-gesteuerter Generierung von Testfällen erstellt, m
 insbesondere zur:
 Eingabevalidierung von Name, Adresse, Geburtsdatum und Email.
 
-Die Tests decken folgende Kategorien ab:
-Happy Path: Typische zulässige Eingaben
-Edge Cases: Grenzfälle, z.B. sehr kurze oder lange Namen, Sonderfälle bei Datum, etc.
-Negative Tests: Ungültige Eingaben wie Zahlen im Namen, spezielle Sonderzeichen, falsche Formate
+Die Tests decken folgende Kategorien ab:<br>
+- Happy Path: Typische zulässige Eingaben <br>
+- Edge Cases: Grenzfälle, z.B. sehr kurze oder lange Namen, Sonderfälle bei Datum, etc.<br>
+- Negative Tests: Ungültige Eingaben wie Zahlen im Namen, spezielle Sonderzeichen, falsche Formate
 
 Für die Namensvalidierung wurde ergänzend eine Regex eingeführt, die nur Buchstaben (auch Unicode), 
 Leerzeichen und Bindestriche erlaubt – dabei wird auch geprüft, dass Namen nicht mit Bindestrich beginnen oder enden.
