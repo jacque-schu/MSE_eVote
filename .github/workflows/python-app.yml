@@ -72,3 +72,12 @@ jobs:
         with:
           name: coverage
           path: coverage.xml
+
+      - name: Ensure static dirs exist
+        run: |
+          mkdir -p apps/static
+          mkdir -p MSE_eVote/apps/static
+
+
+
+
