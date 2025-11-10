@@ -70,7 +70,7 @@ def test_gesamtergebnis_berechnung():
         Stimmenanzahl(stimmoption=Stimmoption(optionstext=Optionen.ENTHALTUNG), anzahl=2)
     ]
     ergebnis = Ergebnis(ergebnisID=1, abstimmungsID=100, einzelwerte=stimmen)
-    assert ergebnis.getGesamtergebnis() == 10
+    assert ergebnis.gesamtergebnis == 10
 
 # Ergebnisdetails-Test
 def test_ergebnisdetails():
@@ -80,3 +80,12 @@ def test_ergebnisdetails():
     ergebnis = Ergebnis(ergebnisID=7, abstimmungsID=23, einzelwerte=stimmen)
     details = ergebnis.getErgebnisDetails()
     assert details == [{'Option': 'Ja', 'Stimmen': 2}]
+
+def test_stimmenanzahl_large_value():
+    option = Stimmoption(optionstext=Optionen.JA)
+    großer_wert = 10**12  # Beispiel: eine Billion Stimmen
+    stimme = Stimmenanzahl(stimmoption=option, anzahl=großer_wert)
+    assert stimme.anzahl == großer_wert
+    stimmen = [Stimmenanzahl(stimmoption=option, anzahl=großer_wert)]
+    ergebnis = Ergebnis(ergebnisID=1, abstimmungsID=99, einzelwerte=stimmen, timestamp=datetime.now())
+    assert ergebnis.gesamtergebnis == großer_wert

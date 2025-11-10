@@ -25,12 +25,12 @@ class Ergebnis(BaseModel):
     def gesamtergebnis(self) -> int:
         return sum(e.anzahl for e in self.einzelwerte)
 
-    def getGesamtergebnis(self) -> int:
+   # def getGesamtergebnis(self) -> int:
         return self.gesamtergebnis
 
     def getErgebnisDetails(self) -> List[dict]:
         return [
-            {"Option": e.stimmoption.optionstext, "Stimmen": e.anzahl}
+            {"Option": e.stimmoption.optionstext.value, "Stimmen": e.anzahl}
             for e in self.einzelwerte
         ]
 
@@ -52,5 +52,5 @@ if __name__ == "__main__":
         Stimmenanzahl(stimmoption=enth, anzahl=3)
     ]
     ergebnis = Ergebnis(ergebnisID=1, abstimmungsID=99, einzelwerte=stimmen)
-    print("Gesamtergebnis:", ergebnis.getGesamtergebnis())
+    print("Gesamtergebnis:", ergebnis.gesamtergebnis)
     print("Details:", ergebnis.getErgebnisDetails())
