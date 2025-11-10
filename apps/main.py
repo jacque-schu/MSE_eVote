@@ -7,7 +7,7 @@ from pathlib import Path
 app = FastAPI(title="MSE eVote")
 
 BASE_DIR = Path(__file__).resolve().parent  # absoluter Pfad
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+templates = Jinja2Templates(directory=str(BASE_DIR / "../templates"))
 
 static_dir = BASE_DIR / "static"
 if static_dir.exists():  # nur mounten, wenn der Ordner vorhanden ist
