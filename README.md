@@ -354,7 +354,86 @@ Leerzeichen und Bindestriche erlaubt – dabei wird auch geprüft, dass Namen ni
 Die Geburtsdatumseingabe wurde an das Format „TT.MM.JJ“ angepasst und per Eigen-Parser im Validator behandelt, 
 sodass Strings korrekt in Python date konvertiert und validiert werden.
 
+Auch für den zweiten (Abstimmungsübersicht) und dritten (Ergebnisdienst) Teil unserer Domänenlogik wurden Testfälle generiert, die die oben genannten Kategorien abdecken.
+Was genau wird zum Beispiel in Teil 3 (Ergebnisdienst) getestet?
+
+**Happy Path:**
+-	Gültige Stimmenanzahlen (z.B. anzahl=5, anzahl=0, anzahl=100000) werden akzeptiert und korrekt zugewiesen
+-	Gültige Stimmoptionen ("Ja", "Nein", "Enthaltung") funktionieren ohne Fehler
+-	Das "Ergebnis" entsteht bei vorhandenen Einzelwerten und die Methoden liefern die korrekten Resultate
+
+**Edge Cases:**
+-	Grenzwerte wie null Stimmen (anzahl=0) oder extrem hohe Werte (anzahl=100000), sowie Minimalbelegung für Einzelwerte (Liste mit genau einer Stimme) werden explizit getestet
+-	Case Sensitivity (z.B. "ja" statt "Ja") wird als Grenzfall für Enums geprüft
+
+**Negative Tests:**
+-	Ungültige Werte wie negative Zahlen bei Stimmen, unzulässige oder falsch geschriebene Stimmoptionen, leere oder None-Einzelwerte führen zu ValidationError/Fehlern und werden bewusst erwartet
+Es gibt zahlreiche weitere Testfälle, die das LLM empfiehlt und je nach Bedarf im Laufe des Projektes ergänzt werden können. Auf ein Beispiel wird in 4. Eingegangen.
+
+
 ### 3. Implementierung der Domänenlogik (TDD Schritt 2) mit LLM-Pair-Programming
+Zu allen drei Teilen der Dämonenlogik wurde Code mit Hilfe eines LLMs (perplexity pro) generiert, der die unter 2. erstellten Tests besteht. Das LLM schlägt einige Verbesserungen vor.
+Zum Bespiel gilt es Redundanzen zu vermeiden.
+
+**Beispiel aus ergebnis.py:**
+
+def gesamtergebnis(self) -> int:
+    return sum(e.anzahl for e in self.einzelwerte)
+
+def getGesamtergebnis(self) -> int:
+    return self.gesamtergebnis
+
+Hier empfiehlt das LLM die Methode getGesamtergebnis() zu entfernen und konsistent das gesamtergebnis (Property) zu nutzen. Demzufolge wurde sowohl ergebnis.py als auch test_validation_ergebnis.py entsprechend angepasst.
+Auf Nachfrage an das LLM ob dann die Methode getErgebnisDetails() ebenfalls als property verwendet werden sollte, bestätigte dies das LLM, falls keine Parameter nötig wären.
+Da noch nicht genau feststeht, welche Ausgaben letztendlich benötigt werden, wird getErgebnisDetails() vorerst so gelassen.
+
+Eine weitere bespielhafte Empfehlung des LLMs ist die Nutzung von Enum-Strings bei Ausgaben anstelle von Enum-Objekten. Dies ist sinnvoll für die Ausgabe und Serialisierung z.B. beim Erstellen von Dicts, bei der Anzeige für Nutzer oder beim Export/Import.
+Deshalb wurde folgender Code angepasst.
+
+**Vorher:**
+
+def getErgebnisDetails(self) -> List[dict]:
+    return [
+        {"Option": e.stimmoption.optionstext, "Stimmen": e.anzahl}
+        for e in self.einzelwerte
+    ]
+
+**Nachher:**
+
+def getErgebnisDetails(self) -> List[dict]:
+    return [
+        {"Option": e.stimmoption.optionstext.value, "Stimmen": e.anzahl}
+        for e in self.einzelwerte
+    ]
+
+Das LLM macht durchaus sinnvolle Vorschläge zum Verbessern des Codes. Allerdings muss immer geprüft werden, ob diese entsprechend benötigt werden, da das LLM nicht das gesamte Projekt im Auge hat und ggf. nicht über alle Informationen verfügt.
+
+### 4. Tests-Erweiterung und Refaktorisierung (TDD Schritt 3):
+Zu allen drei Teilen der Dämonenlogik wurde das LLM nach Testerweiterungen gefragt.
+Das LLM schlägt zum Beispiel vor, extrem hohe Wertebereiche zu testen.
+
+Beispiel aus ergebnis.py: Großer Wertebereich für "anzahl"
+-	Extrem hohe Zahlen könnten zu Performance- oder Logikfehlern führen (z.B. bei Integer Overflow oder Datenbankgrenzen)
+-	Test: Erzeuge "Stimmenanzahl" mit sehr großem "anzahl" (z.B. 10**12)
+
+def test_stimmenanzahl_large_value():
+
+    option = Stimmoption(optionstext=Optionen.JA)
+
+    großer_wert = 10**12  # Beispiel: eine Billion Stimmen
+
+    stimme = Stimmenanzahl(stimmoption=option, anzahl=großer_wert)
+
+    assert stimme.anzahl == großer_wert
+
+    stimmen = [Stimmenanzahl(stimmoption=option, anzahl=großer_wert)]
+
+    ergebnis = Ergebnis(ergebnisID=1, abstimmungsID=99, einzelwerte=stimmen, timestamp=datetime.now())
+
+    assert ergebnis.gesamtergebnis == großer_wert
+
+Weitere Testfälle werden sich im Laufe des Projektes ergeben. Einige Vorschläge des LLMs wurden nicht umgesetzt, da noch nicht ganz klar ist, welche Ausgaben letztendlich benötigt werden. Diese Vorschläge werden dann erneut beurteilt.
+
 
 
 ### 6. Kritische Reflektion zu TDD, DDD und LLM-gestützte Entwicklung
