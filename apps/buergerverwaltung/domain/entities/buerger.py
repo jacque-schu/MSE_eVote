@@ -3,6 +3,24 @@ import re
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime, date
 from enum import Enum
+import json
+
+# Funktion, um die Bürger in einer Datei zu speichern
+def speichere_buerger_db(buerger_db):
+    with open("buerger_db.json", "w") as file:
+        # Alle Bürger als Liste von Dictionaries speichern
+        json.dump([buerger.dict() for buerger in buerger_db], file)
+
+# Funktion, um die Bürger aus einer Datei zu laden
+def lade_buerger_db():
+    try:
+        with open("buerger_db.json", "r") as file:
+            # Lade die Daten und konvertiere sie zurück in Buerger-Objekte
+            daten = json.load(file)
+            return [Buerger(**buerger) for buerger in daten]
+    except FileNotFoundError:
+        # Falls die Datei nicht gefunden wird, gibt es keine gespeicherten Daten
+        return []
 
 # Enum für den Registrierungsstatus
 class Registrierungsstatus(str, Enum):
