@@ -1,13 +1,19 @@
+# apps/buergerverwaltung/domain/entities/buerger.py
 import re
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime, date
 from enum import Enum
 
+# Enum für den Registrierungsstatus
 class Registrierungsstatus(str, Enum):
     NEU = 'neu'
     REGISTRIERT = 'registriert'
     SUSPENDIERT = 'suspendiert'
 
+# In-Memory-Datenbank (Liste für Bürger)
+buerger_db = []
+
+# Bürger Modell
 class Buerger(BaseModel):
     buergerID: int
     name: str
@@ -54,9 +60,23 @@ class Buerger(BaseModel):
         except ValueError:
             raise ValueError("Geburtsdatum muss im Format TT.MM.JJ oder TT.MM.JJJJ sein.")
 
+# Funktion zum Registrieren eines Bürgers
+def registriere_buerger(buerger: Buerger):
+    # Überprüfen, ob der Bürger bereits existiert
+    if any(existing_buerger.buergerID == buerger.buergerID for existing_buerger in buerger_db):
+        raise ValueError("Bürger mit dieser ID existiert bereits.")
+    
+    # Bürger zur Liste (Datenbank) hinzufügen
+    buerger_db.append(buerger)
+    return buerger
+
+# Funktion, um alle registrierten Bürger zu bekommen
+def get_all_buerger():
+    return buerger_db
+
 # Beispiel-Test
 if __name__ == "__main__":
-    # Das wird bei gültiger Eingabe funktionieren:
+    # Erstelle ein Beispiel-Bürger-Objekt
     try:
         buerger = Buerger(
             buergerID=1,
@@ -66,6 +86,12 @@ if __name__ == "__main__":
             email="max@example.com",
             authentifizierungsdaten="geheim",
         )
-        print(buerger)
+        registriere_buerger(buerger)
+        print(f"Bürger registriert: {buerger}")
     except ValueError as e:
         print(f"Fehler: {e}")
+    
+    # Alle Bürger anzeigen
+    print("Alle Bürger:")
+    for b in get_all_buerger():
+        print(b)
