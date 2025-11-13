@@ -1,41 +1,26 @@
-# apps/buergerverwaltung/services/registrierungs_service.py
-
-from apps.buergerverwaltung.domain.entities.buerger import (
-    Buerger,
-    Registrierungsstatus,
-    lade_buerger_db,
-    speichere_buerger_db
-)
-from datetime import date
-
+from apps.buergerverwaltung.domain.entities.buerger import Buerger
 
 class Registrierungsservice:
     def __init__(self, buerger_db):
+        """
+        Initialisiert den Registrierungsservice mit der Bürger-Datenbank.
+
+        :param buerger_db: Die Datenbank, in der die Bürger gespeichert sind.
+        """
         self.buerger_db = buerger_db
-        # Lädt die aktuelle Bürgerdatenbank aus JSON
-        
 
-    def registriere_buerger(self, buerger_daten: dict) -> Buerger:
+    def registriere_buerger(self, buerger: Buerger) -> Buerger:
         """
-        Registriert einen neuen Bürger, fügt ihn der JSON hinzu und gibt ihn zurück.
+        Registriert einen neuen Bürger in der Datenbank.
+
+        :param buerger: Das Bürger-Objekt, das registriert werden soll.
+        :return: Das registrierte Bürger-Objekt.
         """
-        # Automatische ID-Vergabe (max + 1)
-        neue_id = max([b.buergerID for b in self.buerger_db], default=0) + 1
-        buerger_daten["buergerID"] = neue_id
-        buerger_daten["registrierungsstatus"] = Registrierungsstatus.REGISTRIERT
+        # Überprüfen, ob der Bürger bereits existiert (z.B. basierend auf der E-Mail)
+        for existing_buerger in self.buerger_db:
+            if existing_buerger.email == buerger.email:
+                raise ValueError(f"Ein Bürger mit der E-Mail {buerger.email} existiert bereits!")
 
-        # Neues Bürger-Objekt anlegen
-        neuer_buerger = Buerger(**buerger_daten)
-
-        # Speichern in "Pseudo-DB"
-        self.buerger_db.append(neuer_buerger)
-        speichere_buerger_db(self.buerger_db)
-
-        print(f"✅ Neuer Bürger registriert: {neuer_buerger.name} (ID {neue_id})")
-        return neuer_buerger
-
-    def alle_buerger(self) -> list[Buerger]:
-        """
-        Gibt alle registrierten Bürger zurück.
-        """
-        return self.buerger_db
+        # Füge den neuen Bürger zur Datenbank hinzu
+        self.buerger_db.append(buerger)
+        return buerger

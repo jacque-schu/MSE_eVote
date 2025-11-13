@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bürger registrieren</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 50px auto; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Bürger registrieren</h1>
+     <form action="/registrierung/formular" method="POST" style="max-width: 400px; margin: auto;">
+    <!-- buergerID: kann automatisch generiert oder manuell eingegeben werden -->
+  <!-- Bürger-ID wird im Code gesetzt -->
+    <input type="hidden" name="buergerID" value="1"> <!-- Wird im Formular übergeben -->
+
+    <label for="vorname">Vorname:</label>
+    <input type="text" id="vorname" name="vorname" required>
+    <br><br>
+
+    <label for="nachname">Nachname:</label>
+    <input type="text" id="nachname" name="nachname" required>
+    <br><br>
+
+    <!-- Adresse -->
+    <label for="adresse">Adresse:</label>
+    <input type="text" id="adresse" name="adresse" placeholder="Beispielstraße 12" required>
+    <br><br>
+
+    <!-- Geburtsdatum -->
+    <label for="geburtsdatum">Geburtsdatum:</label>
+    <input type="date" id="geburtsdatum" name="geburtsdatum" value="1990-01-01" required>
+    <br><br>
+
+    <!-- E-Mail -->
+    <label for="email">E-Mail:</label>
+    <input type="email" id="email" name="email" placeholder="max@example.com" required>
+    <br><br>
+
+    <!-- Authentifizierungsdaten -->
+    <label for="authentifizierungsdaten">Authentifizierungsstatus:</label>
+    <select id="authentifizierungsdaten" name="authentifizierungsdaten" required>
+        <option value="offen" selected>Offen</option>
+        <option value="bestätigt">Bestätigt</option>
+    </select>
+    <br><br>
+
+        <button type="submit">Registrieren</button>
+    </form>
+</body>
+</html>
