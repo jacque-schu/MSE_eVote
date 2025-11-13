@@ -4,3 +4,4 @@ jinja2
 httpx
 email-validator
 pydantic[email]
+python-multipart
