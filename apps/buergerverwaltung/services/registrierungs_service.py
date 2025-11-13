@@ -10,9 +10,10 @@ from datetime import date
 
 
 class Registrierungsservice:
-    def __init__(self):
+    def __init__(self, buerger_db):
+        self.buerger_db = buerger_db
         # Lädt die aktuelle Bürgerdatenbank aus JSON
-        self.buerger_db = lade_buerger_db()
+        
 
     def registriere_buerger(self, buerger_daten: dict) -> Buerger:
         """
