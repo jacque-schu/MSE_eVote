@@ -1,25 +1,40 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+from apps.buergerverwaltung.api.v1.main import app as registrierung_app
 
-app = FastAPI(title="MSE eVote")
+app = FastAPI(title="eVote - Hauptportal")
 
-BASE_DIR = Path(__file__).resolve().parent  # absoluter Pfad
-templates = Jinja2Templates(directory=str(BASE_DIR / "../templates"))
-
-static_dir = BASE_DIR / "static"
-if static_dir.exists():  # nur mounten, wenn der Ordner vorhanden ist
-    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+# Unter-App "Registrierung" einbinden
+app.mount("/registrierung", registrierung_app)
 
 @app.get("/", response_class=HTMLResponse)
-def home(request: Request):
-    return templates.TemplateResponse(
-        "index.html",
-        {"request": request, "title": "MSE eVote", "subtitle": "Einfach abstimmen. Klar auswerten."}
-    )
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+def startseite():
+    """Einfache Startseite mit Links zu Modulen"""
+    html_content = """
+    <html>
+        <head>
+            <title>eVote Hauptseite</title>
+        </head>
+        <body style='font-family: Arial; text-align: center;'>
+            <h1>Willkommen beim eVote System</h1>
+            <p>Wählen Sie eine Aktion:</p>
+            <a href="/registrierung" style="
+                display: inline-block;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                margin: 10px;
+                text-decoration: none;
+                border-radius: 5px;">Zur Registrierung</a>
+            <a href="/abstimmung" style="
+                display: inline-block;
+                background-color: #2196F3;
+                color: white;
+                padding: 10px 20px;
+                margin: 10px;
+                text-decoration: none;
+                border-radius: 5px;">Zur Abstimmung</a>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
