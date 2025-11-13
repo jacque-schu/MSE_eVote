@@ -1,74 +1,47 @@
 [
     {
         "buergerID": 1,
-        "name": "Marie NEU",
-        "adresse": "Beispielstraße 12",
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
         "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
+        "email": "frhe8734@bht-berlin.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
     },
     {
         "buergerID": 1,
-        "name": "Marie NEU",
-        "adresse": "Beispielstraße 12",
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
         "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
+        "email": "frh33734@bht-berlin.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
     },
     {
         "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
         "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
+        "email": "fraa3734@bht-berlin.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
     },
     {
         "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
         "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
+        "email": "fraaa34@bht-berlin.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
     },
     {
         "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
+        "name": "thomas engel",
+        "adresse": "am graben 12",
         "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
+        "email": "engel@web.de",
         "registrierungsstatus": "neu",
-        "authentifizierungsdaten": "offen"
-    },
-    {
-        "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
-        "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
-        "registrierungsstatus": "neu",
-        "authentifizierungsdaten": "offen"
-    },
-    {
-        "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
-        "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
-        "registrierungsstatus": "neu",
-        "authentifizierungsdaten": "offen"
-    },
-    {
-        "buergerID": 1,
-        "name": "Marie Neumann",
-        "adresse": "Beispielstraße 12",
-        "geburtsdatum": "1990-01-01",
-        "email": "max@example.com",
-        "registrierungsstatus": "neu",
-        "authentifizierungsdaten": "offen"
+        "authentifizierungsdaten": "bestÃ¤tigt"
     }
 ]
