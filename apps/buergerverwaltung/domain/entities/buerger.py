@@ -127,17 +127,17 @@ def speichere_buerger_db(buerger_db):
 buerger_db = lade_buerger_db()
 
 # Beispiel-Daten
-neuer_buerger = Buerger(
-    buergerID=1,
-    name="Marie Neumann",
-    adresse="Beispielstraße 12",
-    geburtsdatum=date(1990, 1, 1),
-    email="max@example.com",
-    authentifizierungsdaten="offen"
-)
+# neuer_buerger = Buerger(
+#     buergerID=1,
+#     name="Marie Neumann",
+#     adresse="Beispielstraße 12",
+#     geburtsdatum=date(1990, 1, 1),
+#     email="max@example.com",
+#     authentifizierungsdaten="offen"
+# )
 
 # Bürger zur Datenbank hinzufügen
-buerger_db.append(neuer_buerger)
+#buerger_db.append(neuer_buerger)
 
 # Ausgabe der gesamten Bürger-Datenbank nach dem Hinzufügen
 print(f"Gespeicherte Bürger-Datenbank (nach Hinzufügen des neuen Bürgers):")
@@ -147,4 +147,4 @@ for buerger in buerger_db:
 # Speichern der aktualisierten Bürger-Datenbank
 speichere_buerger_db(buerger_db)
 
-print(f"Der Bürger {neuer_buerger.name} wurde erfolgreich gespeichert.")
+#print(f"Der Bürger {neuer_buerger.name} wurde erfolgreich gespeichert.")

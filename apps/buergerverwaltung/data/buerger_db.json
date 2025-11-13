@@ -25,5 +25,50 @@
         "email": "max@example.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Marie Neumann",
+        "adresse": "Beispielstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Marie Neumann",
+        "adresse": "Beispielstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Marie Neumann",
+        "adresse": "Beispielstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Marie Neumann",
+        "adresse": "Beispielstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Marie Neumann",
+        "adresse": "Beispielstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
     }
 ]

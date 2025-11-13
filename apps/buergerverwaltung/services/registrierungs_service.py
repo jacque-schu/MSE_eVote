@@ -1,32 +1,40 @@
-# apps/buergerverwaltung/domain/services/registrierungs_service.py
-from pydantic import ValidationError
-from .authentifizierungs_service import AuthentifizierungsService
-from .models import Buerger
-from sqlalchemy.orm import Session
+# apps/buergerverwaltung/services/registrierungs_service.py
 
-class RegistrierungsService:
-    def __init__(self, db: Session):
-        self.db = db
-        self.auth_service = AuthentifizierungsService()
+from apps.buergerverwaltung.domain.entities.buerger import (
+    Buerger,
+    Registrierungsstatus,
+    lade_buerger_db,
+    speichere_buerger_db
+)
+from datetime import date
 
-    def register_buerger(self, buerger_data: dict):
-        # Validierung könnte hier durchgeführt werden (Pydantic Model etc.)
-        try:
-            # Bürgerobjekt erstellen
-            buerger = Buerger(**buerger_data)
 
-            # Passwort verschlüsseln
-            hashed_password = self.auth_service.hash_password(buerger_data["authentifizierungsdaten"])
-            buerger.authentifizierungsdaten = hashed_password
+class Registrierungsservice:
+    def __init__(self):
+        # Lädt die aktuelle Bürgerdatenbank aus JSON
+        self.buerger_db = lade_buerger_db()
 
-            # Bürger in der DB speichern
-            self.db.add(buerger)
-            self.db.commit()
-            self.db.refresh(buerger)
-            return buerger
-        except ValidationError as e:
-            raise ValueError(f"Registrierung fehlgeschlagen: {str(e)}")
+    def registriere_buerger(self, buerger_daten: dict) -> Buerger:
+        """
+        Registriert einen neuen Bürger, fügt ihn der JSON hinzu und gibt ihn zurück.
+        """
+        # Automatische ID-Vergabe (max + 1)
+        neue_id = max([b.buergerID for b in self.buerger_db], default=0) + 1
+        buerger_daten["buergerID"] = neue_id
+        buerger_daten["registrierungsstatus"] = Registrierungsstatus.REGISTRIERT
 
-# Beispiel-Verwendung:
-# registrierungs_service = RegistrierungsService(db_session)
-# new_buerger = registrierungs_service.register_buerger(buerger_data)
+        # Neues Bürger-Objekt anlegen
+        neuer_buerger = Buerger(**buerger_daten)
+
+        # Speichern in "Pseudo-DB"
+        self.buerger_db.append(neuer_buerger)
+        speichere_buerger_db(self.buerger_db)
+
+        print(f"✅ Neuer Bürger registriert: {neuer_buerger.name} (ID {neue_id})")
+        return neuer_buerger
+
+    def alle_buerger(self) -> list[Buerger]:
+        """
+        Gibt alle registrierten Bürger zurück.
+        """
+        return self.buerger_db
