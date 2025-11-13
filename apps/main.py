@@ -7,6 +7,11 @@ app = FastAPI(title="eVote - Hauptportal")
 # Unter-App "Registrierung" einbinden
 app.mount("/registrierung", registrierung_app)
 
+@app.get("/registrierung", response_class=HTMLResponse)
+def registrierung_startseite():
+    """Zeigt die Seite für die Registrierung an"""
+    return HTMLResponse(content=open("apps/buergerverwaltung/templates/registrierung.html").read())
+
 @app.get("/", response_class=HTMLResponse)
 def startseite():
     """Einfache Startseite mit Links zu Modulen"""
