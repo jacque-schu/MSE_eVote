@@ -36,10 +36,7 @@ jobs:
       - name: Add repo (und Unterordner) to PYTHONPATH
         run: echo "PYTHONPATH=$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/MSE_eVote" >> $GITHUB_ENV
 
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/MSE_eVote" >> $GITHUB_ENV
-
-
+        
       - name: Install dependencies (requirements.txt wenn vorhanden)
         run: |
           python -m pip install --upgrade pip
@@ -72,7 +69,10 @@ jobs:
           mkdir -p MSE_eVote/apps/static
 
       - name: Run tests with coverage
-        run: pytest -q --maxfail=1 --disable-warnings --cov=./ --cov-report=xml --capture=no
+        run: pytest -vv --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --capture=no
+
+        name: Check if coverage.xml exists
+        run: ls -la coverage.xml || ls -la ./ || ls -la ./apps/
 
       - name: Check coverage.xml presence
         run: |
@@ -89,3 +89,8 @@ jobs:
         with:
           name: coverage
           path: coverage.xml
+        continue-on-error: true
+
+      - name: Run tests with coverage
+      run: pytest -q --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --capture=no
+
