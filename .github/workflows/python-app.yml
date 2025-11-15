@@ -67,9 +67,22 @@ jobs:
           mkdir -p apps/static
           mkdir -p MSE_eVote/apps/static
 
+      - name: Debug - Show Python path and test discovery
+        run: |
+          echo "PYTHONPATH: $PYTHONPATH"
+          echo "--- Python path ---"
+          python -c "import sys; print('\n'.join(sys.path))"
+          echo "--- Collecting tests ---"
+          python -m pytest --collect-only -q
+
       - name: Run tests with coverage
-        run: | 
-          pytest -vv --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --cov-report=term --tb=short
+        run: |
+          python -m pytest -v \
+          --disable-warnings \
+          --cov=apps \
+          --cov-report=xml \
+          --cov-report=term \
+          -x  # Stop at first failure for faster debugging
 
 
       - name: Check if coverage.xml exists
