@@ -7,6 +7,10 @@ app = FastAPI(title="eVote - Hauptportal")
 # Unter-App "Registrierung" einbinden
 app.mount("/registrierung", registrierung_app)
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 @app.get("/registrierung", response_class=HTMLResponse)
 def registrierung_startseite():
     """Zeigt die Seite für die Registrierung an"""
