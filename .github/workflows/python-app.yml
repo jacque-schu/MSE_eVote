@@ -68,7 +68,9 @@ jobs:
           mkdir -p MSE_eVote/apps/static
 
       - name: Run tests with coverage
-        run: pytest -vv --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --capture=no
+        run: | 
+          pytest -vv --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --cov-report=term --tb=short
+
 
       - name: Check if coverage.xml exists
         run: |
