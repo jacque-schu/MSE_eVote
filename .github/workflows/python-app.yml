@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Wichtig für SonarCloud
 
       - name: Show repo tree (debug)
         run: |
@@ -25,19 +27,16 @@ jobs:
           ls -la .github/workflows || true
           echo "---- requirements.txt ----"
           test -f requirements.txt && cat requirements.txt || echo "requirements.txt NOT FOUND"
-          echo "---- MSE_eVote (falls vorhanden) ----"
-          ls -la MSE_eVote || true
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Add repo (und Unterordner) to PYTHONPATH
+      - name: Add repo to PYTHONPATH
         run: echo "PYTHONPATH=$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/MSE_eVote" >> $GITHUB_ENV
-
         
-      - name: Install dependencies (requirements.txt wenn vorhanden)
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
@@ -71,15 +70,13 @@ jobs:
       - name: Run tests with coverage
         run: pytest -vv --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --capture=no
 
-        name: Check if coverage.xml exists
-        run: ls -la coverage.xml || ls -la ./ || ls -la ./apps/
-
-      - name: Check coverage.xml presence
+      - name: Check if coverage.xml exists
         run: |
           if [ -f coverage.xml ]; then
-            echo "coverage.xml found."
+            echo "✓ coverage.xml found."
+            ls -lh coverage.xml
           else
-            echo "coverage.xml NOT FOUND!"
+            echo "✗ coverage.xml NOT FOUND!"
             ls -la
           fi
 
@@ -91,6 +88,18 @@ jobs:
           path: coverage.xml
         continue-on-error: true
 
-      - name: Run tests with coverage
-      run: pytest -q --maxfail=1 --disable-warnings --cov=apps --cov-report=xml --capture=no
+      # ======= NEUER SCHRITT: SonarCloud Scan =======
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=jacque-schu
+            -Dsonar.projectKey=jacque-schu_MSE_eVote
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=apps/
+            -Dsonar.tests=tests/
+            -Dsonar.test.exclusions=tests/**
 
