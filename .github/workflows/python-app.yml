@@ -67,22 +67,37 @@ jobs:
           mkdir -p apps/static
           mkdir -p MSE_eVote/apps/static
 
-      - name: Debug - Show Python path and test discovery
+      - name: Debug pytest configuration
         run: |
-          echo "PYTHONPATH: $PYTHONPATH"
-          echo "--- Python path ---"
-          python -c "import sys; print('\n'.join(sys.path))"
-          echo "--- Collecting tests ---"
-          python -m pytest --collect-only -q
+          echo "=== pytest.ini ==="
+          cat pytest.ini || echo "No pytest.ini found"
+          echo "=== PYTHONPATH ==="
+          echo "$PYTHONPATH"
 
-      - name: Run tests with coverage
+      - name: Run tests with coverage (capture disabled)
         run: |
           python -m pytest -v \
+          --capture=no \
           --disable-warnings \
           --cov=apps \
           --cov-report=xml \
           --cov-report=term \
-          -x  # Stop at first failure for faster debugging
+          --tb=short \
+          -rA
+
+      - name: Verify coverage.xml
+        if: always()
+        run: |
+          if [ -f coverage.xml ]; then
+            echo "✓ coverage.xml exists"
+            ls -lh coverage.xml
+            echo "--- First 20 lines ---"
+            head -20 coverage.xml
+          else
+            echo "✗ coverage.xml NOT found"
+            ls -la
+            exit 1
+          fi
 
 
       - name: Check if coverage.xml exists
