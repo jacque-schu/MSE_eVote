@@ -45,7 +45,7 @@ jobs:
 
       - name: Lint (ruff)
         run: ruff check . --fix
-        continue-on-error: true  # Linting sollte Build nicht stoppen
+        continue-on-error: true
 
       - name: Ensure static dirs exist
         run: mkdir -p apps/static
@@ -62,11 +62,11 @@ jobs:
             }
           ]
           EOF
-          echo "✓ Test database created at /tmp/test_buerger_db.json"
+          echo "✓ Test database created"
 
       - name: Run tests with coverage
         id: pytest_run
-        continue-on-error: true  # Ignoriere Exit-Code bei pytest-Problemen
+        continue-on-error: true
         run: |
           python -m pytest -v \
             --capture=no \
@@ -75,7 +75,7 @@ jobs:
             --cov-report=xml \
             --cov-report=term \
             --tb=short \
-            || echo "⚠️ pytest exited with error code $?, continuing anyway..."
+            || echo "⚠️ pytest had issues, continuing..."
 
       - name: Ensure coverage.xml exists
         if: always()
@@ -83,18 +83,14 @@ jobs:
           if [ -f coverage.xml ]; then
             echo "✓ coverage.xml exists ($(wc -l < coverage.xml) lines)"
             ls -lh coverage.xml
-            echo "--- First 20 lines of coverage.xml ---"
-            head -20 coverage.xml
           else
-            echo "⚠️ coverage.xml NOT found, creating placeholder..."
+            echo "⚠️ Creating placeholder coverage.xml"
             cat > coverage.xml << 'EOF'
           <?xml version="1.0" ?>
-          <coverage version="7.0.0" timestamp="$(date +%s)" lines-valid="0" lines-covered="0" line-rate="0" branches-covered="0" branches-valid="0" branch-rate="0" complexity="0">
+          <coverage version="7.0.0" timestamp="0" lines-valid="0" lines-covered="0" line-rate="0" branches-covered="0" branches-valid="0" branch-rate="0" complexity="0">
             <packages/>
           </coverage>
           EOF
-            echo "✓ Placeholder coverage.xml created"
-            ls -lh coverage.xml
           fi
 
       - name: Upload coverage artifact
@@ -111,12 +107,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: "https://sonarcloud.io"
-        with:
-          args: >
-            -Dsonar.organization=jacque-schu
-            -Dsonar.projectKey=jacque-schu_MSE_eVote
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=apps/
-            -Dsonar.tests=tests/
-            -Dsonar.test.exclusions=tests/**
-  
