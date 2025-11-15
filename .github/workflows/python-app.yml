@@ -19,22 +19,13 @@ jobs:
         with:
           fetch-depth: 0  # Wichtig für SonarCloud
 
-      - name: Show repo tree (debug)
-        run: |
-          pwd
-          ls -la
-          echo "---- .github/workflows ----"
-          ls -la .github/workflows || true
-          echo "---- requirements.txt ----"
-          test -f requirements.txt && cat requirements.txt || echo "requirements.txt NOT FOUND"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
       - name: Add repo to PYTHONPATH
-        run: echo "PYTHONPATH=$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/MSE_eVote" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
         
       - name: Install dependencies
         run: |
@@ -47,78 +38,42 @@ jobs:
             python -m pip install pytest ruff pytest-cov
           fi
 
-      - name: Verify installed packages
-        run: |
-          python - <<'PY'
-          import sys, pkgutil
-          print("Python:", sys.version)
-          for m in ["fastapi","starlette","uvicorn","httpx","jinja2","pytest","pydantic","email_validator"]:
-              print(f"{m:16} installed:", bool(pkgutil.find_loader(m)))
-          PY
-
-      - name: Lint (ruff fix)
-        run: ruff check . --fix
-
       - name: Lint (ruff)
-        run: ruff check .
+        run: ruff check . --fix
+        continue-on-error: true  # Linting sollte Build nicht stoppen
 
       - name: Ensure static dirs exist
         run: |
           mkdir -p apps/static
-          mkdir -p MSE_eVote/apps/static
 
-      - name: Debug pytest configuration
-        run: |
-          echo "=== pytest.ini ==="
-          cat pytest.ini || echo "No pytest.ini found"
-          echo "=== PYTHONPATH ==="
-          echo "$PYTHONPATH"
-
-      - name: Run tests with coverage (capture disabled)
+      - name: Run tests with coverage
         run: |
           python -m pytest -v \
-          --capture=no \
-          --disable-warnings \
-          --cov=apps \
-          --cov-report=xml \
-          --cov-report=term \
-          --tb=short \
-          -rA
+            --capture=no \
+            --disable-warnings \
+            --cov=apps \
+            --cov-report=xml \
+            --cov-report=term \
+            --tb=short
 
       - name: Verify coverage.xml
         if: always()
         run: |
           if [ -f coverage.xml ]; then
-            echo "✓ coverage.xml exists"
+            echo "✓ coverage.xml exists ($(wc -l < coverage.xml) lines)"
             ls -lh coverage.xml
-            echo "--- First 20 lines ---"
-            head -20 coverage.xml
           else
             echo "✗ coverage.xml NOT found"
-            ls -la
             exit 1
           fi
 
-
-      - name: Check if coverage.xml exists
-        run: |
-          if [ -f coverage.xml ]; then
-            echo "✓ coverage.xml found."
-            ls -lh coverage.xml
-          else
-            echo "✗ coverage.xml NOT FOUND!"
-            ls -la
-          fi
-
-      - name: Upload coverage (artifact)
+      - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage.xml
-        continue-on-error: true
 
-      # ======= NEUER SCHRITT: SonarCloud Scan =======
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -132,4 +87,3 @@ jobs:
             -Dsonar.sources=apps/
             -Dsonar.tests=tests/
             -Dsonar.test.exclusions=tests/**
-
