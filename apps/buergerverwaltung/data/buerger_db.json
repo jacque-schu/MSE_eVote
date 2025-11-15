@@ -1,0 +1,47 @@
+[
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "frhe8734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "frh33734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "fraa3734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "fraaa34@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "thomas engel",
+        "adresse": "am graben 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "engel@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "bestÃ¤tigt"
+    }
+]
