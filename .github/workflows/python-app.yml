@@ -12,7 +12,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +36,6 @@ jobs:
       - name: Add repo (und Unterordner) to PYTHONPATH
         run: echo "PYTHONPATH=$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/MSE_eVote" >> $GITHUB_ENV
 
-      # Dependencies installieren
-      # Variante A: aus requirements.txt, falls vorhanden
       - name: Install dependencies (requirements.txt wenn vorhanden)
         run: |
           python -m pip install --upgrade pip
@@ -69,8 +67,17 @@ jobs:
           mkdir -p apps/static
           mkdir -p MSE_eVote/apps/static
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: pytest -q --maxfail=1 --disable-warnings --cov=./ --cov-report=xml
+
+      - name: Check coverage.xml presence
+        run: |
+          if [ -f coverage.xml ]; then
+            echo "coverage.xml found."
+          else
+            echo "coverage.xml NOT FOUND!"
+            ls -la
+          fi
 
       - name: Upload coverage (artifact)
         if: always()
