@@ -106,7 +106,7 @@ jobs:
 
       - name: SonarCloud Scan
         if: always()  # Führe SonarCloud auch bei Test-Fehlern aus
-        uses: uses: SonarSource/sonarqube-scan-action@v1
+        uses: SonarSource/sonarqube-scan-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
