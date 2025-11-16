@@ -66,6 +66,33 @@ jobs:
         ]
         EOF
         echo "✓ Test database created"
+        ls -la /tmp/test_buerger_db.json
+        cat /tmp/test_buerger_db.json
+
+    - name: Debug environment
+      run: |
+        echo "=== Environment Variables ==="
+        echo "PYTHONPATH=$PYTHONPATH"
+        echo "TESTING=$TESTING"
+        echo "BUERGER_DB_PATH=$BUERGER_DB_PATH"
+        echo ""
+        echo "=== Test Database Status ==="
+        ls -la /tmp/test_buerger_db.json || echo "❌ Test DB not found"
+        echo ""
+        echo "=== Python Environment ==="
+        python --version
+        pip list
+        echo ""
+        echo "=== Project Structure ==="
+        ls -la
+        ls -la apps/ || echo "apps/ directory not found"
+        ls -la tests/ || echo "tests/ directory not found"
+
+    - name: Check test collection
+      run: |
+        echo "=== Attempting to collect tests ==="
+        python -m pytest --collect-only -vv
+      continue-on-error: true
 
     - name: Run tests with coverage
       run: |
@@ -75,10 +102,11 @@ jobs:
           --cov=apps \
           --cov-report=xml \
           --cov-report=term \
-          --tb=short
+          --tb=long \
+          -vv
 
     - name: Upload coverage artifact
-      if: always()
+      if: success()
       uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882  # v4.4.3
       with:
         name: coverage
@@ -86,8 +114,7 @@ jobs:
 
     - name: SonarCloud Scan
       if: always()
-      uses: SonarSource/sonarqube-scan-action@v6
+      uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: "https://sonarcloud.io"
