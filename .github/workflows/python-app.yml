@@ -12,12 +12,12 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # Für Stabilität v4 statt Commit-Hash
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Wichtig für SonarCloud, vollständiger Checkout
+          fetch-depth: 0  # Vollständiger Checkout für SonarCloud
 
       - name: Set up Python
         uses: actions/setup-python@v5
