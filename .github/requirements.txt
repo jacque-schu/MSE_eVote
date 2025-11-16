@@ -5,4 +5,6 @@ httpx
 email-validator
 pydantic[email]
 python-multipart
+pytest
 pytest-cov
+ruff
