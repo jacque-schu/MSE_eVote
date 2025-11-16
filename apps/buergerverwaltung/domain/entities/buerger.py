@@ -11,11 +11,13 @@ import os
 projektordner = os.path.dirname(os.path.abspath(__file__))  # Aktuellen Ordner bekommen
 root_ordner = os.path.dirname(os.path.dirname(projektordner))  # Zwei Ebenen nach oben
 json_dateipfad = os.path.join(root_ordner, "data", "buerger_db.json")  # Zum 'data' Ordner gehen
+buerger_db = None
 
 # Verzeichnis prüfen und ggf. erstellen
 verzeichnis = os.path.dirname(json_dateipfad)
 if not os.path.exists(verzeichnis):
     os.makedirs(verzeichnis)
+
 
 # Setzt die Standard-Codierung für die Ausgabe in der Konsole auf UTF-8
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -123,28 +125,23 @@ def speichere_buerger_db(buerger_db):
     except Exception as e:
         print(f"Fehler beim Speichern der Bürger: {e}")
 
-# Beispiel: Initialisieren der Bürger-Datenbank (kann später durch echte Daten ersetzt werden)
-buerger_db = lade_buerger_db()
 
-# Beispiel-Daten
-# neuer_buerger = Buerger(
-#     buergerID=1,
-#     name="Marie Neumann",
-#     adresse="Beispielstraße 12",
-#     geburtsdatum=date(1990, 1, 1),
-#     email="max@example.com",
-#     authentifizierungsdaten="offen"
-# )
+def init_buerger_db():
+    global buerger_db
+    if buerger_db is None:
+        buerger_db = lade_buerger_db()
 
-# Bürger zur Datenbank hinzufügen
-#buerger_db.append(neuer_buerger)
+def add_buerger(neuer_buerger):
+    init_buerger_db()
+    buerger_db.append(neuer_buerger)
+    speichere_buerger_db(buerger_db)
 
-# Ausgabe der gesamten Bürger-Datenbank nach dem Hinzufügen
-print(f"Gespeicherte Bürger-Datenbank (nach Hinzufügen des neuen Bürgers):")
-for buerger in buerger_db:
-    print(f"- {buerger.name}, {buerger.geburtsdatum}, {buerger.email}")
+def get_all_buerger():
+    init_buerger_db()
+    return buerger_db
 
-# Speichern der aktualisierten Bürger-Datenbank
-speichere_buerger_db(buerger_db)
-
-#print(f"Der Bürger {neuer_buerger.name} wurde erfolgreich gespeichert.")
+if __name__ == "__main__":
+    init_buerger_db()
+    print("Gespeicherte Bürger-Datenbank (nach Hinzufügen des neuen Bürgers):")
+    for b in buerger_db:
+        print(f"- {b.name}, {b.geburtsdatum}, {b.email}")
