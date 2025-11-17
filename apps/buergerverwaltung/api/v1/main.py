@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request, Form
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from apps.buergerverwaltung.domain.entities.buerger import Buerger, lade_buerger_db, speichere_buerger_db

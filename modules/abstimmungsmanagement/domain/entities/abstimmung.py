@@ -1,7 +1,7 @@
 from __future__ import annotations
 from datetime import date
 from enum import Enum
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel, field_validator, model_validator, ConfigDict
 
 # Abstimmungsstatus (offen,geschlossen,archiviert)
