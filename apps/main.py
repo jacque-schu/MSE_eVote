@@ -14,7 +14,9 @@ async def health_check():
 @app.get("/registrierung", response_class=HTMLResponse)
 def registrierung_startseite():
     """Zeigt die Seite für die Registrierung an"""
-    return HTMLResponse(content=open("apps/buergerverwaltung/templates/registrierung.html").read())
+    with open("apps/buergerverwaltung/templates/registrierung.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
 
 @app.get("/", response_class=HTMLResponse)
 def startseite():
@@ -22,6 +24,7 @@ def startseite():
     html_content = """
     <html>
         <head>
+            <meta charset="UTF-8">
             <title>eVote Hauptseite</title>
         </head>
         <body style='font-family: Arial; text-align: center;'>
