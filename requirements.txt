@@ -8,3 +8,6 @@ python-multipart
 pytest
 pytest-cov
 ruff
+passlib
+bcrypt
+python-jose
