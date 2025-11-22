@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta
 from typing import Optional
-from .entities.buerger import Buerger  # Importiere das Buerger-Modell
+from apps.buergerverwaltung.domain.entities.buerger import Buerger  # Importiere das Buerger-Modell
 from pydantic import EmailStr
 
 # Beispiel: Sicherheitseinstellungen für Hashing und JWT
@@ -18,6 +18,8 @@ class AuthentifizierungsService:
 
     def hash_password(self, password: str) -> str:
         """Hashes a password using bcrypt."""
+        if len(password.encode("utf-8")) > 72:
+            raise ValueError("Das Passwort darf für bcrypt maximal 72 Bytes lang sein.")
         return pwd_context.hash(password)
 
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
