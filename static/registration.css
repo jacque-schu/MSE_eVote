@@ -1,83 +1,34 @@
 /* =========================================
-   Design Tokens (kompatibel zu base.css)
+   Registrierung – nutzt Tokens aus base.css
    ========================================= */
-:root {
-  --bg: #0f1012;
-  --bg-soft: #15171a;
-  --surface: #17181b;
-  --surface-2: #1f2125;
-  --text: #f7f7f8;
-  --text-dim: #a9afb8;
 
-  --accent: #93e0c7;        /* mint */
-  --accent-strong: #3bc49a;
-  --danger: #f97373;
-
-  --radius-lg: 18px;
-  --radius-xl: 22px;
-  --radius-2xl: 26px;
-
-  --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.35);
-  --shadow-strong: 0 20px 46px rgba(0, 0, 0, 0.5);
-}
-
-/* =========================================
-   Base / Hintergrund
-   ========================================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  background:
-    radial-gradient(1200px 600px at 75% 0%, #1b1d21 0%, #0f1012 55%),
-    radial-gradient(900px 500px at 0% 100%, #191b1f 0%, #0f1012 50%);
-  color: var(--text);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Falls die Seite sonst nichts hat, alles über Wrapper zentrieren */
+/* Wrapper zentriert die Karte */
 .registration-shell {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 40px 16px 56px;
+  align-items: center;
+  padding: 32px 16px;
 }
 
-@media (min-width: 768px) {
-  .registration-shell {
-    align-items: center;
-  }
-}
-
-/* =========================================
-   Card für das Formular
-   ========================================= */
+/* Karte für das Formular – Look wie andere dunkle Karten */
 .registration-card {
   width: 100%;
   max-width: 520px;
-  background: var(--surface);
-  border-radius: var(--radius-2xl);
-  padding: 26px 24px 24px;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.98);    /* sehr dunkles Blau, wie Status-Panel */
+  border-radius: 30px;
+  padding: 26px 28px 24px;
+  border: 1px solid #111827;
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(34, 197, 94, 0.18);     /* leichter grüner Glow wie auf Startseite */
+  color: var(--text);
 }
 
 /* Titel & Untertitel */
 .registration-card h1 {
-  margin: 0 0 4px;
-  font-size: 24px;
+  margin: 0 0 6px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
@@ -85,12 +36,13 @@ body {
 .registration-card .subtitle {
   margin: 0 0 18px;
   font-size: 13px;
-  color: var(--text-dim);
+  color: var(--muted);
 }
 
 /* =========================================
    Formular-Layout
    ========================================= */
+
 .registration-form {
   display: flex;
   flex-direction: column;
@@ -118,18 +70,18 @@ body {
 .form-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-dim);
+  color: var(--muted);
 }
 
-/* Inputs, Selects */
+/* Inputs / Selects – dunkle Felder wie der Rest der App */
 .form-input,
 .form-select {
   width: 100%;
   height: 42px;
   padding: 9px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: var(--surface-2);
+  border-radius: 10px;
+  border: 1px solid #111827;
+  background: #020617;
   color: var(--text);
   font: inherit;
   transition:
@@ -140,7 +92,7 @@ body {
 }
 
 .form-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(148, 163, 184, 0.6);
 }
 
 /* Fokuszustand */
@@ -148,85 +100,55 @@ body {
 .form-select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(147, 224, 199, 0.6);
-  background: #1f2327;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+  background: #020617;
 }
 
-/* Datum-Feld leicht monospaced wirken lassen (optional) */
+/* Datum leicht monospaced (optional) */
 input[type="date"].form-input {
   font-feature-settings: "tnum" 1, "lnum" 1;
 }
 
-/* Fehlermeldung (falls du serverseitig Fehler ausgibst) */
+/* Fehlermeldung */
 .form-error {
   font-size: 12px;
-  color: var(--danger);
+  color: #f97373;
 }
 
-/* =========================================
-   Submit-Button
-   ========================================= */
+/* Aktionen unten rechts */
 .form-actions {
   margin-top: 18px;
   display: flex;
   justify-content: flex-end;
-}
-
-.btn-primary {
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #0f1311;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background 0.12s ease;
-}
-
-.btn-primary:hover {
-  background: var(--accent-strong);
-  transform: translateY(-1px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  gap: 8px;
 }
 
 /* =========================================
-   Kleinere Helfer
+   Helpers
    ========================================= */
 
-/* Wenn du oben über dem Formular einen Link „Zurück“ o.Ä. hast */
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: var(--text-dim);
+  color: var(--muted);
   margin-bottom: 10px;
+  text-decoration: none;
 }
 
 .back-link:hover {
   color: var(--accent);
 }
 
-/* Mobile Feinjustierung */
+/* Mobile */
 @media (max-width: 480px) {
   .registration-card {
     padding: 22px 18px 20px;
-    border-radius: var(--radius-xl);
+    border-radius: 24px;
   }
 
   .registration-card h1 {
-    font-size: 22px;
+    font-size: 20px;
   }
 }

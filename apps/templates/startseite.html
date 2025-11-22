@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eVote Hauptseite</title>
+
     <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
 </head>
 <body>
@@ -13,17 +14,26 @@
          ======================= -->
     <main class="feed">
 
-        <!-- Topbar -->
+        <!-- Topbar mit Gast rechts -->
         <header class="topbar">
-            <div class="title">eVote</div>
-            <div class="mute">Schnell, sicher &amp; digital abstimmen</div>
+            <div class="brand">
+                <div class="title">eVote</div>
+                <div class="mute">Schnell, sicher &amp; digital abstimmen</div>
+            </div>
+
+            <div class="user-pill">
+                <div class="avatar">G</div>
+                <div class="user-meta">
+                    <div class="user-name">Gast</div>
+                    <a href="/auth" class="user-link">Anmelden oder registrieren</a>
+                </div>
+            </div>
         </header>
 
-        <!-- Tabs (nur Optik, kein JS nötig) -->
         <div class="tabs">
             <div class="tab active">Übersicht</div>
-            <div class="tab">Registrierung</div>
-            <div class="tab">Abstimmung</div>
+            <div class="tab">Erstellen</div>
+            <div class="tab">Abstimmungen</div>
         </div>
 
         <!-- Willkommenskarte -->
@@ -61,8 +71,7 @@
                 <span>Warum eVote?</span>
             </div>
             <div class="question" style="font-size: 20px;">
-                Digitale Abstimmungen, die sich
-                anfühlen wie eine moderne App
+                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
             </div>
             <p>
                 eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
@@ -78,39 +87,27 @@
          ======================= -->
     <aside class="side">
 
-        <!-- "Profil" / Systemkarte -->
+        <!-- Systemstatus-Karte: vergangene Abstimmungen -->
         <section class="card profile">
             <span class="badge">Systemstatus</span>
-            <h2 style="margin: 6px 0 4px;">eVote Control Center</h2>
+            <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
             <p class="mute" style="margin-bottom: 14px;">
-                Überblick über Ihre laufenden Abstimmungen und Registrierungen.
+                Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
             </p>
 
             <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                <li>• Sichere, zentrale Verwaltung aller Votes</li>
-                <li>• Rollenkonzepte für Admins und Teilnehmende</li>
-                <li>• Nachvollziehbare Ergebnisse in Echtzeit</li>
+                <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
+                <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
+                <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
             </ul>
         </section>
 
-        <!-- Kleine Highlight-Karte -->
-        <section class="card lime">
-            <div class="meta">
-                <span>Hinweis</span>
-            </div>
-            <div class="question" style="font-size:18px; margin-bottom:10px;">
-                Bereit für die nächste Abstimmung?
-            </div>
-            <p>
-                Starten Sie mit der Registrierung neuer Nutzerinnen und Nutzer oder
-                springen Sie direkt zu einer laufenden Abstimmung.
-            </p>
-        </section>
+        <!-- (Gelbe Karte ist entfernt) -->
 
     </aside>
 </div>
 
-<!-- Optional: Sticky-Button unten, wie im Mobile-Design -->
+<!-- Sticky-Button unten bleibt, falls du ihn magst -->
 <div class="postbar">
     <button class="btn-post" onclick="window.location.href='/abstimmung'">
         Zur nächsten Abstimmung
