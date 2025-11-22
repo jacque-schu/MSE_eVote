@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Bürger registrieren</title>
 
-    <!-- Falls du auf der Startseite schon Inter verwendest, kannst du das hier wiederverwenden -->
+    <!-- Gleiche Fonts wie auf der Startseite -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
             Erfassen Sie die Daten der Bürgerin oder des Bürgers für das eVote-System.
         </p>
 
-        <!-- WICHTIG: Action, Method & Feldnamen wie zuvor -->
+        <!-- Action, Method & Feldnamen wie zuvor -->
         <form class="registration-form" action="/registrierung/formular" method="POST">
 
             <!-- Hidden: Bürger-ID wie gehabt -->
@@ -66,32 +66,17 @@
                 >
             </div>
 
-            <!-- Geburtsdatum & Auth-Status nebeneinander -->
-            <div class="form-group-inline">
-                <div class="form-group">
-                    <label class="form-label" for="geburtsdatum">Geburtsdatum</label>
-                    <input
-                        type="date"
-                        id="geburtsdatum"
-                        name="geburtsdatum"
-                        class="form-input"
-                        value="1990-01-01"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="authentifizierungsdaten">Authentifizierungsstatus</label>
-                    <select
-                        id="authentifizierungsdaten"
-                        name="authentifizigungsdaten"
-                        class="form-select"
-                        required
-                    >
-                        <option value="offen" selected>Offen</option>
-                        <option value="bestätigt">Bestätigt</option>
-                    </select>
-                </div>
+            <!-- Geburtsdatum -->
+            <div class="form-group">
+                <label class="form-label" for="geburtsdatum">Geburtsdatum</label>
+                <input
+                    type="date"
+                    id="geburtsdatum"
+                    name="geburtsdatum"
+                    class="form-input"
+                    value="1990-01-01"
+                    required
+                >
             </div>
 
             <!-- E-Mail -->
@@ -105,6 +90,33 @@
                     placeholder="max@example.com"
                     required
                 >
+            </div>
+
+            <!-- Passwort & Passwort-Bestätigung -->
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label class="form-label" for="authentifizierungsdaten">Passwort</label>
+                    <input
+                        type="password"
+                        id="authentifizierungsdaten"
+                        name="authentifizierungsdaten"
+                        class="form-input"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="authentifizierungsdaten_confirm">Passwort bestätigen</label>
+                    <input
+                        type="password"
+                        id="authentifizierungsdaten_confirm"
+                        name="authentifizierungsdaten_confirm"
+                        class="form-input"
+                        minlength="8"
+                        required
+                    >
+                </div>
             </div>
 
             <!-- Submit -->
