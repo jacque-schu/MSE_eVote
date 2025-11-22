@@ -25,9 +25,6 @@ class Ergebnis(BaseModel):
     def gesamtergebnis(self) -> int:
         return sum(e.anzahl for e in self.einzelwerte)
 
-   # def getGesamtergebnis(self) -> int:
-        return self.gesamtergebnis
-
     def getErgebnisDetails(self) -> List[dict]:
         return [
             {"Option": e.stimmoption.optionstext.value, "Stimmen": e.anzahl}

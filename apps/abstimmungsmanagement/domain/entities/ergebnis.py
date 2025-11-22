@@ -3,6 +3,9 @@ from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator
 
+from modules.ergebnisdienst.domain.entities.ergebnis import Ergebnis
+
+
 class Optionen(str, Enum):
     JA = "Ja"
     NEIN = "Nein"
@@ -16,17 +19,14 @@ class Stimmenanzahl(BaseModel):
     anzahl: int = Field(ge=0)
 
 class Ergebnis(BaseModel):
-    ergebnisID: int
-    abstimmungsID: int
+    ergebnisID: int = Field(ge=0)
+    abstimmungsID: int = Field(ge=0)
     einzelwerte: List[Stimmenanzahl]
     timestamp: datetime = Field(default_factory=datetime.now)
 
     @property
     def gesamtergebnis(self) -> int:
         return sum(e.anzahl for e in self.einzelwerte)
-
-    #def getGesamtergebnis(self) -> int:
-        return self.gesamtergebnis
 
     def getErgebnisDetails(self) -> List[dict]:
         return [
@@ -36,8 +36,8 @@ class Ergebnis(BaseModel):
 
     @field_validator("einzelwerte")
     @classmethod
-    def validate_einzelwerte(cls, einzelwerte):
-        if not einzelwerte or len(einzelwerte) == 0:
+    def validate_einzelwerte(cls, einzelwerte: List[Stimmenanzahl]) -> List[Stimmenanzahl]:
+        if not einzelwerte:
             raise ValueError("Es müssen Stimmen für mindestens eine Option vorhanden sein.")
         return einzelwerte
 
