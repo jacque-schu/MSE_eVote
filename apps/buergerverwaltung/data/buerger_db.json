@@ -46,10 +46,10 @@
     },
     {
         "buergerID": 1,
-        "name": "asda asdasd",
-        "adresse": "asdasd",
+        "name": "marco muster",
+        "adresse": "am bahnhof 111",
         "geburtsdatum": "1990-01-01",
-        "email": "asd@gmail.com",
+        "email": "laches_23@web.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
     }

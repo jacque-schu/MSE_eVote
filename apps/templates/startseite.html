@@ -1,26 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eVote Hauptseite</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
 </head>
-<body style="font-family: Arial; text-align: center;">
-    <h1>Willkommen beim eVote System</h1>
-    <p>Wählen Sie eine Aktion:</p>
-    <a href="/registrierung" style="
-        display: inline-block;
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        margin: 10px;
-        text-decoration: none;
-        border-radius: 5px;">Zur Registrierung</a>
-    <a href="/abstimmung" style="
-        display: inline-block;
-        background-color: #2196F3;
-        color: white;
-        padding: 10px 20px;
-        margin: 10px;
-        text-decoration: none;
-        border-radius: 5px;">Zur Abstimmung</a>
+<body>
+<div class="app">
+    <!-- =======================
+         Linke Spalte (Feed)
+         ======================= -->
+    <main class="feed">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="title">eVote</div>
+            <div class="mute">Schnell, sicher &amp; digital abstimmen</div>
+        </header>
+
+        <!-- Tabs (nur Optik, kein JS nötig) -->
+        <div class="tabs">
+            <div class="tab active">Übersicht</div>
+            <div class="tab">Registrierung</div>
+            <div class="tab">Abstimmung</div>
+        </div>
+
+        <!-- Willkommenskarte -->
+        <section class="card mint is-relative">
+            <div class="meta">
+                <span>Willkommen</span>
+                <span>·</span>
+                <span>eVote System</span>
+            </div>
+
+            <h1 class="question">
+                Willkommen beim eVote System
+            </h1>
+            <p>
+                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+                oder neue Teilnehmende zu registrieren.
+            </p>
+
+            <div class="options" style="margin-top: 16px;">
+                <a href="/registrierung" class="option">
+                    <span>Zur Registrierung</span>
+                    <span class="count">Neue Teilnehmer</span>
+                </a>
+
+                <a href="/abstimmung" class="option">
+                    <span>Zur Abstimmung</span>
+                    <span class="count">Laufende Votes</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Info-Karte -->
+        <section class="card salmon">
+            <div class="meta">
+                <span>Warum eVote?</span>
+            </div>
+            <div class="question" style="font-size: 20px;">
+                Digitale Abstimmungen, die sich
+                anfühlen wie eine moderne App
+            </div>
+            <p>
+                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
+                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
+                sich schnell zurecht und können mit wenigen Klicks abstimmen.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- =======================
+         Rechte Spalte (Side)
+         ======================= -->
+    <aside class="side">
+
+        <!-- "Profil" / Systemkarte -->
+        <section class="card profile">
+            <span class="badge">Systemstatus</span>
+            <h2 style="margin: 6px 0 4px;">eVote Control Center</h2>
+            <p class="mute" style="margin-bottom: 14px;">
+                Überblick über Ihre laufenden Abstimmungen und Registrierungen.
+            </p>
+
+            <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
+                <li>• Sichere, zentrale Verwaltung aller Votes</li>
+                <li>• Rollenkonzepte für Admins und Teilnehmende</li>
+                <li>• Nachvollziehbare Ergebnisse in Echtzeit</li>
+            </ul>
+        </section>
+
+        <!-- Kleine Highlight-Karte -->
+        <section class="card lime">
+            <div class="meta">
+                <span>Hinweis</span>
+            </div>
+            <div class="question" style="font-size:18px; margin-bottom:10px;">
+                Bereit für die nächste Abstimmung?
+            </div>
+            <p>
+                Starten Sie mit der Registrierung neuer Nutzerinnen und Nutzer oder
+                springen Sie direkt zu einer laufenden Abstimmung.
+            </p>
+        </section>
+
+    </aside>
+</div>
+
+<!-- Optional: Sticky-Button unten, wie im Mobile-Design -->
+<div class="postbar">
+    <button class="btn-post" onclick="window.location.href='/abstimmung'">
+        Zur nächsten Abstimmung
+    </button>
+</div>
 </body>
 </html>

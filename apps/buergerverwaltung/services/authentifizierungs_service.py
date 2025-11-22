@@ -1,6 +1,6 @@
 # apps/buergerverwaltung/domain/services/authentifizierungs_service.py
 from passlib.context import CryptContext
-from jose import JWTError, jwt
+from jose import jwt
 from datetime import datetime, timedelta
 from typing import Optional
 from .entities.buerger import Buerger  # Importiere das Buerger-Modell
