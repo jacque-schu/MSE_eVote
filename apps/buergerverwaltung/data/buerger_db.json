@@ -1,5 +1,18 @@
 [
     {
+    "buergerID": 1,
+    "name": "Fabian Scholl",
+    "adresse": "am graben 12",
+    "geburtsdatum": "1997-01-01",
+    "email": "fabian@gemail.de",
+    "registrierungsstatus": "neu",
+    "authentifizierungsdaten": "bestätigt",
+    "passwort": "EvoteDemo!2025"
+},
+
+
+
+  {
         "buergerID": 1,
         "name": "Heike Fritz",
         "adresse": "strasse 11",

@@ -1,365 +1,520 @@
-/* =========================
-   Design Tokens
-   ========================= */
+/* ========================================================================
+   eVote – Basis-Layout & Styling
+   Diese Datei kannst du komplett als static/base.css verwenden.
+   ======================================================================== */
+
+/* ------------------------
+   Farb- & Layout-Variablen
+   ------------------------ */
 :root {
-  --bg: #0f1012;
-  --bg-soft: #15171a;
-  --surface: #17181b;
-  --surface-2: #1f2125;
-  --text: #f7f7f8;
-  --text-dim: #a9afb8;
+    --bg: #04070a;
+    --bg-elevated: #070b10;
+    --bg-card: #0b1117;
+    --bg-soft: #050a0f;
 
-  /* Pastell-Akzente (Karten) */
-  --mint: #93e0c7;
-  --salmon: #e07c63;
-  --lime: #d7f06a;
+    --mint: #9af5d4;
+    --mint-soft: #77e9c0;
+    --salmon: #ff8a66;
+    --salmon-soft: #ff7245;
+    --lime: #e4ff5a;
 
-  --pill: #272a30;
+    --text: #f9fafb;
+    --text-soft: #d1d5db;
+    --text-strong: #ffffff;
+    --muted: #9ca3af;
 
-  --radius-lg: 18px;
-  --radius-xl: 22px;
-  --radius-2xl: 26px;
+    --accent: #5eead4;
+    --accent-strong: #22c55e;
 
-  --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.35);
-  --shadow-strong: 0 20px 46px rgba(0, 0, 0, 0.5);
+    --pill: #0f172a;
+    --pill-soft: #111827;
+
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    --shadow-soft: 0 26px 60px rgba(0, 0, 0, 0.65);
+    --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.6);
+
+    --border-subtle: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* =========================
-   Global Reset & Base
-   ========================= */
+/* ------------------------
+   Global
+   ------------------------ */
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  background:
-    radial-gradient(1200px 600px at 75% 0%, #1b1d21 0%, #0f1012 55%),
-    radial-gradient(900px 500px at 0% 100%, #191b1f 0%, #0f1012 50%);
-  color: var(--text);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #020617 0, #02040a 40%, #020308 100%);
+    color: var(--text);
 }
 
-/* Links generell */
-a {
-  color: inherit;
-  text-decoration: none;
+/* kleine Utility-Klasse */
+.is-relative {
+    position: relative;
 }
 
-a:hover {
-  text-decoration: none;
-}
+/* ------------------------
+   App-Layout
+   ------------------------ */
 
-/* =========================
-   Layout / App-Container
-   ========================= */
 .app {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 24px 20px 80px;
-  display: grid;
-  grid-template-columns: 1fr; /* mobile */
-  gap: 24px;
-}
-
-@media (min-width: 880px) {
-  .app {
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    max-width: 1180px;
+    margin: 32px auto 80px auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
     gap: 28px;
-    padding-top: 30px;
-  }
 }
 
+/* Linke Spalte */
 .feed {
-  display: grid;
-  gap: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
+/* Rechte Spalte */
 .side {
-  display: grid;
-  gap: 18px;
-  align-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-/* =========================
-   Topbar & Tabs
-   ========================= */
+/* ------------------------
+   Topbar + Branding + Gast-Pill
+   ------------------------ */
+
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  padding: 10px 0 8px;
-  margin-bottom: 4px;
-  background: linear-gradient(
-    180deg,
-    rgba(9, 9, 10, 0.96),
-    rgba(9, 9, 10, 0.88),
-    rgba(9, 9, 10, 0)
-  );
-  backdrop-filter: blur(7px);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 16px;
 }
 
-.topbar .title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+/* Brand links */
+.topbar .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-strong);
 }
 
 .mute {
-  color: var(--text-dim);
-  font-size: 13px;
+    font-size: 13px;
+    color: var(--muted);
 }
 
-/* Tabs unter dem Titel */
+/* Gast-Pill rechts */
+.user-pill {
+    margin-left: auto;            /* schiebt das Element nach rechts */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.user-pill .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: linear-gradient(145deg, #4ade80, #22c55e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #02110b;
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: underline;
+}
+.user-link:hover {
+    text-decoration: none;
+}
+
+/* ------------------------
+   Tabs
+   ------------------------ */
 .tabs {
-  position: sticky;
-  top: 56px;
-  z-index: 15;
-  display: inline-flex;
-  gap: 10px;
-  padding: 12px 0 14px;
+    display: inline-flex;
+    gap: 10px;
+    padding: 4px;
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.75);
+    margin-bottom: 18px;
 }
 
 .tab {
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: var(--pill);
-  color: var(--text-dim);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.18s ease;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: default;  /* derzeit nur optisch */
+    color: var(--text-soft);
 }
 
 .tab.active {
-  color: var(--text);
-  background: var(--surface-2);
+    background: rgba(148, 163, 184, 0.18);
+    color: var(--text-strong);
+    font-weight: 600;
 }
 
-.tab:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.36);
-}
-
-/* =========================
-   Cards
-   ========================= */
+/* ------------------------
+   Karten-Layout
+   ------------------------ */
 .card {
-  border-radius: var(--radius-2xl);
-  padding: 22px 22px 20px;
-  background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow-soft);
+    background: linear-gradient(145deg, #020617, #02040c);
+    border-radius: var(--radius-xl);
+    padding: 24px 26px;
+    border: var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
 }
 
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.14), transparent 55%);
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+/* Varianten */
 .card.mint {
-  background: var(--mint);
-  color: #10221a;
+    background: linear-gradient(135deg, var(--mint), var(--mint-soft));
+    color: #022c22;
+    box-shadow: 0 26px 60px rgba(34, 197, 94, 0.45);
+}
+.card.mint::before {
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.25), transparent 60%);
 }
 
 .card.salmon {
-  background: var(--salmon);
-  color: #261310;
+    background: linear-gradient(135deg, var(--salmon), var(--salmon-soft));
+    color: #2a0600;
+    box-shadow: 0 26px 60px rgba(248, 113, 113, 0.45);
 }
-
-.card.lime {
-  background: var(--lime);
-  color: #181d0e;
+.card.salmon::before {
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.25), transparent 60%);
 }
 
 .card.profile {
-  background: var(--surface-2);
-  color: var(--text);
+    background: radial-gradient(circle at top, #0b1120, #020617 50%, #02040c 100%);
+    color: var(--text);
 }
 
-.is-relative {
-  position: relative;
+/* lime-Karte kannst du optional weiterverwenden */
+.card.lime {
+    background: linear-gradient(135deg, #fef9c3, var(--lime));
+    color: #1f2937;
+    box-shadow: 0 26px 60px rgba(234, 179, 8, 0.5);
+}
+.card.lime::before {
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.35), transparent 60%);
 }
 
-/* Meta-Zeile über Überschriften */
-.meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  opacity: 0.8;
-  font-size: 13px;
-  margin-bottom: 6px;
+/* Inhalt in Karten */
+.card .meta {
+    font-size: 13px;
+    color: rgba(15, 23, 42, 0.7);
+    margin-bottom: 8px;
+}
+.card.profile .meta {
+    color: var(--muted);
 }
 
-/* Überschrift innerhalb von Karten */
 .question {
-  font-size: clamp(20px, 2.2vw, 24px);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  margin: 4px 0 10px;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
 }
 
-/* Standard-Paragraph in Cards */
-.card p {
-  margin: 0 0 6px;
+/* Badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--text-soft);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(148, 163, 184, 0.5);
 }
 
-/* =========================
-   Optionen / „Chips“-Buttons
-   ========================= */
+/* ------------------------
+   Optionen in der Mint-Karte
+   ------------------------ */
 .options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .option {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 15px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  background: rgba(0, 0, 0, 0.07);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background 0.12s ease,
-    border-color 0.12s ease;
-}
-
-.card.mint .option,
-.card.salmon .option,
-.card.lime .option {
-  background: rgba(0, 0, 0, 0.12);
-  border-color: rgba(0, 0, 0, 0.16);
-  color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.25);
 }
 
 .option .count {
-  padding: 2px 9px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  opacity: 0.95;
-  background: rgba(0, 0, 0, 0.16);
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    font-size: 12px;
+    opacity: 0.85;
 }
 
-.option:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
-  background: rgba(0, 0, 0, 0.16);
-}
-
-.option:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-}
-
-/* =========================
-   Badge / kleine Labels
-   ========================= */
-.badge {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--pill);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 10px;
-}
-
-/* =========================
-   Post-Button (unten)
-   ========================= */
-.postbar {
-  position: sticky;
-  bottom: 14px;
-  display: flex;
-  justify-content: center;
-  padding: 0 16px 16px;
-  pointer-events: none; /* damit nur der Button klickbar ist */
-}
-
+/* ------------------------
+   Buttons
+   ------------------------ */
 .btn-post {
-  pointer-events: auto;
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  width: min(640px, 96%);
-  height: 56px;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #121212;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  box-shadow: var(--shadow-strong);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    border: none;
+    outline: none;
+    border-radius: 999px;
+    padding: 13px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    color: #022c22;
+    box-shadow: 0 24px 50px rgba(34, 197, 94, 0.5);
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
 }
 
 .btn-post:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.65);
-  background: #fdfdfd;
+    transform: translateY(-1px);
+    box-shadow: 0 30px 60px rgba(22, 163, 74, 0.6);
 }
 
 .btn-post:active {
-  transform: scale(0.99);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55);
+    transform: scale(0.99);
+    box-shadow: 0 18px 40px rgba(22, 163, 74, 0.55);
 }
 
-/* =========================
-   Kleine Helfer-Klassen
-   ========================= */
-ul {
-  margin: 0;
-  padding-left: 1.1rem;
+/* Secondary-Button (z.B. Login) */
+.btn-secondary {
+    appearance: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: var(--pill);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.card.profile ul {
-  list-style: none;
-  padding-left: 0;
+/* ------------------------
+   Sticky-Postbar unten
+   ------------------------ */
+.postbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
 }
 
-.card.profile li {
-  font-size: 14px;
-  color: var(--text-dim);
+/* ------------------------
+   Auth-Choice & Registrierung
+   (werden von auth_choice.html / registrierung.html genutzt)
+   ------------------------ */
+
+.registration-shell {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
 }
 
-/* Abstände mobil etwas enger */
-@media (max-width: 600px) {
-  .app {
-    padding-inline: 14px;
-  }
-
-  .card {
-    padding: 18px 16px 16px;
-    border-radius: var(--radius-xl);
-  }
-
-  .tabs {
-    padding-bottom: 10px;
-  }
-
-  .btn-post {
+.registration-card {
     width: 100%;
-  }
+    max-width: 520px;
+    background: radial-gradient(circle at top, #0b1120, #020617 55%, #02040c 100%);
+    border-radius: var(--radius-xl);
+    padding: 28px 26px 26px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.registration-card h1 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.registration-card .subtitle {
+    margin: 0 0 18px 0;
+    font-size: 14px;
+    color: var(--text-soft);
+}
+
+/* Formular-Layout */
+.registration-form {
+    display: grid;
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.field-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.input,
+select {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.55);
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.input::placeholder {
+    color: #6b7280;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.btn-primary {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0f1311;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+}
+
+
+/* ------------------------
+   Responsives Verhalten
+   ------------------------ */
+
+@media (max-width: 960px) {
+    .app {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    .side {
+        order: 2;
+    }
+
+    .postbar {
+        left: 16px;
+        right: 16px;
+        transform: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .user-pill {
+        margin-left: 0;
+    }
+
+    .registration-card {
+        padding: 22px 18px 20px;
+    }
 }

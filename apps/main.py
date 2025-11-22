@@ -10,12 +10,11 @@ from apps.buergerverwaltung.api.v1.main import app as registrierung_app
 # -----------------------------------------------------------------------------
 # Basispfade
 # -----------------------------------------------------------------------------
-# Diese Datei liegt in apps/main.py
 BASE_DIR = Path(__file__).resolve().parent.parent  # Projektroot
 
 # Templates:
-#   - Hauptportal:   apps/templates/startseite.html
-#   - Registrierung: apps/buergerverwaltung/templates/registrierung.html
+#   - Hauptportal & Auth & Login: apps/templates/...
+#   - Registrierung:              apps/buergerverwaltung/templates/...
 haupt_templates = Jinja2Templates(directory=BASE_DIR / "apps" / "templates")
 registrierung_templates = Jinja2Templates(
     directory=BASE_DIR / "apps" / "buergerverwaltung" / "templates"
@@ -38,15 +37,43 @@ async def health_check():
     return {"status": "ok"}
 
 
+# --------------------------------------------------------------------------
+# 1) Einstiegsseite: Auth-Auswahl (kommt als erstes)
+#    -> erreichbar unter "/" und "/auth"
+# --------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
+@app.get("/auth", response_class=HTMLResponse)
+async def auth_choice(request: Request):
+    """
+    Vorschalt-Seite:
+    - Anmelden
+    - Registrieren
+    - Demo: Startseite ansehen (ohne Login)
+    """
+    return haupt_templates.TemplateResponse(
+        "auth_choice.html",
+        {"request": request},
+    )
+
+
+# --------------------------------------------------------------------------
+# 2) Demo-Startseite: zeigt Umfragen, aber ohne Login-Pflicht
+# --------------------------------------------------------------------------
+@app.get("/startseite", response_class=HTMLResponse)
 async def startseite(request: Request):
-    """Hauptseite mit Links auf Registrierung / Abstimmung."""
+    """
+    Demo-Startseite mit Übersicht über Umfragen.
+    Kein Login notwendig.
+    """
     return haupt_templates.TemplateResponse(
         "startseite.html",
         {"request": request},
     )
 
 
+# --------------------------------------------------------------------------
+# 3) Registrierung: Bürger registrieren
+# --------------------------------------------------------------------------
 @app.get("/registrierung", response_class=HTMLResponse)
 async def registrierung_startseite(request: Request):
     """HTML-Seite für die Registrierung."""
