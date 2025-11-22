@@ -43,5 +43,14 @@
         "email": "engel@web.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "bestÃ¤tigt"
+    },
+    {
+        "buergerID": 1,
+        "name": "asda asdasd",
+        "adresse": "asdasd",
+        "geburtsdatum": "1990-01-01",
+        "email": "asd@gmail.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
     }
 ]
