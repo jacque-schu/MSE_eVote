@@ -70,9 +70,17 @@ async def startseite(request: Request):
         {"request": request},
     )
 
-
 # --------------------------------------------------------------------------
 # 3) Registrierung: Bürger registrieren
+# --------------------------------------------------------------------------
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_get(request: Request):
+    return haupt_templates.TemplateResponse("login.html", {"request": request})
+
+
+# --------------------------------------------------------------------------
+# 4) Registrierung: Bürger registrieren
 # --------------------------------------------------------------------------
 @app.get("/registrierung", response_class=HTMLResponse)
 async def registrierung_startseite(request: Request):
