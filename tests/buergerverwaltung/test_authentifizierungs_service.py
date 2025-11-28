@@ -1,7 +1,7 @@
 import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
-from apps.buergerverwaltung.services.authentifizierungs_service import (
+from apps.buergerverwaltung.application.services import (
     AuthentifizierungsService, pwd_context
 )
 from apps.buergerverwaltung.domain.entities.buerger import Buerger

@@ -1,18 +1,14 @@
 [
     {
-    "buergerID": 1,
-    "name": "Fabian Scholl",
-    "adresse": "am graben 12",
-    "geburtsdatum": "1997-01-01",
-    "email": "fabian@gemail.de",
-    "registrierungsstatus": "neu",
-    "authentifizierungsdaten": "bestätigt",
-    "passwort": "EvoteDemo!2025"
-},
-
-
-
-  {
+        "buergerID": 1,
+        "name": "Fabian Scholl",
+        "adresse": "am graben 12",
+        "geburtsdatum": "1997-01-01",
+        "email": "fabian@gemail.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "bestätigt"
+    },
+    {
         "buergerID": 1,
         "name": "Heike Fritz",
         "adresse": "strasse 11",
@@ -65,5 +61,14 @@
         "email": "laches_23@web.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "lala lalal",
+        "adresse": "lalal 5",
+        "geburtsdatum": "1990-01-01",
+        "email": "teo1@teo1.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "123445612"
     }
 ]
