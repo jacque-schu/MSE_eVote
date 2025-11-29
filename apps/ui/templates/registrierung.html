@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bürger registrieren</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='registration.css') }}">
+</head>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".registration-form");
+    const emailInput = document.getElementById("email");
+    const vornameInput = document.getElementById("vorname");
+    const nachnameInput = document.getElementById("nachname");
+    const adresseInput = document.getElementById("adresse");
+    const geburtsdatumInput = document.getElementById("geburtsdatum");
+    const passInput = document.getElementById("authentifizierungsdaten");
+    const passConfirmInput = document.getElementById("authentifizierungsdaten_confirm");
+
+    const errorBox = document.createElement("div");
+    errorBox.style.color = "red";
+    errorBox.style.marginBottom = "1rem";
+    form.prepend(errorBox);
+
+    form.addEventListener("submit", function (e) {
+        const errors = [];
+
+        const name = (vornameInput.value.trim() + " " + nachnameInput.value.trim()).trim();
+        if (!name) {
+            errors.push("Name darf nicht leer sein.");
+        }
+
+        const email = emailInput.value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            errors.push("E-Mail ist ungültig.");
+        }
+
+        const adresse = adresseInput.value.trim();
+        if (!adresse || adresse.length < 5) {
+            errors.push("Adresse ist zu kurz oder leer.");
+        }
+
+        const geburtsdatum = geburtsdatumInput.value.trim();
+        if (!geburtsdatum) {
+            errors.push("Geburtsdatum darf nicht leer sein.");
+        }
+
+        if (passInput.value.length < 8) {
+            errors.push("Passwort muss mindestens 8 Zeichen lang sein.");
+        }
+        if (passInput.value !== passConfirmInput.value) {
+             errors.push("Passwörter stimmen nicht überein.");
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            errorBox.innerHTML = "<ul>" + errors.map(e => "<li>" + e + "</li>").join("") + "</ul>";
+        } else {
+            errorBox.innerHTML = "";
+        }
+    });
+});
+</script>
+
+<body>
+
+<div class="registration-shell">
+    <div class="registration-card">
+        <h1>Bürger registrieren</h1>
+        <p class="subtitle">
+            Erfassen Sie die Daten der Bürgerin oder des Bürgers für das eVote-System.
+        </p>
+
+        {% if fehler and fehler|length > 0 %}
+        <div class="form-error" style="color: red; margin-bottom: 1rem;">
+            <ul>
+                {% for msg in fehler %}
+                <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form class="registration-form" action="/api/v1/buerger/formular" method="POST">
+
+            <input type="hidden" name="buergerID" value="1">
+
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label class="form-label" for="vorname">Vorname</label>
+                    <input
+                        type="text"
+                        id="vorname"
+                        name="vorname"
+                        class="form-input"
+                        required
+                        value="{{ form.vorname if form and form.vorname is defined else '' }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="nachname">Nachname</label>
+                    <input
+                        type="text"
+                        id="nachname"
+                        name="nachname"
+                        class="form-input"
+                        required
+                        value="{{ form.nachname if form and form.nachname is defined else '' }}"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="adresse">Adresse</label>
+                <input
+                    type="text"
+                    id="adresse"
+                    name="adresse"
+                    class="form-input"
+                    placeholder="Beispielstraße 12"
+                    required
+                    value="{{ form.adresse if form and form.adresse is defined else '' }}"
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="geburtsdatum">Geburtsdatum</label>
+                <input
+                    type="date"
+                    id="geburtsdatum"
+                    name="geburtsdatum"
+                    class="form-input"
+                    required
+                    value="{{ form.geburtsdatum if form and form.geburtsdatum is defined else '1990-01-01' }}"
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">E-Mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="max@example.com"
+                    required
+                    value="{{ form.email if form and form.email is defined else '' }}"
+                >
+            </div>
+
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label class="form-label" for="authentifizierungsdaten">Passwort</label>
+                    <input
+                        type="password"
+                        id="authentifizierungsdaten"
+                        name="authentifizierungsdaten"
+                        class="form-input"
+                        minlength="8"
+                        required
+                        value="{{ form.authentifizierungsdaten if form and form.authentifizierungsdaten is defined else '' }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="authentifizierungsdaten_confirm">Passwort bestätigen</label>
+                    <input
+                        type="password"
+                        id="authentifizierungsdaten_confirm"
+                        name="authentifizierungsdaten_confirm"
+                        class="form-input"
+                        minlength="8"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Registrieren</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

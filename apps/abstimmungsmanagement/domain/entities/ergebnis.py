@@ -3,9 +3,6 @@ from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator
 
-from modules.ergebnisdienst.domain.entities.ergebnis import Ergebnis
-
-
 class Optionen(str, Enum):
     JA = "Ja"
     NEIN = "Nein"

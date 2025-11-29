@@ -1,11 +1,12 @@
-import json
-from pydantic import BaseModel, EmailStr, field_validator
-from datetime import datetime, date
-import re
-from enum import Enum
-import sys
 import io
+import json
 import os
+import re
+import sys
+from datetime import datetime, date
+from enum import Enum
+
+from pydantic import BaseModel, EmailStr, field_validator
 
 # Erstelle den absoluten Pfad basierend auf dem aktuellen Arbeitsverzeichnis (Projektordner)
 projektordner = os.path.dirname(os.path.abspath(__file__))  # Aktuellen Ordner bekommen
