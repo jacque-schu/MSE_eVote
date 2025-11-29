@@ -39,12 +39,13 @@ async def health_check():
 
 
 # -------------------------------------------------------------------------
-# 1) Root: Login-Seite
+#1) Einstiegsseite: Auth-Auswahl (kommt als erstes)
+#    -> erreichbar unter "/" und "/auth"
 # -------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    # Beim Aufruf von http://127.0.0.1:8000 -> login.html
-    return ui_templates.TemplateResponse("login.html", {"request": request})
+    # Beim Aufruf von http://127.0.0.1:8000 -> auth_choice.html
+    return ui_templates.TemplateResponse("auth_choice.html", {"request": request})
 
 
 # Optionaler Alias /auth -> ebenfalls login.html
