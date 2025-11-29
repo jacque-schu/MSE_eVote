@@ -55,7 +55,6 @@ async def auth_choice(request: Request):
         {"request": request},
     )
 
-
 # --------------------------------------------------------------------------
 # 2) Demo-Startseite: zeigt Umfragen, aber ohne Login-Pflicht
 # --------------------------------------------------------------------------
