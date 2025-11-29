@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const email = emailInput.value.trim();
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
         if (!emailPattern.test(email)) {
             errors.push("E-Mail ist ungültig.");
         }
