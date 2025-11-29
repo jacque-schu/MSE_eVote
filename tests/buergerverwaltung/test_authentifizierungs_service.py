@@ -33,6 +33,7 @@ def test_create_access_token_custom_expiry(auth_service):
     assert len(token) > 0
 
 def test_authenticate_user_success(auth_service):
+    email = "beispiel@example.com"
     plain_pw = "mein_passwort"
     assert len(plain_pw.encode("utf-8")) < 72
     hashed_pw = auth_service.hash_password(plain_pw)
