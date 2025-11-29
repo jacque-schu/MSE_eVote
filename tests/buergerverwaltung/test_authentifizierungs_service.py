@@ -1,10 +1,10 @@
 import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
-from apps.buergerverwaltung.application.services import (
+from apps.buergerverwaltung.application.services.authentifizierungs_service import (
     AuthentifizierungsService, pwd_context
 )
-from apps.buergerverwaltung.domain.entities.buerger import Buerger
+from apps.buergerverwaltung.domain.models.buerger import Buerger
 
 @pytest.fixture
 def auth_service():
