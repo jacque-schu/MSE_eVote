@@ -1,5 +1,8 @@
 from apps.buergerverwaltung.domain.models.buerger import Buerger
 from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
+import aspectlib
+from fastapi import HTTPException, status
+from apps.shared.aspects.auth_aspect import auth_check
 
 
 class Registrierungsservice:
@@ -11,7 +14,8 @@ class Registrierungsservice:
         """
         self.buerger_repository = buerger_repository
 
-    def registriere_buerger(self, buerger: Buerger) -> Buerger:
+    @auth_check
+    def registriere_buerger(self, buerger: Buerger, auth_token=None) -> Buerger:
         """
         Registriert einen neuen Bürger in der Datenbank.
 
