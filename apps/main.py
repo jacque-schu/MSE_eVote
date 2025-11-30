@@ -46,24 +46,24 @@ async def health_check():
 # -------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return ui_templates.TemplateResponse("auth_choice.html", {"request": request})
+    return ui_templates.TemplateResponse(request, "auth_choice.html", {})
 
 # Optionaler Alias /auth -> login.html
 @app.get("/auth", response_class=HTMLResponse)
 async def auth_alias(request: Request):
-    return ui_templates.TemplateResponse("login.html", {"request": request})
+    return ui_templates.TemplateResponse(request, "login.html", {})
 
 # Login (GET) – gleiche Seite wie Root
 @app.get("/login", response_class=HTMLResponse)
 async def login_get(request: Request):
-    return ui_templates.TemplateResponse("login.html", {"request": request})
+    return ui_templates.TemplateResponse(request, "login.html", {})
 
 # Registrierung: Bürger registrieren (BC Bürgerverwaltung)
 @app.get("/registrierung", response_class=HTMLResponse)
 async def registrierung_startseite(request: Request):
-    return ui_templates_buergerverwaltung.TemplateResponse("registrierung.html", {"request": request})
+    return ui_templates_buergerverwaltung.TemplateResponse(request, "registrierung.html", {})
 
 # Startseite (Demo/Übersicht)
 @app.get("/startseite", response_class=HTMLResponse)
 async def startseite(request: Request):
-    return ui_templates.TemplateResponse("startseite.html", {"request": request})
+    return ui_templates.TemplateResponse(request, "startseite.html", {})

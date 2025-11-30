@@ -63,4 +63,4 @@ async def registriere_buerger_api(
 async def registrierung_seite(request: Request):
     init_buerger_db()
     templates = Jinja2Templates(directory=Path(__file__).parent.parent.parent.parent / "ui" / "buergerverwaltung" / "templates")
-    return templates.TemplateResponse("registrierung.html", {"request": request})
+    return templates.TemplateResponse(request, "registrierung.html", {})
