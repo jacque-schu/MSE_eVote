@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from apps.buergerverwaltung.domain.entities.buerger import Buerger  # Importiere das Buerger-Modell
+from apps.buergerverwaltung.domain.models.buerger import Buerger  # Importiere das Buerger-Modell
 from pydantic import EmailStr
 
 # Beispiel: Sicherheitseinstellungen für Hashing und JWT

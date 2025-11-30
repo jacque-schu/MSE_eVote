@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='registration.css') }}">
+<link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static_buergerverwaltung', path='buerger.css') }}">
 </head>
 
 <script>
@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const email = emailInput.value.trim();
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
         if (!emailPattern.test(email)) {
             errors.push("E-Mail ist ungültig.");
         }

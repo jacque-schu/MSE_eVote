@@ -13,8 +13,9 @@
     >
 
     <!-- Globale Styles + Formular-Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='registration.css') }}">
+<link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static_buergerverwaltung', path='buerger.css') }}">
+
 </head>
 <body>
 
@@ -57,12 +58,6 @@
                     required
                 >
             </div>
-
-            <!-- Optional: Hinweis, falls mal Fehlermeldungen kommen sollen
-            <p class="form-error">
-                Ungültige Kombination aus E-Mail und Passwort.
-            </p>
-            -->
 
             <!-- Aktionen -->
             <div class="form-actions" style="justify-content: space-between; align-items: center; gap: 12px;">
