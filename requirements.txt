@@ -11,3 +11,4 @@ ruff
 bcrypt==3.2.0
 passlib
 python-jose
+aspectlib
