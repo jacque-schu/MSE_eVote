@@ -1,0 +1,191 @@
+/* =========================================
+   Abstimmungen – Mobile Card UI
+   Datei: apps/ui/abstimmungsmanagement/styles/abstimmung.css
+   ========================================= */
+
+/* ---- Design-Token (falls base.css nichts setzt) ---- */
+:root{
+  --bg: #0b1220;
+  --text: #e9eefb;
+  --muted: #c7d2fe;
+  --muted-2: #9aa3c7;
+  --ring: rgba(255,255,255,.14);
+  --glass: rgba(255,255,255,.12);
+  --glass-strong: rgba(255,255,255,.2);
+  --success: #22c55e;
+  --shadow-lg: 0 20px 40px rgba(0,0,0,.35);
+}
+
+/* ---- Page Rahmen ---- */
+.page-abstimmungen{
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,.25), transparent 60%),
+              radial-gradient(1000px 520px at 90% -20%, rgba(56,189,248,.18), transparent 55%),
+              var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.abst-headline{
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: .4px;
+  margin: 8px auto 18px;
+  color: var(--text);
+  text-shadow: 0 2px 12px rgba(0,0,0,.35);
+  max-width: 520px;
+}
+
+/* ---- Feed-Layout wie Smartphone ---- */
+.mobile-feed{
+  max-width: 520px;
+  margin: 0 auto 64px;
+  display: grid;
+  gap: 18px;
+}
+
+/* ---- Karte – blauer App-Gradient ---- */
+.poll-card{
+  position: relative;
+  border-radius: 22px;
+  padding: 14px 14px 12px;
+  background: linear-gradient(180deg, #4f46e5 0%, #3b82f6 55%, #2563eb 100%);
+  color: #00000;
+  box-shadow: var(--shadow-lg), inset 0 -80px 120px rgba(0,0,0,.12);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+/* dezent „Inset“ unten wie im Mock */
+.poll-card::after{
+  content:"";
+  position:absolute; inset: auto 12px 12px 12px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.08);
+  filter: blur(26px);
+  pointer-events:none;
+}
+
+/* ---- Top-Zeile ---- */
+.poll-card__top{
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.poll-badge{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:.8rem; font-weight:700;
+  color:#00000;
+  background: var(--glass);
+  padding:.35rem .6rem; border-radius:999px;
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(6px);
+}
+
+.poll-badge .badge-dot{
+  width:.55rem; height:.55rem; border-radius:50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px rgba(34,197,94,.18);
+}
+
+.poll-card .plane{
+  color: rgba(255,255,255,.78);
+}
+
+/* ---- Body ---- */
+.poll-card__body{ padding:12px 6px 6px; }
+
+.poll-title{
+  margin:0 0 6px 0;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height:1.25;
+  font-weight:850;
+  letter-spacing:.2px;
+  color:#00000;
+}
+
+.poll-text{
+  margin:0 0 8px 0;
+  color:#00000;
+  opacity:.95;
+}
+
+.poll-meta{
+  margin:0;
+  font-size:.85rem;
+  color:#00000;
+  opacity:.85;
+}
+
+/* ---- CTA „Tap to …“ ---- */
+.poll-card__cta{ margin:10px 0 6px; }
+
+.cta-pill{
+  width:100%;
+  border:0;
+  padding:12px 16px;
+  border-radius:18px;
+  font-weight:800;
+  letter-spacing:.2px;
+  color:#000000;
+  background: var(--glass);
+  border:1px solid var(--ring);
+  backdrop-filter: blur(8px);
+  cursor:pointer;
+  transition: background .15s ease, transform .05s ease;
+}
+.cta-pill:hover{ background: var(--glass-strong); }
+.cta-pill:active{ transform: translateY(1px); }
+
+/* ---- Vote Pills ---- */
+.vote-pills{
+  margin-top:10px;
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+
+.pill{
+  border:0;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:800;
+  background: var(--glass);
+  border:1px solid var(--ring);
+  color:#000000;
+  cursor:pointer;
+  transition: background .15s ease, transform .05s ease;
+}
+.pill:hover{ background: var(--glass-strong); }
+.pill:active{ transform: translateY(1px); }
+
+/* ---- Footer ---- */
+.poll-card__foot{
+  margin-top:4px;
+  color:#000000;
+  opacity:.75;
+}
+
+/* ---- Leerer Zustand ---- */
+.abst-empty{
+  max-width:520px; margin:32px auto;
+  color: var(--muted);
+  opacity:.9;
+}
+
+/* ---- Fokus und Accessiblity ---- */
+.cta-pill:focus-visible,
+.pill:focus-visible{
+  outline: 2px solid #a5b4fc;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(165,180,252,.25);
+}
+
+/* ---- Responsive Feinschliff ---- */
+@media (min-width: 640px){
+  .mobile-feed{ gap: 20px; }
+  .poll-card{ border-radius: 24px; padding: 16px 16px 14px; }
+}
+
+@media (max-width: 360px){
+  .poll-title{ font-size: 1rem; }
+  .vote-pills{ gap: 8px; }
+}

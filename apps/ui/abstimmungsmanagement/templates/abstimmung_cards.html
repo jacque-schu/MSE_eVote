@@ -1,0 +1,44 @@
+{# apps/ui/abstimmungsmanagement/templates/abstimmung_cards.html #}
+
+<section class="section" aria-label="Laufende Abstimmungen" style="max-width:720px;margin:24px auto 64px;">
+  <h2 class="abst-headline" style="margin-top:8px;">Laufende Abstimmungen</h2>
+
+  {% if abstimmungen and abstimmungen|length > 0 %}
+    <div class="mobile-feed">
+      {% for a in abstimmungen %}
+      <article class="card salmon">
+        <div class="poll-card__top">
+          <span class="poll-badge"><span class="badge-dot"></span>
+            {{ a.status.value if a.status is defined else a.status }}
+          </span>
+          <span class="plane" aria-hidden="true">✈️</span>
+        </div>
+
+        <div class="poll-card__body">
+          <h3 class="poll-title">{{ a.titel }}</h3>
+          <p class="poll-text">{{ a.beschreibung }}</p>
+          <p class="poll-meta">
+            {% if a.startDatum %}{{ a.startDatum.strftime("%d.%m.%Y") }}{% else %}—{% endif %}
+            –
+            {% if a.endDatum %}{{ a.endDatum.strftime("%d.%m.%Y") }}{% else %}—{% endif %}
+          </p>
+        </div>
+
+        <div class="poll-card__cta">
+          <form method="post" action="/abstimmungen/{{ a.abstimmungsID }}/stimme" class="vote-pills">
+            <button class="pill" name="option" value="Ja" type="submit">Ja</button>
+            <button class="pill" name="option" value="Nein" type="submit">Nein</button>
+            <button class="pill" name="option" value="Enthaltung" type="submit">Enthaltung</button>
+          </form>
+        </div>
+
+        <div class="poll-card__foot">
+          <small>Abstimmungs-ID: {{ a.abstimmungsID }}</small>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="abst-empty">Aktuell keine offenen Abstimmungen.</p>
+  {% endif %}
+</section>

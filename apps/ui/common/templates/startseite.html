@@ -1,119 +1,97 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eVote Hauptseite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title or "eVote Hauptseite" }}</title>
 
-<link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
-
-
+  <!-- Basis-Styles -->
+  <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+  <!-- Karten-/Feed-Styles -->
+  <link rel="stylesheet" href="{{ url_for('static_abstimmungsmanagement', path='abstimmung.css') }}">
 </head>
 <body>
 <div class="app">
-    <!-- =======================
-         Linke Spalte (Feed)
-         ======================= -->
-    <main class="feed">
-
-        <!-- Topbar mit Gast rechts -->
-        <header class="topbar">
-            <div class="brand">
-                <div class="title">eVote</div>
-                <div class="mute">Schnell, sicher &amp; digital abstimmen</div>
-            </div>
-
-            <div class="user-pill">
-                <div class="avatar">G</div>
-                <div class="user-meta">
-                    <div class="user-name">Gast</div>
-                    <a href="/auth" class="user-link">Anmelden oder registrieren</a>
-                </div>
-            </div>
-        </header>
-
-        <div class="tabs">
-            <div class="tab active">Übersicht</div>
-            <div class="tab">Erstellen</div>
-            <div class="tab">Abstimmungen</div>
+  <!-- =======================
+       Linke Spalte (Feed)
+       ======================= -->
+  <main class="feed">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="title">eVote</div>
+        <div class="mute">Schnell, sicher &amp; digital abstimmen</div>
+      </div>
+      <div class="user-pill">
+        <div class="avatar">G</div>
+        <div class="user-meta">
+          <div class="user-name">Gast</div>
+          <a href="/auth" class="user-link">Anmelden oder registrieren</a>
         </div>
+      </div>
+    </header>
 
-        <!-- Willkommenskarte -->
-        <section class="card mint is-relative">
-            <div class="meta">
-                <span>Willkommen</span>
-                <span>·</span>
-                <span>eVote System</span>
-            </div>
+    <!-- Tabs -->
+    <nav class="tabs" aria-label="Navigation">
+      <div class="tab active">Übersicht</div>
+      <a class="tab" href="/erstellen">Erstellen</a>
+      <a class="tab" href="/abstimmungen">Abstimmungen</a>
+    </nav>
 
-            <h1 class="question">
-                Willkommen beim eVote System
-            </h1>
-            <p>
-                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
-                oder neue Teilnehmende zu registrieren.
-            </p>
+    <!-- Willkommenskarte -->
+    <section class="card mint is-relative">
+      <div class="meta">
+        <span>Willkommen</span><span>·</span><span>eVote System</span>
+      </div>
 
-            <div class="options" style="margin-top: 16px;">
-                <a href="/registrierung" class="option">
-                    <span>Zur Registrierung</span>
-                    <span class="count">Neue Teilnehmer</span>
-                </a>
+      <h1 class="question">Willkommen beim eVote System</h1>
+      <p>
+        Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+        oder neue Teilnehmende zu registrieren.
+      </p>
 
-                <a href="/abstimmung" class="option">
-                    <span>Zur Abstimmung</span>
-                    <span class="count">Laufende Votes</span>
-                </a>
-            </div>
-        </section>
+      <div class="options" style="margin-top:16px;">
+        <a href="/registrierung" class="option">
+          <span>Zur Registrierung</span>
+          <span class="count">Neue Teilnehmende</span>
+        </a>
+        <a href="/abstimmungen" class="option">
+          <span>Zur Abstimmung</span>
+          <span class="count">Laufende Votes</span>
+        </a>
+      </div>
+    </section>
 
-        <!-- Info-Karte -->
-        <section class="card salmon">
-            <div class="meta">
-                <span>Warum eVote?</span>
-            </div>
-            <div class="question" style="font-size: 20px;">
-                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
-            </div>
-            <p>
-                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
-                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
-                sich schnell zurecht und können mit wenigen Klicks abstimmen.
-            </p>
-        </section>
+    <!-- Info-Karte -->
 
-    </main>
+    <!-- Laufende Abstimmungen (aus gemeinsamer Template-Datei) -->
+    {% include "abstimmung_cards.html" %}
+  </main>
 
-    <!-- =======================
-         Rechte Spalte (Side)
-         ======================= -->
-    <aside class="side">
-
-        <!-- Systemstatus-Karte: vergangene Abstimmungen -->
-        <section class="card profile">
-            <span class="badge">Systemstatus</span>
-            <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
-            <p class="mute" style="margin-bottom: 14px;">
-                Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
-            </p>
-
-            <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
-                <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
-                <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
-            </ul>
-        </section>
-
-        <!-- (Gelbe Karte ist entfernt) -->
-
-    </aside>
+  <!-- =======================
+       Rechte Spalte (Side)
+       ======================= -->
+  <aside class="side">
+    <section class="card profile">
+      <span class="badge">SYSTEMSTATUS</span>
+      <h2 style="margin:6px 0 4px;">Bisherige Abstimmungen</h2>
+      <p class="mute" style="margin-bottom:14px;">
+        Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
+      </p>
+      <ul style="list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:14px;">
+        <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
+        <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
+        <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
+      </ul>
+    </section>
+  </aside>
 </div>
 
-<!-- Sticky-Button unten bleibt, falls du ihn magst -->
+<!-- Optionaler Sticky-Button unten -->
 <div class="postbar">
-    <button class="btn-post" onclick="window.location.href='/abstimmung'">
-        Zur nächsten Abstimmung
-    </button>
+  <button class="btn-post" onclick="window.location.href='/abstimmungen'">
+    Zur nächsten Abstimmung
+  </button>
 </div>
 </body>
 </html>

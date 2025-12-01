@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static_abstimmungsmanagement', path='abstimmung.css') }}">
+</head>
+<body class="page-abstimmungen">
+
+  <h1 class="abst-headline">Aktuelle Abstimmungen</h1>
+
+  {% if abstimmungen and abstimmungen|length > 0 %}
+  <main class="mobile-feed">
+    {% for a in abstimmungen %}
+    {% set status_text = (a.status.value if a.status is defined and a.status is not none else a.status) %}
+    <article class="poll-card">
+      <header class="poll-card__top">
+        <div class="poll-badge">
+          <span class="badge-dot"></span>
+          {{ status_text|default('—')|title }}
+        </div>
+
+        <!-- Paper-plane icon -->
+        <svg class="plane" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 2L15 22l-4-9-9-4 20-7Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        </svg>
+      </header>
+
+      <div class="poll-card__body">
+        <h2 class="poll-title">{{ a.titel }}</h2>
+        <p class="poll-text">{{ a.beschreibung }}</p>
+        <p class="poll-meta">
+          Zeitraum:
+          {% if a.startDatum %}{{ a.startDatum.strftime("%d.%m.%Y") }}{% else %}—{% endif %}
+          –
+          {% if a.endDatum %}{{ a.endDatum.strftime("%d.%m.%Y") }}{% else %}—{% endif %}
+        </p>
+      </div>
+
+      <form method="post" action="/abstimmungen/{{ a.abstimmungsID }}/stimme" class="poll-card__cta">
+
+        <div class="vote-pills">
+          <button class="pill" type="submit" name="option" value="Ja">Ja</button>
+          <button class="pill" type="submit" name="option" value="Nein">Nein</button>
+          <button class="pill" type="submit" name="option" value="Enthaltung">Enthaltung</button>
+        </div>
+      </form>
+
+      <footer class="poll-card__foot">
+        <small>Abstimmungs-ID: {{ a.abstimmungsID }}</small>
+      </footer>
+    </article>
+    {% endfor %}
+  </main>
+  {% else %}
+    <p class="abst-empty">Keine offenen Abstimmungen vorhanden.</p>
+  {% endif %}
+
+</body>
+</html>

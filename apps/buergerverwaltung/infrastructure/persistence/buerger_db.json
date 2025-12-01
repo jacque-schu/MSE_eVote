@@ -70,5 +70,32 @@
         "email": "teo1@teo1.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "123445612"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Pavillonstraße, 8",
+        "geburtsdatum": "1990-01-01",
+        "email": "fabianscholl@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "HArry234"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Teststra",
+        "geburtsdatum": "1990-01-01",
+        "email": "test2l@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "Moin234!"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Pavillonstraße, 8",
+        "geburtsdatum": "1990-01-01",
+        "email": "TEst1234@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "Test1234"
     }
 ]
