@@ -1,5 +1,5 @@
 import pytest
-from apps.buergerverwaltung.domain.entities.buerger import Buerger
+from apps.buergerverwaltung.domain.models.buerger import Buerger
 from pydantic import ValidationError
 from datetime import date
 

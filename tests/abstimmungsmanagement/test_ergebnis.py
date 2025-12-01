@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 from pydantic import ValidationError
-from apps.abstimmungsmanagement.domain.entities.ergebnis import Ergebnis, Stimmoption, Stimmenanzahl, Optionen
+from apps.abstimmungsmanagement.domain.models.ergebnis import Ergebnis, Stimmoption, Stimmenanzahl, Optionen
 
 # Stimmenanzahl-Tests: Anzahl darf nicht negativ sein
 @pytest.mark.parametrize("anzahl, valid", [

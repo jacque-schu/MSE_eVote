@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from apps.abstimmungsmanagement.domain.entities.abstimmung import Abstimmung, Stimme, Stimmoption, Abstimmungsstatus
+from apps.abstimmungsmanagement.domain.models.abstimmung import Abstimmung, Stimme, Stimmoption, Abstimmungsstatus
 from datetime import date, timedelta
 
 def _valid_abstimmung(**overrides):

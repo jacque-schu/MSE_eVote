@@ -1,10 +1,10 @@
 import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
-from apps.buergerverwaltung.application.services import (
+from apps.buergerverwaltung.application.services.authentifizierungs_service import (
     AuthentifizierungsService, pwd_context
 )
-from apps.buergerverwaltung.domain.entities.buerger import Buerger
+from apps.buergerverwaltung.domain.models.buerger import Buerger
 
 @pytest.fixture
 def auth_service():
@@ -33,6 +33,7 @@ def test_create_access_token_custom_expiry(auth_service):
     assert len(token) > 0
 
 def test_authenticate_user_success(auth_service):
+    email = "beispiel@example.com"
     plain_pw = "mein_passwort"
     assert len(plain_pw.encode("utf-8")) < 72
     hashed_pw = auth_service.hash_password(plain_pw)
