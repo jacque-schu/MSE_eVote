@@ -70,5 +70,23 @@
         "email": "teo1@teo1.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "123445612"
+    },
+    {
+        "buergerID": 0,
+        "name": "lana mana",
+        "adresse": "Lanamana Str. 6",
+        "geburtsdatum": "1990-01-01",
+        "email": "lanamana@lanamana.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "12345678"
+    },
+    {
+        "buergerID": 0,
+        "name": "afgfgd djhsjdhsgd",
+        "adresse": "stjkjsdfhk 7",
+        "geburtsdatum": "1990-01-01",
+        "email": "easy@easy.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "12345678"
     }
 ]
