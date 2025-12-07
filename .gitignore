@@ -16,3 +16,7 @@ build/
 # Ignoriere Python-Caches
 __pycache__/
 *.py[cod]
+
+# .env files
+.env
+*.env
