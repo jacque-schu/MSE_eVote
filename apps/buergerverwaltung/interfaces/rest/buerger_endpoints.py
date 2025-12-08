@@ -1,66 +1,67 @@
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request, Form, Header, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import ValidationError
 from pathlib import Path
+from datetime import date
 from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
-from apps.buergerverwaltung.application.services.registrierungs_service import Registrierungsservice
 from apps.buergerverwaltung.domain.models.buerger import Buerger
-from fastapi import Header, HTTPException
+from apps.shared.aspects.auth_aspect import fastapi_auth_check, hash_password
+
+
+
 
 router = APIRouter(prefix="/api/buergerverwaltung", tags=["Buergerverwaltung"])
 
 
+
 DB_DATEIPFAD = Path(__file__).parent.parent.parent / "infrastructure" / "persistence" / "buerger_db.json"
+repo = None
 
-# Globale Service-Variable
-registrierungs_service = None
-
-def init_buerger_db():
-    global registrierungs_service
-    if registrierungs_service is None:
-        repository = BuergerRepository(str(DB_DATEIPFAD))
-        registrierungs_service = Registrierungsservice(repository)
+def init_repo():
+    global repo
+    if repo is None:
+        repo = BuergerRepository(str(DB_DATEIPFAD))
 
 @router.post("/registrierung")
+@fastapi_auth_check
 async def registriere_buerger_api(
     request: Request,
-    name: str = Form(...),
+    vorname: str = Form(...),
+    nachname: str = Form(...),
     adresse: str = Form(...),
     geburtsdatum: str = Form(...),
     email: str = Form(...),
     authentifizierungsdaten: str = Form(...),
-    authorization: str = Header(None)  # Liest den Authorization-Header aus
+    authorization: str = Header(None),   # <-- hier
 ):
-    init_buerger_db()
+    print("ENDPOINT DEBUG header:", repr(authorization))
+    
+    init_repo()
 
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Authorization Header fehlt")
+    # Namen aus vorname + nachname zusammensetzen
+    name = f"{vorname} {nachname}".strip()
 
-    # Erwartet Bearer-Token z.B. "Bearer eyJhbGciOiJIUzI1NiIsInR..."
-    try:
-        token = authorization.split(" ")[1]
-    except IndexError:
-        raise HTTPException(status_code=401, detail="Ungültiger Authorization Header")
+    if any(b.email == email for b in repo.lade_alle()):
+        raise HTTPException(409, detail="E-Mail bereits registriert")
+
+    pw_hash = hash_password(authentifizierungsdaten)
 
     buerger = Buerger(
-        buergerID=0,  # ID ggf. automatisch generieren oder weglassen
+        buergerID=0,
         name=name,
         adresse=adresse,
         geburtsdatum=geburtsdatum,
         email=email,
-        authentifizierungsdaten=authentifizierungsdaten
+        authentifizierungsdaten=pw_hash,
     )
 
-    registrierter_buerger = registrierungs_service.registriere_buerger(
-        buerger, auth_token=token
-    )
-
-    return {"message": "Bürger registriert", "buerger": registrierter_buerger}
+    repo.fuege_hinzu(buerger)
+    return {"message": f"Bürger '{buerger.name}' erfolgreich registriert"}
 
 
 @router.get("/registrierung", response_class=HTMLResponse)
 async def registrierung_seite(request: Request):
-    init_buerger_db()
-    templates = Jinja2Templates(directory=Path(__file__).parent.parent.parent.parent / "ui" / "buergerverwaltung" / "templates")
-    return templates.TemplateResponse(request, "registrierung.html", {})
+    templates = Jinja2Templates(directory="ui/buergerverwaltung/templates")
+    return templates.TemplateResponse("registrierung.html", {"request": request})
+
+
