@@ -1,0 +1,5 @@
+from auth_aspect import create_token, is_token_valid
+
+t = create_token("admin")
+print("Token:", t)
+print("Valid:", is_token_valid(t))

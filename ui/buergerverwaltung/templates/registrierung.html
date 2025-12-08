@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bürger registrieren - eVote</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static_common', path='static/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_buergerverwaltung', path='./static/buerger.css') }}">
+    <style>
+        .registration-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+        .registration-card { background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        .form-group-inline { display: flex; gap: 1rem; }
+        .form-group-inline .form-group { flex: 1; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+        .form-input { width: 100%; padding: 0.875rem 1rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
+        .form-input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+        .form-error { color: #ef4444; background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .form-success { color: #10b981; background: #ecfdf5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #10b981; }
+        .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(16,185,129,0.3); }
+        .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; }
+        .btn-secondary { width: 100%; padding: 0.875rem; background: #6b7280; color: white; border: none; border-radius: 8px; margin-top: 1rem; text-decoration: none; display: inline-block; text-align: center; }
+        .login-link { color: #3b82f6; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="registration-shell">
+        <div class="registration-card">
+            <h1>Bürger registrieren</h1>
+            <p class="subtitle">Erfassen Sie die Daten für das eVote-System (Admin-only).</p>
+
+            <div id="errorBox" class="form-error" style="display: none;"></div>
+            <div id="successBox" class="form-success" style="display: none;"></div>
+
+            <form class="registration-form" id="registrierungsform" novalidate>
+                <input type="hidden" id="buergerID" name="buergerID" value="0">
+
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label class="form-label" for="vorname">Vorname</label>
+                        <input type="text" id="vorname" name="vorname" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="nachname">Nachname</label>
+                        <input type="text" id="nachname" name="nachname" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="adresse">Adresse</label>
+                    <input type="text" id="adresse" name="adresse" class="form-input" placeholder="Musterstraße 12" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="geburtsdatum">Geburtsdatum</label>
+                    <input type="date" id="geburtsdatum" name="geburtsdatum" class="form-input" required value="1990-01-01">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="max@example.com" required>
+                </div>
+
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label class="form-label" for="authentifizierungsdaten">Passwort</label>
+                        <input type="password" id="authentifizierungsdaten" name="authentifizierungsdaten" class="form-input" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="authentifizierungsdaten_confirm">Passwort bestätigen</label>
+                        <input type="password" id="authentifizierungsdaten_confirm" name="authentifizierungsdaten_confirm" class="form-input" minlength="8" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="submitBtn">Registrieren</button>
+                </div>
+            </form>
+
+            <a href="/startseite" class="btn-secondary">← Zur Startseite</a>
+        </div>
+    </div>
+
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('registrierungsform');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorBox = document.getElementById('errorBox');
+        const successBox = document.getElementById('successBox');
+
+        if (!form) {
+            console.error("Registrierungsformular nicht gefunden!");
+            return;
+        }
+
+        function showError(message) {
+            errorBox.textContent = message;
+            errorBox.style.display = 'block';
+            successBox.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successBox.textContent = message;
+            successBox.style.display = 'block';
+            errorBox.style.display = 'none';
+        }
+
+        function extractErrorMessage(errData) {
+            if (!errData) return "Unbekannter Fehler bei der Registrierung.";
+            if (typeof errData === "string") return errData;
+            if (errData.detail) {
+                if (typeof errData.detail === "string") return errData.detail;
+                if (Array.isArray(errData.detail) && errData.detail[0].msg) {
+                    return errData.detail[0].msg;
+                }
+            }
+            return "Unbekannter Fehler bei der Registrierung.";
+        }
+
+        async function sendRegistration(body) {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                throw new Error("Kein Token gefunden. Bitte erneut einloggen.");
+            }
+
+            const response = await fetch("/api/buergerverwaltung/registrierung", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: body
+            });
+
+            if (!response.ok) {
+                let errData = null;
+                try {
+                    errData = await response.json();
+                } catch (_) {}
+                throw { response: { data: errData || `HTTP ${response.status}` } };
+            }
+
+            return response;
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const pw = document.getElementById('authentifizierungsdaten').value.trim();
+            const pw2 = document.getElementById('authentifizierungsdaten_confirm').value.trim();
+            if (pw !== pw2) {
+                showError("Passwörter stimmen nicht überein.");
+                return;
+            }
+
+            const vorname = document.getElementById('vorname').value.trim();
+            const nachname = document.getElementById('nachname').value.trim();
+            const name = `${vorname} ${nachname}`.trim();
+
+            const formData = new URLSearchParams();
+            formData.append('vorname', vorname);
+            formData.append('nachname', nachname);
+            formData.append("adresse", document.getElementById('adresse').value.trim());
+            formData.append("geburtsdatum", document.getElementById('geburtsdatum').value.trim());
+            formData.append("email", document.getElementById('email').value.trim());
+            formData.append("authentifizierungsdaten", pw);
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Wird gesendet...';
+
+            try {
+                await sendRegistration(formData);
+                showSuccess("Bürger erfolgreich registriert.");
+                form.reset();
+            } catch (err) {
+                console.error("💥 Network/Error:", err);
+                const msg = err.response ? extractErrorMessage(err.response.data) : err.message;
+                showError(msg);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Registrieren';
+            }
+        });
+    });
+    </script>
+
+
+
+</body>
+</html>

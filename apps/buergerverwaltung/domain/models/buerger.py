@@ -19,16 +19,16 @@ class Buerger(BaseModel):
     registrierungsstatus: Registrierungsstatus = Registrierungsstatus.NEU
     authentifizierungsdaten: str  # z.B. Platzhalter für späteres Passwortfeld
 
-    @field_validator("name")
-    @classmethod
+    @field_validator('name')
     def validate_name(cls, name: str) -> str:
-        if not name or len(name) < 1:
-            raise ValueError("Name ist zu kurz.")
-        if not re.fullmatch(r"[A-Za-zÀ-ÿ\s-]+", name):
-            raise ValueError("Name enthält ungültige Zeichen.")
-        if name.startswith('-') or name.endswith('-'):
-            raise ValueError("Name darf nicht mit Bindestrich beginnen oder enden.")
+        name = name.strip()
+        if not name or len(name) < 2:
+            raise ValueError("Name ist zu kurz")
+        # 👇 Leerzeichen ERLAUBEN
+        if not re.fullmatch(r"^[A-Za-zÄÖÜäöüß\s-]+$", name):
+            raise ValueError("Name enthält ungültige Zeichen")
         return name
+
 
     @field_validator("adresse")
     @classmethod

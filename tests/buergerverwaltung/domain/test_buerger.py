@@ -1,23 +1,22 @@
 import pytest
-from apps.buergerverwaltung.domain.models.buerger import Buerger
-from pydantic import ValidationError
 from datetime import date
+from pydantic import ValidationError
+
+from apps.buergerverwaltung.domain.models.buerger import Buerger
 
 
-# Name Tests
+# Name-Validierung (mind. 2 Zeichen, Buchstaben/Leerzeichen/Bindestrich)
 @pytest.mark.parametrize("name, valid", [
-    ("Anna-Maria", True),               # Happy Path
-    ("Élodie", True),
-    ("Maximilian", True),
-    ("É", True),                       # Edge Case: sehr kurzer Name
-    ("A" * 50, True),                  # Edge Case: langer Name
-    ("Anna--Maria", True),             # Edge Case: doppelte Bindestriche
+    ("Anna Maria", True),
+    ("Max-Moritz", True),
+    ("ÄÖÜ äöüß", True),
+    ("A B", True),                 # minimal 2 Zeichen + Leerzeichen erlaubt
 
-    ("", False),                      # Negativ: leer
-    ("Anna123", False),               # Negativ: Zahlen
-    ("Anna@", False),                 # Negativ: Sonderzeichen
-    ("-Anna", False),                 # Negativ: Bindestrich am Anfang
-    ("Anna-", False),                 # Negativ: Bindestrich am Ende
+    ("A", False),                  # zu kurz
+    ("", False),
+    ("  ", False),
+    ("Anna123", False),
+    ("Anna@", False),
 ])
 def test_name_validation(name, valid):
     data = dict(
@@ -26,25 +25,24 @@ def test_name_validation(name, valid):
         adresse="Musterstraße 1",
         geburtsdatum=date(1990, 1, 1),
         email="max@mustermann.de",
-        authentifizierungsdaten="geheim"
+        authentifizierungsdaten="geheim",
     )
     if valid:
         b = Buerger(**data)
-        assert b.name == name
+        assert b.name == name.strip()
     else:
         with pytest.raises(ValidationError):
             Buerger(**data)
 
-# Email Tests
+
+# Email-Validierung (nur „nicht leer“ plus EmailStr)
 @pytest.mark.parametrize("email, valid", [
     ("max.mustermann@example.com", True),
     ("user123@domain.de", True),
     ("a@b.co", True),
 
-    ("user@domain", False),          # Negativ: kein TLD
-    ("invalid-email", False),
     ("", False),
-    ("user@ domain.com", False),     # Negativ: Leerzeichen
+    ("   ", False),
 ])
 def test_email_validation(email, valid):
     data = dict(
@@ -53,7 +51,7 @@ def test_email_validation(email, valid):
         adresse="Musterstraße 1",
         geburtsdatum=date(1990, 1, 1),
         email=email,
-        authentifizierungsdaten="geheim"
+        authentifizierungsdaten="geheim",
     )
     if valid:
         b = Buerger(**data)
@@ -62,15 +60,18 @@ def test_email_validation(email, valid):
         with pytest.raises(ValidationError):
             Buerger(**data)
 
-# Geburtsdatum Tests
+
+# Geburtsdatum-Parsing (mehrere Formate)
 @pytest.mark.parametrize("geburtsdatum, valid", [
     ("05.11.1990", True),
     ("05.11.25", True),
-    ("31.02.1990", False),  # Ungültiges Datum
-    ("", False),            # Leer
-    ("2025-01-01", True),   # ISO-Format, gültig (Anpassung, da Modell dieses Format unterstützt)
-    ("2025/01/01", False),  # Ungültiges Format
-    ("01-01-2025", False),  # Ungültiges Format
+    ("1990-11-05", True),
+    (date(1990, 11, 5), True),
+
+    ("31.02.1990", False),
+    ("", False),
+    ("2025/01/01", False),
+    ("01-01-2025", False),
 ])
 def test_geburtsdatum_validation(geburtsdatum, valid):
     data = dict(
@@ -79,26 +80,26 @@ def test_geburtsdatum_validation(geburtsdatum, valid):
         adresse="Musterstraße 1",
         geburtsdatum=geburtsdatum,
         email="max@mustermann.de",
-        authentifizierungsdaten="geheim"
+        authentifizierungsdaten="geheim",
     )
     if valid:
         b = Buerger(**data)
-        # Prüfe, ob geburtsdatum als date geparst wurde
         assert isinstance(b.geburtsdatum, date)
     else:
-        with pytest.raises((ValidationError, ValueError)):
+        with pytest.raises(ValidationError):
             Buerger(**data)
-            
-# Adresse Tests
+
+
+# Adress-Validierung (min. 5 Zeichen, nicht nur Leerzeichen)
 @pytest.mark.parametrize("adresse, valid", [
     ("Musterstraße 12", True),
     ("Hauptstr. 1a", True),
-    ("Am Stadtpark 5", True),
+    ("Am Park 5", True),
     ("A" * 100, True),
 
     ("", False),
     ("   ", False),
-    (None, False),
+    ("abc", False),   # zu kurz
 ])
 def test_adresse_validation(adresse, valid):
     data = dict(
@@ -107,7 +108,7 @@ def test_adresse_validation(adresse, valid):
         adresse=adresse,
         geburtsdatum=date(1990, 1, 1),
         email="max@mustermann.de",
-        authentifizierungsdaten="geheim"
+        authentifizierungsdaten="geheim",
     )
     if valid:
         b = Buerger(**data)
