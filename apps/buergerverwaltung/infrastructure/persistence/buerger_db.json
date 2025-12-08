@@ -88,5 +88,50 @@
         "email": "easy@easy.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "12345678"
+    },
+    {
+        "buergerID": 0,
+        "name": "elf ewf",
+        "adresse": "ewfere 56",
+        "geburtsdatum": "1990-01-01",
+        "email": "hs-fritz@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$lTanXdTUeBoBarhcSHkAg.c/mXHhCjyWyCQ72qNBqOobpuh04uCCS"
+    },
+    {
+        "buergerID": 0,
+        "name": "Safe ecefc",
+        "adresse": "efvcfrv 55",
+        "geburtsdatum": "1990-01-01",
+        "email": "ewvcfrv@refwf.fr",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$BaVOd42e0jbNnxFPVRRHR.dFhRDcDcOcfv/GNxxvOzdzqATH5M9/q"
+    },
+    {
+        "buergerID": 0,
+        "name": "efrxe errfxver",
+        "adresse": "rfvxr4fx 44",
+        "geburtsdatum": "1990-01-01",
+        "email": "rfx@4rfx.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$7Dytl/WIpfbM0s4.YgCojOZnrs01Dl/yd3hnainWG1Nx7KaNFKEHe"
+    },
+    {
+        "buergerID": 0,
+        "name": "heike fritz",
+        "adresse": "fcwerec 67",
+        "geburtsdatum": "1990-01-01",
+        "email": "mail@mail.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$btwCV6MjlDjPrQgFw.eqQOw91SKtzVvmzMECe6VmcvWfssIvEaH/i"
+    },
+    {
+        "buergerID": 0,
+        "name": "Max Mustermann",
+        "adresse": "Musterstraße 1",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$RlXtTdleDGs47sLv/Q5JG.PFPzpGItTc2N6xA05FLxDNeMVlPoWzW"
     }
 ]
