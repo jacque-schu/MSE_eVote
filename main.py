@@ -7,7 +7,6 @@ from apps.buergerverwaltung.interfaces.rest.buerger_endpoints import router as b
 from apps.authentifizierung.interfaces.rest.auth_endpoints import router as auth_router
 
 app = FastAPI(title="MSE eVote")
-#BASE_DIR = Path(__file__).resolve().parent.parent  # MSE_eVote/
 BASE_DIR = Path(__file__).resolve().parent
 
 # Router
