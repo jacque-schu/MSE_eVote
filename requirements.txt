@@ -13,3 +13,6 @@ passlib
 python-jose
 aspectlib
 bcrypt
+PyJWT
+bcrypt
+python-dotenv
