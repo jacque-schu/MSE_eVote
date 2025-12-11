@@ -91,6 +91,26 @@
     transform 0.05s ease;
 }
 
+/* Status-Boxen für Fehlermeldungen / Erfolgsmeldungen */
+.form-error {
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #ef4444;
+}
+
+/* Erfolgs-Box */
+.form-success {
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #10b981;
+}
+
 .form-input::placeholder {
   color: rgba(148, 163, 184, 0.6);
 }

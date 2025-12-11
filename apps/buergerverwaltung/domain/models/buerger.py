@@ -9,6 +9,22 @@ class Registrierungsstatus(str, Enum):
     REGISTRIERT = 'registriert'
     SUSPENDIERT = 'suspendiert'
 
+# Kleine Prüffunktionen (Übung 7: funktionale Programmierkonzepte)
+def ensure_not_empty(name: str) -> str:
+    cleaned = name.strip()
+    if len(cleaned) < 2:
+        raise ValueError("Name ist zu kurz.")
+    return cleaned
+
+def ensure_valid_pattern(name: str) -> str:
+    if not re.fullmatch(r"[A-Za-zÀ-ÿ\s-]+", name):
+        raise ValueError("Name enthält ungültige Zeichen.")
+    return name
+
+def ensure_valid_hyphen(name: str) -> str:
+    if name.startswith("-") or name.endswith("-"):
+        raise ValueError("Name darf nicht mit Bindestrich beginnen oder enden.")
+    return name
 
 class Buerger(BaseModel):
     buergerID: int
@@ -19,16 +35,15 @@ class Buerger(BaseModel):
     registrierungsstatus: Registrierungsstatus = Registrierungsstatus.NEU
     authentifizierungsdaten: str  # z.B. Platzhalter für späteres Passwortfeld
 
-    @field_validator('name')
+    @field_validator("name")
+    @classmethod
     def validate_name(cls, name: str) -> str:
-        name = name.strip()
-        if not name or len(name) < 2:
-            raise ValueError("Name ist zu kurz")
-        # 👇 Leerzeichen ERLAUBEN
-        if not re.fullmatch(r"^[A-Za-zÄÖÜäöüß\s-]+$", name):
-            raise ValueError("Name enthält ungültige Zeichen")
-        return name
+        # Funktionale „Pipeline“ aus pure Functions
+        checks = [ensure_not_empty, ensure_valid_pattern, ensure_valid_hyphen]
 
+        for check in checks:
+            name = check(name)
+        return name
 
     @field_validator("adresse")
     @classmethod
