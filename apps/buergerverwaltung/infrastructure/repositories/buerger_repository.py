@@ -4,6 +4,25 @@ from datetime import date
 from typing import List
 from ...domain.models.buerger import Buerger
 
+# Pure Functions (keine I/O)
+
+def parse_buerger_liste(daten) -> List[Buerger]:
+    if not isinstance(daten, list):
+        return []
+    return [Buerger(**buerger) for buerger in daten]
+
+def serialize_buerger_liste(buerger_liste: List[Buerger]) -> list[dict]:
+    return [b.model_dump() for b in buerger_liste]
+
+def date_serializer(obj):
+    if isinstance(obj, date):
+        return obj.isoformat()
+    raise TypeError(f"Type {type(obj)} not serializable")
+
+def hinzufuegen(buerger_liste: List[Buerger], neuer_buerger: Buerger) -> List[Buerger]:
+    # keine Mutation der ursprünglichen Liste
+    return [*buerger_liste, neuer_buerger]
+
 
 class BuergerRepository:
     def __init__(self, dateipfad: str):
@@ -19,10 +38,6 @@ class BuergerRepository:
         try:
             with open(self.dateipfad, "r", encoding="utf-8") as file:
                 daten = json.load(file)
-                if isinstance(daten, list):
-                    return [Buerger(**buerger) for buerger in daten]
-                else:
-                    return []
         except FileNotFoundError:
             return []
         except json.JSONDecodeError:
@@ -30,17 +45,21 @@ class BuergerRepository:
             self.speichere_alle([])
             return []
 
-    def speichere_alle(self, buerger_liste: List[Buerger]):
-        def date_serializer(obj):
-            if isinstance(obj, date):
-                return obj.isoformat()
-            raise TypeError(f"Type {type(obj)} not serializable")
+        # funktionale Transformation
+        return parse_buerger_liste(daten)
 
+    def speichere_alle(self, buerger_liste: List[Buerger]):
+        daten = serialize_buerger_liste(buerger_liste)
         with open(self.dateipfad, "w", encoding="utf-8") as file:
-            json.dump([b.model_dump() for b in buerger_liste], file, default=date_serializer, ensure_ascii=False, indent=4)
+            json.dump(
+                daten,
+                file,
+                default=date_serializer,
+                ensure_ascii=False,
+                indent=4,
+            )
 
     def fuege_hinzu(self, neuer_buerger: Buerger):
-        buerger_liste = self.lade_alle()
-        # Einfach anhängen, keine Duplikatprüfung hier (Optional in Application Service)
-        buerger_liste.append(neuer_buerger)
-        self.speichere_alle(buerger_liste)
+        alte_liste = self.lade_alle()
+        neue_liste = hinzufuegen(alte_liste, neuer_buerger)
+        self.speichere_alle(neue_liste)

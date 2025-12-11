@@ -8,23 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static_common', path='static/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static_buergerverwaltung', path='./static/buerger.css') }}">
-    <style>
-        .registration-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
-        .registration-card { background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
-        .form-group-inline { display: flex; gap: 1rem; }
-        .form-group-inline .form-group { flex: 1; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
-        .form-input { width: 100%; padding: 0.875rem 1rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
-        .form-input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
-        .form-error { color: #ef4444; background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
-        .form-success { color: #10b981; background: #ecfdf5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #10b981; }
-        .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(16,185,129,0.3); }
-        .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; }
-        .btn-secondary { width: 100%; padding: 0.875rem; background: #6b7280; color: white; border: none; border-radius: 8px; margin-top: 1rem; text-decoration: none; display: inline-block; text-align: center; }
-        .login-link { color: #3b82f6; text-decoration: underline; }
-    </style>
+
 </head>
 <body>
     <div class="registration-shell">
