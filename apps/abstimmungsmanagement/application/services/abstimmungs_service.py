@@ -10,7 +10,7 @@ from apps.abstimmungsmanagement.domain.models.ergebnis import Ergebnis
 class AbstimmungRepository(Protocol):
     def get(self, abstimmungs_id: int) -> Abstimmung: ...
     def save(self, abstimmung: Abstimmung) -> None: ...
-    def list_all(self) -> list[Abstimmung]: ...  # NEU
+
 
 class ErgebnisRepository(Protocol):
     def save(self, ergebnis: Ergebnis) -> None: ...
@@ -30,7 +30,7 @@ class AbstimmungsService:
                        option: Stimmoption, datum: date) -> Abstimmung:
         abstimmung = self.abst_repo.get(abstimmungs_id)
         stimme = Stimme(buergerId=buerger_id, option=option, zeitpunkt=datum)
-        abstimmung.stimme_abgeben(stimme)
+        abstimmung.stimmeAbgeben(stimme)
         self.abst_repo.save(abstimmung)
         return abstimmung
 
@@ -43,8 +43,3 @@ class AbstimmungsService:
         )
         self.erg_repo.save(ergebnis)
         return ergebnis
-
-    def liste_abstimmungen(self) -> list[Abstimmung]:
-        return self.abst_repo.list_all()
-
-
