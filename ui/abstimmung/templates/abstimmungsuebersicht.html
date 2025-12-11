@@ -5,75 +5,126 @@
     <title>Abstimmungsübersicht</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background: #f3f4f6;
-            margin: 0;
             padding: 2rem;
         }
         .page {
             max-width: 800px;
             margin: 0 auto;
             background: #ffffff;
-            padding: 2rem;
+            padding: 2rem 2.5rem;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
         h1 {
-            margin-top: 0;
-            margin-bottom: 1rem;
+            margin: 0;
+            font-size: 1.8rem;
+            color: #111827;
         }
         p.subtitle {
             color: #6b7280;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .btn {
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            padding: 0.6rem 1.3rem;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn.primary {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.25);
+        }
+        .btn:hover {
+            background-color: #e5e7eb;
+        }
+        .btn.primary:hover {
+            filter: brightness(1.05);
         }
         .topic-list {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            margin-top: 0.5rem;
         }
         .topic-button {
             width: 100%;
             padding: 0.85rem 1rem;
             border-radius: 8px;
             border: 1px solid #e5e7eb;
-            background: #e5e7eb;
-            color: #4b5563;
-            text-align: left;
-            cursor: default; /* „tot“ – nicht klickbar */
-            font-size: 1rem;
+            background: #f9fafb;
+            color: #374151;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.1s, transform 0.05s, box-shadow 0.1s;
+        }
+        .topic-button:hover {
+            background: #eef2ff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            transform: translateY(-1px);
         }
         .topic-button span.label {
             font-weight: 600;
         }
+        .topic-meta {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
     </style>
 </head>
 <body>
-    <div class="page">
-        <h1>Abstimmungsübersicht</h1>
-        <p class="subtitle">
-            Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.
-        </p>
-
-        <div class="topic-list">
-            <button class="topic-button" type="button">
-                <span class="label">Thema 1:</span> Haushaltsplan 2026
-            </button>
-            <button class="topic-button" type="button">
-                <span class="label">Thema 2:</span> Ausbau Radwegenetz
-            </button>
-            <button class="topic-button" type="button">
-                <span class="label">Thema 3:</span> Schulmodernisierung
-            </button>
-            <button class="topic-button" type="button">
-                <span class="label">Thema 4:</span> Öffentlicher Nahverkehr
-            </button>
-            <button class="topic-button" type="button">
-                <span class="label">Thema 5:</span> Umwelt- und Klimaschutz
-            </button>
+<div class="page">
+    <header>
+        <div>
+            <h1>Abstimmungsübersicht</h1>
+            <p class="subtitle">
+                Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.
+            </p>
         </div>
+        <div class="actions">
+            <a class="btn" href="/startseite">Startseite</a>
+            <a class="btn primary" href="/ui/admin/abstimmungen/neu">Erstellen</a>
+        </div>
+    </header>
+
+    <div class="topic-list">
+        {% for a in abstimmungen %}
+            <a class="topic-button"
+               href="/ui/abstimmung/{{ a.abstimmungsID }}">
+                <div>
+                    <span class="label">Thema {{ loop.index }}:</span>
+                    {{ a.titel }}
+                </div>
+
+            </a>
+        {% endfor %}
     </div>
+</div>
 </body>
 </html>
-
-
