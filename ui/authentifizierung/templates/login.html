@@ -272,6 +272,8 @@
                     console.log("LOGIN DATA:", data);                // Debug
                     localStorage.setItem('access_token', data.access_token);
                     localStorage.setItem('user_role', currentRole);
+                    // ← COOKIE für Backend!
+                    document.cookie = `auth_token=${data.access_token}; path=/; max-age=3600; SameSite=Lax`;
 
                     const redirectUrl = currentRole === 'admin'
                         ? '/api/buergerverwaltung/registrierung'
@@ -299,6 +301,8 @@
             submitBtn.textContent = 'Einloggen';
         }
     });
+
+
 </script>
 </body>
 </html>

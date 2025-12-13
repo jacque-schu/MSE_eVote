@@ -95,6 +95,13 @@
         .nav-btn:hover {
             background: #e5e7eb;
         }
+        .login-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+            color: white !important;
+            border-color: #3b82f6 !important;
+            margin-top: 0.5rem;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +118,8 @@
       <div class="error">{{ fehlermeldung }}</div>
     {% endif %}
 
+    {% if is_logged_in %}
+    <!-- ✅ EINGELOGGT: Buttons anzeigen -->
     <form method="post" action="/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
         <div class="buttons">
             <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">
@@ -124,6 +133,13 @@
             </button>
         </div>
     </form>
+    {% else %}
+    <!-- ❌ NICHT EINGELOGGT: Login-Hinweis + BUTTON -->
+    <div class="error">
+        🔐 Bitte einloggen um abzustimmen!
+        <a href="/api/auth/" class="nav-btn login-btn">Jetzt einloggen</a>
+    </div>
+    {% endif %}
 
     <div class="footer-actions">
         <a class="nav-btn" href="/startseite">Startseite</a>

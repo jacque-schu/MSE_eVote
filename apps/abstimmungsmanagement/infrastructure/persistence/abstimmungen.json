@@ -11,6 +11,11 @@
         "buergerId": 1,
         "option": "Ja",
         "zeitpunkt": "2025-12-13"
+      },
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-13"
       }
     ],
     "status": "offen",
