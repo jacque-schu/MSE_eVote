@@ -4,49 +4,42 @@ from fastapi import APIRouter, Depends, Request, Form
 from fastapi.responses import RedirectResponse, HTMLResponse
 from urllib.parse import urlencode
 from apps.abstimmungsmanagement.application.services.abstimmungs_service import AbstimmungsService
+from apps.abstimmungsmanagement.application.services.abstimmungsuebersichts_service import AbstimmungsUebersichtsService
 from apps.abstimmungsmanagement.domain.models.abstimmung import Stimmoption
 from pydantic import BaseModel
 from apps.abstimmungsmanagement.infrastructure.templates.templates import templates_abst
-from apps.abstimmungsmanagement.infrastructure.container import get_abstimmungs_service
+from apps.abstimmungsmanagement.infrastructure.container.container import get_abstimmungs_service, get_uebersichts_service
+
+# Die Datei bündelt alle HTTP‑Endpunkte („Routen“) rund um Abstimmungen.
 
 
 router = APIRouter(tags=["abstimmungen"])
 
-# --- JSON-API ---
 
-@router.post("/abstimmungen/seed")
-def seed(service: AbstimmungsService = Depends(get_abstimmungs_service)):
-    abstimmung = service.erstelle_abstimmung(
-        abstimmungsID=100,
-        titel="Kommunalwahl 2026",
-        beschreibung="Soll es eine Briefwahl geben?",
-        startDatum=date.today(),
-        endDatum=date.today() + timedelta(days=7),
-        teilnehmerliste=[1, 2, 3],
-        stimmen=[],
-    )
-    return abstimmung
-
-
+# Listet alle Abstimmungen als JSON auf (für API‑Nutzung).
 @router.get("/abstimmungen", response_model=List[dict])
 def liste_abstimmungen(service: AbstimmungsService = Depends(get_abstimmungs_service)):
     return [a.__dict__ for a in service.liste_abstimmungen()]
 
 
+# Liefert die Details einer einzelnen Abstimmung als JSON.
 @router.get("/abstimmungen/{abstimmungs_id}")
 def get_abstimmung(
-    abstimmungs_id: int,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        abstimmungs_id: int,
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.abst_repo.get(abstimmungs_id)
     return abstimmung.__dict__
 
 
+
+
+# Nimmt eine Stimme zu einer Abstimmung entgegen (Form‑POST) und leitet zurück zur HTML-Detailseite.
 @router.post("/abstimmungen/{abstimmungs_id}/stimme")
 def stimme_abgeben_endpoint(
-    abstimmungs_id: int,
-    wahl: str = Form(...),
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        abstimmungs_id: int,
+        wahl: str = Form(...),
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     option = Stimmoption[wahl]
     try:
@@ -69,23 +62,24 @@ def stimme_abgeben_endpoint(
         )
 
 
+# Zeigt eine HTML‑Übersicht aller offenen Abstimmungen.
 @router.get("/ui/abstimmungsuebersicht", response_class=HTMLResponse)
 async def abstimmungsuebersicht(
     request: Request,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+    service: AbstimmungsUebersichtsService = Depends(get_uebersichts_service),  # ← NEU
 ):
-    abstimmungen = service.liste_abstimmungen()
+    abstimmungen = service.alle_offenen_abstimmungen()  # ← Nur OFFEN!
     return templates_abst.TemplateResponse(
         "abstimmungsuebersicht.html",
         {"request": request, "abstimmungen": abstimmungen},
     )
 
-
+# Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
 @router.get("/ui/abstimmung/{abstimmungs_id}", response_class=HTMLResponse)
 async def abstimmungs_detail(
-    request: Request,
-    abstimmungs_id: int,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        request: Request,
+        abstimmungs_id: int,
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.abst_repo.get(abstimmungs_id)
     fehlermeldung: Optional[str] = request.query_params.get("error")
@@ -107,16 +101,18 @@ class AbstimmungCreate(BaseModel):
     endDatum: date
     mindestalter: int | None = None
 
-# JSON-API: Admin legt Abstimmung an
+
+# JSON‑API: Admin legt eine neue Abstimmung an und bekommt sie als JSON zurück.
 @router.post("/abstimmungen", response_model=dict)
 def create_abstimmung(
-    payload: AbstimmungCreate,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        payload: AbstimmungCreate,
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.erstelle_abstimmung(**payload.dict(), stimmen=[])
     return abstimmung.__dict__
 
-# HTML-Form anzeigen
+
+# Zeigt das HTML‑Formular, mit dem der Admin eine neue Abstimmung anlegen kann.
 @router.get("/ui/admin/abstimmungen/neu", response_class=HTMLResponse)
 async def abstimmung_neu_form(request: Request):
     return templates_abst.TemplateResponse(
@@ -124,18 +120,19 @@ async def abstimmung_neu_form(request: Request):
         {"request": request},
     )
 
-# HTML-Form verarbeiten
+
+# Verarbeitet das HTML‑Formular zur Erstellung einer neuen Abstimmung und leitet zur Übersicht um.
 @router.post("/ui/admin/abstimmungen/neu")
 async def abstimmung_neu_submit(
-    abstimmungsID: int | None = Form(None),
-    titel: str = Form(...),
-    beschreibung: str = Form(...),
-    startDatum: date = Form(...),
-    endDatum: date = Form(...),
-    minAlter: int | None = Form(None),
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        abstimmungsID: int | None = Form(None),
+        titel: str = Form(...),
+        beschreibung: str = Form(...),
+        startDatum: date = Form(...),
+        endDatum: date = Form(...),
+        minAlter: int | None = Form(None),
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
-    # falls keine ID mitgekommen ist → automatisch vergeben
+    # da es im HTML-Template kein Feld für eine ID gibt, wird die ID automatisch vergeben
     if abstimmungsID is None:
         vorhandene = service.liste_abstimmungen()
         max_id = max((a.abstimmungsID for a in vorhandene), default=0)
@@ -155,7 +152,3 @@ async def abstimmung_neu_submit(
         url="/ui/abstimmungsuebersicht",
         status_code=303,
     )
-
-
-
-

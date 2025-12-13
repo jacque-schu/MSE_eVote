@@ -1,0 +1,19 @@
+[
+  {
+    "abstimmungsID": 1,
+    "titel": "Kindergarten renovieren",
+    "beschreibung": "Soll der Kindergarten einen neuen Anstrich erhalten?",
+    "startDatum": "2025-12-22",
+    "endDatum": "2025-12-31",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 1,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-13"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 18
+  }
+]
