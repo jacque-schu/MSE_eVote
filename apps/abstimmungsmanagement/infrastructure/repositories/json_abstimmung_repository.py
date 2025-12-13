@@ -16,12 +16,22 @@ class JsonAbstimmungRepository:
             try:
                 with open(self._file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                    self._store = {
-                        item['abstimmungsID']: Abstimmung.model_validate(item)
-                        for item in data
-                    }
+                    self._store = {}
+                    for item_data in data:  # ← Liste iterieren!
+                        abstimmung = Abstimmung.model_validate(item_data)
+
+                        # Status prüfen & OBJEKT ändern
+                        if (abstimmung.status == Abstimmungsstatus.OFFEN and
+                                abstimmung.endDatum < date.today()):
+                            # Pydantic erlaubt .model_copy_update()
+                            abstimmung = abstimmung.model_copy(update={'status': Abstimmungsstatus.GESCHLOSSEN})
+
+                        self._store[abstimmung.abstimmungsID] = abstimmung
             except (json.JSONDecodeError, KeyError, ValueError):
-                self._store = {}  # Korrupte Datei ignorieren
+                self._store = {}
+
+        if self._store:
+            self._save()  # ← Neue Objekte speichern!
 
     def _save(self):
         self._file_path.parent.mkdir(parents=True, exist_ok=True)
