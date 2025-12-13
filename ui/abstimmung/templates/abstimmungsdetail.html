@@ -118,28 +118,29 @@
       <div class="error">{{ fehlermeldung }}</div>
     {% endif %}
 
-    {% if is_logged_in %}
-    <!-- ✅ EINGELOGGT: Buttons anzeigen -->
+    {% if current_user and current_user.role == "buerger" %}
+    <!-- ✅ NUR BÜRGER: Buttons -->
     <form method="post" action="/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
         <div class="buttons">
-            <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">
-                Ja
-            </button>
-            <button type="submit" name="wahl" value="NEIN" class="vote-btn vote-nein">
-                Nein
-            </button>
-            <button type="submit" name="wahl" value="ENTHALTUNG" class="vote-btn vote-ent">
-                Enthaltung
-            </button>
+            <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">Ja</button>
+            <button type="submit" name="wahl" value="NEIN" class="vote-btn vote-nein">Nein</button>
+            <button type="submit" name="wahl" value="ENTHALTUNG" class="vote-btn vote-ent">Enthaltung</button>
         </div>
     </form>
-    {% else %}
-    <!-- ❌ NICHT EINGELOGGT: Login-Hinweis + BUTTON -->
+{% elif current_user %}
+    <!-- ❌ ADMIN: Block + Meldung -->
     <div class="error">
-        🔐 Bitte einloggen um abzustimmen!
+        <strong>Admin-Modus</strong><br>
+        Nur Bürger dürfen abstimmen!<br>
+        <a href="/api/auth/" class="nav-btn login-btn">Als Bürger einloggen</a>
+    </div>
+{% else %}
+    <!-- ❌ GAST: Login -->
+    <div class="error">Bitte einloggen um abzustimmen!<br>
         <a href="/api/auth/" class="nav-btn login-btn">Jetzt einloggen</a>
     </div>
-    {% endif %}
+{% endif %}
+
 
     <div class="footer-actions">
         <a class="nav-btn" href="/startseite">Startseite</a>

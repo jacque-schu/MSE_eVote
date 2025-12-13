@@ -9,14 +9,14 @@ class AuthService:
     
     def __init__(self, buerger_repository: BuergerRepository):
         self.buerger_repo = buerger_repository
-    
+
     def authenticate_admin(self, username: str, password: str):
         """Authentifiziert Admin."""
         admin = Admin(username=username)
         if admin.authenticate(password):
-            return {"access_token": create_token(user_id=username), "role": "admin"}
+            return {"access_token": create_token(user_id=f"admin_{username}")}
         raise ValueError("Ungültige Admin-Daten")
-    
+
     def authenticate_buerger(self, email: str, password: str):
         """Authentifiziert Bürger."""
         buerger = self._find_buerger_by_email(email)

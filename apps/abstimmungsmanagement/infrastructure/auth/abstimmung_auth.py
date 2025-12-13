@@ -1,25 +1,16 @@
-# apps/abstimmungsmanagement/infrastructure/auth/dependencies.py
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPBearer
-from apps.shared.aspects.auth_aspect import is_token_valid
+from fastapi import Depends, HTTPException, Request
+import jwt
+from apps.shared.aspects.auth_aspect import is_token_valid, SECRET_KEY, ALGORITHM
 
-security = HTTPBearer()
+#Diese Datei ist dein zentraler Auth-Schutz für ALLE Endpunkte
 
+async def require_login(request: Request):
+    token = request.cookies.get('auth_token')
+    if not token or not is_token_valid(token):
+        raise HTTPException(status_code=401, detail="Login fehlt")
 
-async def require_login(token: str = Depends(security)):
-    """Prüft Login (Bürger ODER Admin) mit is_token_valid()"""
-    try:
-        is_token_valid(token.credentials)  # ← DEINE Funktion!
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    user_id = payload["sub"]
+    role = "admin" if user_id == "admin" or user_id.startswith("admin_") else "buerger"
 
-        # Payload extrahieren (aus create_token)
-        payload = jwt.decode(token.credentials, SECRET_KEY, algorithms=["HS256"])
-
-        return {
-            "user_id": payload["sub"],  # Dein "sub" = user_id
-            "role": payload.get("role", "buerger")  # Optional role
-        }
-    except HTTPException:
-        raise HTTPException(
-            status_code=401,
-            detail="Bitte loggen Sie sich ein, um Ihre Stimme abzugeben"
-        )
+    return {"user_id": user_id, "role": role}

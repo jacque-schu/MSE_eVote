@@ -37,5 +37,22 @@
     ],
     "status": "geschlossen",
     "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 3,
+    "titel": "Umbenennung Hans-Dieter-Str.",
+    "beschreibung": "Soll die Hans-Dieter-Str. in Simone-Selter-Str. umbenannt werden?",
+    "startDatum": "2025-12-08",
+    "endDatum": "2026-01-28",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-13"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 18
   }
 ]
