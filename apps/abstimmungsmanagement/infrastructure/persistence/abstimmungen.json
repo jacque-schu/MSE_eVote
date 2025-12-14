@@ -1,0 +1,58 @@
+[
+  {
+    "abstimmungsID": 1,
+    "titel": "Kindergarten renovieren",
+    "beschreibung": "Soll der Kindergarten einen neuen Anstrich erhalten?",
+    "startDatum": "2025-12-22",
+    "endDatum": "2025-12-31",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 1,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-13"
+      },
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-13"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 2,
+    "titel": "Schulbeginn Sonnen-Grundschule an Winterzeit anpassen",
+    "beschreibung": "Soll der Schulbeginn in den Wintermonaten an der Sonnen-Grundschule erst um 9Uhr beginnen?",
+    "startDatum": "2025-12-01",
+    "endDatum": "2025-12-12",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 1,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-13"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 3,
+    "titel": "Umbenennung Hans-Dieter-Str.",
+    "beschreibung": "Soll die Hans-Dieter-Str. in Simone-Selter-Str. umbenannt werden?",
+    "startDatum": "2025-12-08",
+    "endDatum": "2026-01-28",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-13"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 18
+  }
+]

@@ -42,6 +42,7 @@ class Abstimmung(BaseModel):
     teilnehmerliste: List[int] = []
     stimmen: List[Stimme] = []
     status: Abstimmungsstatus = Abstimmungsstatus.OFFEN
+    mindestalter: int | None = None
 
 
     @field_validator("titel")
@@ -98,6 +99,11 @@ class Abstimmung(BaseModel):
         for s in self.stimmen:
             result[s.option.value] += 1
         return result
+
+    def stimme_abgeben(self, stimme: Stimme) -> None:
+        if any(s.buergerId == stimme.buergerId for s in self.stimmen):
+            raise ValueError("Bürger hat bereits abgestimmt.")
+        self.stimmen.append(stimme)
 
 
 # Beispiel-Test
