@@ -20,8 +20,8 @@ templates_abst = Jinja2Templates(
 # Router
 app.include_router(auth_router)
 app.include_router(buerger_router)
-
 app.include_router(abstimmung_router)
+
 
 
 # Static Files → ROOT ui/!
