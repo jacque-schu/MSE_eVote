@@ -1,0 +1,11 @@
+[
+    {
+        "buergerID": 0,
+        "name": "lana mana",
+        "adresse": "lanamana str. 6",
+        "geburtsdatum": "1990-01-01",
+        "email": "lana@mana123.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "12345678"
+    }
+]
