@@ -79,7 +79,10 @@ def test_ergebnisdetails():
     ]
     ergebnis = Ergebnis(ergebnisID=7, abstimmungsID=23, einzelwerte=stimmen)
     details = ergebnis.getErgebnisDetails()
-    assert details == [{'Option': 'Ja', 'Stimmen': 2}]
+    assert len(details) == 1
+    assert details[0]["Option"] == "Ja"
+    assert details[0]["Stimmen"] == 2
+    assert details[0]["Prozent"] == 100.0
 
 def test_stimmenanzahl_large_value():
     option = Stimmoption(optionstext=Optionen.JA)

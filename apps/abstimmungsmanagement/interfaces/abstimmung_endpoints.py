@@ -1,15 +1,21 @@
 from datetime import date
 from typing import List
+
 from fastapi import APIRouter, Depends, Request, Form, HTTPException
 from fastapi.responses import RedirectResponse, HTMLResponse
 from urllib.parse import urlencode
+from pydantic import BaseModel
+
 from apps.abstimmungsmanagement.application.services.abstimmungs_service import AbstimmungsService
 from apps.abstimmungsmanagement.application.services.abstimmungsuebersichts_service import AbstimmungsUebersichtsService
+from apps.abstimmungsmanagement.application.services.ergebnis_service import ErgebnisService
 from apps.abstimmungsmanagement.domain.models.abstimmung import Stimmoption
-from pydantic import BaseModel
 from apps.abstimmungsmanagement.infrastructure.templates.templates import templates_abst
-from apps.abstimmungsmanagement.infrastructure.container.container import get_abstimmungs_service, \
-    get_uebersichts_service
+from apps.abstimmungsmanagement.infrastructure.container.container import (
+    get_abstimmungs_service,
+    get_uebersichts_service,
+    get_ergebnis_service,
+)
 from apps.abstimmungsmanagement.infrastructure.auth.abstimmung_auth import require_login
 
 # Die Datei bündelt alle HTTP‑Endpunkte („Routen“) rund um Abstimmungen.
@@ -32,6 +38,13 @@ def get_abstimmung(
     abstimmung = service.abst_repo.get(abstimmungs_id)
     return abstimmung.__dict__
 
+# Liefert das Ergebnis einer Abstimmung als JSON (API).
+@router.get("/abstimmungen/{abstimmungs_id}/ergebnis", response_model=List[dict])
+def get_abstimmung_ergebnis(
+        abstimmungs_id: int,
+        ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
+):
+    return ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
 # Nimmt eine Stimme zu einer Abstimmung entgegen (Form‑POST) und leitet zurück zur HTML-Detailseite.
 @router.post("/abstimmungen/{abstimmungs_id}/stimme")
@@ -99,6 +112,33 @@ async def abstimmungs_detail(
         },
     )
 
+# Zeigt die HTML‑Ergebnisansicht einer Abstimmung.
+@router.get("/ui/abstimmung/{abstimmungs_id}/ergebnis", response_class=HTMLResponse)
+async def abstimmungs_ergebnis_view(
+        request: Request,
+        abstimmungs_id: int,
+        abstimmungs_service: AbstimmungsService = Depends(get_abstimmungs_service),
+        ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
+):
+    abstimmung = abstimmungs_service.abst_repo.get(abstimmungs_id)
+    ergebnis_details = ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
+
+    user = None
+    try:
+        user = await require_login(request)
+    except HTTPException:
+        pass
+
+    return templates_abst.TemplateResponse(
+        "abstimmung_ergebnis.html",
+        {
+            "request": request,
+            "abstimmung": abstimmung,
+            "ergebnis": ergebnis_details,
+            "is_logged_in": user is not None,
+            "current_user": user,
+        },
+    )
 
 class AbstimmungCreate(BaseModel):
     abstimmungsID: int

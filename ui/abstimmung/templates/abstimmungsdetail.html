@@ -145,7 +145,15 @@
     <div class="footer-actions">
         <a class="nav-btn" href="/startseite">Startseite</a>
         <a class="nav-btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
+
+        {% if abstimmung.stimmen | length > 0 %}
+            <a class="nav-btn"
+               href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
+                Ergebnis anzeigen
+            </a>
+        {% endif %}
     </div>
+
 </div>
 </body>
 </html>
