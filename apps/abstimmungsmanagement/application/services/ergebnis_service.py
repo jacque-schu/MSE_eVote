@@ -29,10 +29,20 @@ class ErgebnisService:
             Optionen.ENTHALTUNG: 0,
         }
 
+        #for stimme in getattr(abstimmung, "stimmen", []):
+            #option_abstimmung: Stimmoption = stimme.option
+            # direkt das Enum aus dem Domain-Modell verwenden
+            #option = option_abstimmung.optionstext
+
+            #if option in stimmen_nach_option:
+                #stimmen_nach_option[option] += 1
+            #else:
+                #stimmen_nach_option[option] = 1
+
         for stimme in getattr(abstimmung, "stimmen", []):
-            # stimme.option ist vom Typ Stimmoption
+            #stimme.option ist vom Typ Stimmoption
             option_abstimmung: Stimmoption = stimme.option
-            # in das Ergebnis-Enum konvertieren
+            #in das Ergebnis-Enum konvertieren
             option = Optionen[option_abstimmung.name]  # Enum-Name -> Enum im Ergebnis-Model
 
             if option in stimmen_nach_option:
