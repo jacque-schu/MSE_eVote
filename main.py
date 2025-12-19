@@ -25,8 +25,10 @@ app.include_router(abstimmung_router)
 
 
 # Static Files → ROOT ui/!
-app.mount("/static/common", StaticFiles(directory=BASE_DIR / "ui" / "common"), name="static_common")
-app.mount("/static/buergerverwaltung", StaticFiles(directory=BASE_DIR / "ui" / "buergerverwaltung"), name="static_buergerverwaltung")
+app.mount("/static/common", StaticFiles(directory=BASE_DIR / "ui" / "common" / "static"), name="static_common")
+app.mount("/static/buergerverwaltung", StaticFiles(directory=BASE_DIR / "ui" / "buergerverwaltung" / "static"), name="static_buergerverwaltung")
+app.mount("/static/authentifizierung", StaticFiles(directory=BASE_DIR / "ui" / "authentifizierung" / "static"), name="static_authentifizierung")
+
 
 
 # Health

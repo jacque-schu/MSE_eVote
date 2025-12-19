@@ -7,153 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .login-shell {
-            width: 100%;
-            max-width: 450px;
-        }
-
-        .login-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            margin-bottom: 0.5rem;
-            color: #1f2937;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: #6b7280;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .role-tabs {
-            display: flex;
-            background: #f3f4f6;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .tab {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            color: #6b7280;
-        }
-
-        .tab:hover {
-            background: #e5e7eb;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #374151;
-            font-size: 0.95rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.2s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-primary:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .error {
-            color: #ef4444;
-            background: #fef2f2;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            border-left: 4px solid #ef4444;
-            display: none;
-        }
-
-        .role-indicator {
-            background: #f0f9ff;
-            padding: 0.75rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: 500;
-            color: #0369a1;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static_authentifizierung', path='auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_common', path='./static/base.css') }}">
 </head>
 <body>
 <div class="login-shell">
@@ -162,8 +17,8 @@
         <p class="subtitle">Wählen Sie Ihre Rolle für den Login:</p>
 
         <div class="role-tabs">
-            <button class="tab active" data-role="admin" onclick="setRole('admin')">🛡️ Admin</button>
-            <button class="tab" data-role="buerger" onclick="setRole('buerger')">👤 Bürger</button>
+            <button class="tab-login active-login" data-role="admin" onclick="setRole('admin')">🛡️ Admin</button>
+            <button class="tab-login" data-role="buerger" onclick="setRole('buerger')">👤 Bürger</button>
         </div>
 
         <div id="role-indicator" class="role-indicator" style="display:none;">
@@ -217,9 +72,10 @@
     function setRole(role) {
         currentRole = role;
 
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.classList.toggle('active', tab.dataset.role === role);
+      document.querySelectorAll('.tab-login').forEach(btn => {
+        btn.classList.toggle('active-login', btn.dataset.role === role);
         });
+
 
         document.getElementById('admin-fields').style.display = role === 'admin' ? 'block' : 'none';
         document.getElementById('buerger-fields').style.display = role === 'buerger' ? 'block' : 'none';
