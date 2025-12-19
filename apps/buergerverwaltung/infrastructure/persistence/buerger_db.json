@@ -1,11 +1,101 @@
 [
     {
-        "buergerID": 0,
-        "name": "lana mana",
-        "adresse": "lanamana str. 6",
-        "geburtsdatum": "1990-01-01",
-        "email": "lana@mana123.com",
+        "buergerID": 1,
+        "name": "Fabian Scholl",
+        "adresse": "am graben 12",
+        "geburtsdatum": "1997-01-01",
+        "email": "fabian@gemail.de",
         "registrierungsstatus": "neu",
-        "authentifizierungsdaten": "12345678"
+        "authentifizierungsdaten": "bestätigt"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "frhe8734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "frh33734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "fraa3734@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "Heike Fritz",
+        "adresse": "strasse 11",
+        "geburtsdatum": "1990-01-01",
+        "email": "fraaa34@bht-berlin.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "thomas engel",
+        "adresse": "am graben 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "engel@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "bestÃ¤tigt"
+    },
+    {
+        "buergerID": 1,
+        "name": "marco muster",
+        "adresse": "am bahnhof 111",
+        "geburtsdatum": "1990-01-01",
+        "email": "laches_23@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "offen"
+    },
+    {
+        "buergerID": 1,
+        "name": "lala lalal",
+        "adresse": "lalal 5",
+        "geburtsdatum": "1990-01-01",
+        "email": "teo1@teo1.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "123445612"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Pavillonstraße, 8",
+        "geburtsdatum": "1990-01-01",
+        "email": "fabianscholl@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "HArry234"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Teststra",
+        "geburtsdatum": "1990-01-01",
+        "email": "test2l@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "Moin234!"
+    },
+    {
+        "buergerID": 0,
+        "name": "Fabian Scholl",
+        "adresse": "Pavillonstraße, 8",
+        "geburtsdatum": "1990-01-01",
+        "email": "TEst1234@yahoo.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "Test1234"
     }
 ]

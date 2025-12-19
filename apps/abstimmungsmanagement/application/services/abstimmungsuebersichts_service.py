@@ -13,3 +13,5 @@ class AbstimmungsUebersichtsService:
 
     def details_zu_abstimmung(self, abstimmungs_id: int) -> Abstimmung:
         return self.abst_repo.get(abstimmungs_id)
+
+
