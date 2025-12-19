@@ -40,10 +40,12 @@ def get_abstimmung(
 
 # Liefert das Ergebnis einer Abstimmung als JSON (API).
 @router.get("/abstimmungen/{abstimmungs_id}/ergebnis", response_model=List[dict])
-def get_abstimmung_ergebnis(
+async def get_abstimmung_ergebnis(
+        request: Request,
         abstimmungs_id: int,
         ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
 ):
+    await require_login(request)
     return ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
 # Nimmt eine Stimme zu einer Abstimmung entgegen (Form‑POST) und leitet zurück zur HTML-Detailseite.
@@ -119,23 +121,23 @@ async def abstimmungs_ergebnis_view(
         abstimmungs_id: int,
         abstimmungs_service: AbstimmungsService = Depends(get_abstimmungs_service),
         ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
+
 ):
+    # 1. Login erzwingen
+    user = await require_login(request)
+
+    # 2. Daten laden
     abstimmung = abstimmungs_service.abst_repo.get(abstimmungs_id)
     ergebnis_details = ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
-    user = None
-    try:
-        user = await require_login(request)
-    except HTTPException:
-        pass
-
+    #3. Template laden
     return templates_abst.TemplateResponse(
         "abstimmung_ergebnis.html",
         {
             "request": request,
             "abstimmung": abstimmung,
             "ergebnis": ergebnis_details,
-            "is_logged_in": user is not None,
+            "is_logged_in": True,
             "current_user": user,
         },
     )
