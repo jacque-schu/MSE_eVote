@@ -1,0 +1,46 @@
+ <!-- Willkommenskarte mit korrekten Links! -->
+        <section class="card mint is-relative">
+            <div class="meta">
+                <span>Willkommen</span>
+                <span>·</span>
+                <span>eVote System</span>
+            </div>
+            <h1 class="question">Willkommen beim eVote System</h1>
+            <p>
+                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+                oder neue Teilnehmende zu registrieren.
+            </p>
+
+            <div class="options" style="margin-top: 16px;">
+                <!-- Immer sichtbar: Login -->
+                <a href="/api/auth/" class="option">
+                    <span>👤 Login</span>
+                    <span class="count">Admin / Bürger</span>
+                </a>
+
+                <!-- Nur für Admins! -->
+                <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
+                    <span>🛡️ Bürger registrieren</span>
+                    <span class="count">Admin-only</span>
+                </a>
+
+                <!-- Abstimmung (zukünftig) -->
+                <a href="/ui/abstimmungsuebersicht" class="option">
+                    <span>📊 Abstimmungen</span>
+                    <span class="count">Laufende Votes</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Info-Karte -->
+        <section class="card salmon">
+            <div class="meta"><span>Warum eVote?</span></div>
+            <div class="question" style="font-size: 20px;">
+                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
+            </div>
+            <p>
+                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
+                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
+                sich schnell zurecht und können mit wenigen Klicks abstimmen.
+            </p>
+        </section>

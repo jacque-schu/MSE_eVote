@@ -1,0 +1,44 @@
+<div class="page card">
+  <h1>Neue Abstimmung anlegen</h1>
+  <p class="subtitle">
+    Erfasse die Eckdaten der Abstimmung. Die Felder werden im Backend validiert.
+  </p>
+  <form method="post" action="/ui/admin/abstimmungen/neu">
+        <div class="form-grid">
+            <div class="field">
+                <label for="titel">Titel</label>
+                <input type="text" id="titel" name="titel" required>
+                <div class="hint">Mindestens 3 Zeichen</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="beschreibung">Beschreibung</label>
+            <textarea id="beschreibung" name="beschreibung" required></textarea>
+            <div class="hint">Kurz beschreiben, worum es in der Abstimmung geht</div>
+        </div>
+
+        <div class="row-2">
+            <div class="field">
+                <label for="startDatum">Startdatum</label>
+                <input type="date" id="startDatum" name="startDatum" required>
+            </div>
+            <div class="field">
+                <label for="endDatum">Enddatum</label>
+                <input type="date" id="endDatum" name="endDatum" required>
+                <div class="hint">Darf nicht vor dem Startdatum liegen</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="minAlter">Mindestalter der Wähler</label>
+            <input type="number" id="minAlter" name="minAlter" min="0" placeholder="z.B. 18">
+            <div class="hint">Optional: Mindestalter in Jahren (z.B. 16 oder 18)</div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Abbrechen</button>
+            <button type="submit" class="btn btn-primary">Abstimmung anlegen</button>
+        </div>
+  </form>
+</div>

@@ -1,130 +1,205 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eVote Hauptseite</title>
-    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eVote Hauptseite</title>
+  <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
 </head>
+
 <body>
 <div class="app">
-    <!-- =======================
-         Linke Spalte (Feed)
-         ======================= -->
-    <main class="feed">
-        <!-- Topbar mit dynamischem User-Status -->
-        <header class="topbar">
-            <div class="brand">
-                <div class="title">eVote</div>
-                <div class="mute">Schnell, sicher & digital abstimmen</div>
-            </div>
-            <div class="user-pill" id="user-status">
-                <div class="avatar">G</div>
-                <div class="user-meta">
-                    <div class="user-name" id="user-name">Gast</div>
-                    <a href="/api/auth/" class="user-link" id="login-link">Anmelden</a>
-                </div>
-            </div>
-        </header>
+  <!-- =======================
+       Linke Spalte (Feed)
+       ======================= -->
+  <main class="feed">
+    <!-- Topbar mit dynamischem User-Status -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="title">eVote</div>
+        <div class="mute">Schnell, sicher & digital abstimmen</div>
+      </div>
 
-        <div class="tabs">
-            <div class="tab active">Übersicht</div>
-            <div class="tab">Erstellen</div>
-            <div class="tab">Abstimmungen</div>
+      <div class="user-pill" id="user-status">
+        <div class="avatar">G</div>
+        <div class="user-meta">
+          <div class="user-name" id="user-name">Gast</div>
+          <a href="/api/auth/" class="user-link" id="login-link">Anmelden</a>
         </div>
+      </div>
+    </header>
 
-        <!-- Willkommenskarte mit korrekten Links! -->
-        <section class="card mint is-relative">
-            <div class="meta">
-                <span>Willkommen</span>
-                <span>·</span>
-                <span>eVote System</span>
-            </div>
-            <h1 class="question">Willkommen beim eVote System</h1>
-            <p>
-                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
-                oder neue Teilnehmende zu registrieren.
-            </p>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active"
+              data-tab="overview"
+              data-url="/startseite?partial=1"
+              type="button">Übersicht</button>
 
-            <!-- ✅ DDD-KORREKTE NAVIGATION! -->
-            <div class="options" style="margin-top: 16px;">
-                <!-- Immer sichtbar: Login -->
-                <a href="/api/auth/" class="option">
-                    <span>👤 Login</span>
-                    <span class="count">Admin / Bürger</span>
-                </a>
-                
-                <!-- Nur für Admins! -->
-                <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
-                    <span>🛡️ Bürger registrieren</span>
-                    <span class="count">Admin-only</span>
-                </a>
-                
-                <!-- Abstimmung (zukünftig) -->
-                <a href="/ui/abstimmungsuebersicht" class="option">
-                    <span>📊 Abstimmungen</span>
-                    <span class="count">Laufende Votes</span>
-                </a>
-            </div>
-        </section>
+      <button class="tab"
+              data-tab="create"
+              data-url="/ui/abstimmung/neu?partial=1"
+              type="button">Erstellen</button>
 
-        <!-- Info-Karte -->
-        <section class="card salmon">
-            <div class="meta"><span>Warum eVote?</span></div>
-            <div class="question" style="font-size: 20px;">
-                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
-            </div>
-            <p>
-                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
-                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
-                sich schnell zurecht und können mit wenigen Klicks abstimmen.
-            </p>
-        </section>
-    </main>
+      <button class="tab"
+              data-tab="votes"
+              data-url="/ui/abstimmungsuebersicht?partial=1"
+              type="button">Abstimmungen</button>
+    </div>
 
-    <!-- Rechte Spalte -->
-    <aside class="side">
-        <section class="card profile">
-            <span class="badge">Systemstatus</span>
-            <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
-            <p class="mute" style="margin-bottom: 14px;">
-                Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
-                <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
-                <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
-            </ul>
-        </section>
-    </aside>
+    <!-- HIER wird gemountet -->
+    <div id="view">
+      <!-- Initialer Content (Übersicht) -->
+      <section class="card mint is-relative">
+        <div class="meta">
+          <span>Willkommen</span>
+          <span>·</span>
+          <span>eVote System</span>
+        </div>
+        <h1 class="question">Willkommen beim eVote System</h1>
+        <p>
+          Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+          oder neue Teilnehmende zu registrieren.
+        </p>
+
+        <div class="options" style="margin-top: 16px;">
+          <a href="/api/auth/" class="option">
+            <span>👤 Login</span>
+            <span class="count">Admin / Bürger</span>
+          </a>
+
+          <!-- Nur für Admins (wird per JS sichtbar) -->
+          <a href="/api/buergerverwaltung/registrierung"
+             class="option"
+             id="admin-reg-link"
+             style="display:none;">
+            <span>🛡️ Bürger registrieren</span>
+            <span class="count">Admin-only</span>
+          </a>
+
+          <a href="/ui/abstimmungsuebersicht" class="option">
+            <span>📊 Abstimmungen</span>
+            <span class="count">Laufende Votes</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="card salmon">
+        <div class="meta"><span>Warum eVote?</span></div>
+        <div class="question" style="font-size: 20px;">
+          Digitale Abstimmungen, die sich anfühlen wie eine moderne App
+        </div>
+        <p>
+          eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
+          Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
+          sich schnell zurecht und können mit wenigen Klicks abstimmen.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Rechte Spalte -->
+  <aside class="side">
+    <section class="card profile">
+      <span class="badge">Systemstatus</span>
+      <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
+      <p class="mute" style="margin-bottom: 14px;">
+        Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
+      </p>
+      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
+        <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
+        <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
+        <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
+      </ul>
+    </section>
+  </aside>
 </div>
 
-<!-- ✅ DYNAMISCHE NAVIGATION + AUTH-STATUS! -->
 <script>
+/* AUTH-STATUS */
 document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('access_token');
-    const role = localStorage.getItem('user_role');
-    
-    if (token && role) {
-        // Eingeloggt! User-Status aktualisieren
-        document.getElementById('user-name').textContent = 
-            role === 'admin' ? 'Admin' : 'Bürger';
-        document.getElementById('login-link').textContent = 'Abmelden';
-        document.getElementById('login-link').href = '#';
-        document.getElementById('login-link').onclick = function() {
-            localStorage.clear();
-            location.reload();
-        };
-        
-        // Admin-Features freischalten!
-        if (role === 'admin') {
-            document.getElementById('admin-reg-link').style.display = 'block';
-        }
-    } else {
-        // Gast: Nur Login sichtbar
-        document.getElementById('login-link').textContent = 'Anmelden';
-        document.getElementById('login-link').href = '/api/auth/';
+  const token = localStorage.getItem('access_token');
+  const role = localStorage.getItem('user_role');
+
+  if (token && role) {
+    document.getElementById('user-name').textContent =
+      role === 'admin' ? 'Admin' : 'Bürger';
+
+    const loginLink = document.getElementById('login-link');
+    loginLink.textContent = 'Abmelden';
+    loginLink.href = '#';
+    loginLink.onclick = function() {
+      localStorage.clear();
+      location.reload();
+    };
+
+    if (role === 'admin') {
+      const adminReg = document.getElementById('admin-reg-link');
+      if (adminReg) adminReg.style.display = 'block';
     }
+  } else {
+    document.getElementById('login-link').textContent = 'Anmelden';
+    document.getElementById('login-link').href = '/api/auth/';
+  }
+});
+
+/* SPA-MOUNTING */
+document.addEventListener('DOMContentLoaded', () => {
+  const view = document.getElementById('view');
+  const tabs = Array.from(document.querySelectorAll('.tabs .tab'));
+
+  if (!view) {
+    console.error("FEHLT: <div id='view'> ... </div>");
+    return;
+  }
+
+  function setActive(tabName) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+  }
+
+  async function mount(url, tabName, push = true) {
+    // Admin-Guard (optional)
+    if (tabName === 'create' && localStorage.getItem('user_role') !== 'admin') {
+      alert('Nur Admins können Abstimmungen erstellen.');
+      return;
+    }
+
+    const res = await fetch(url, { headers: { "X-Partial": "1" } });
+    if (!res.ok) {
+      view.innerHTML = `<div class="card salmon">Fehler beim Laden (${res.status}).</div>`;
+      return;
+    }
+
+    const html = await res.text();
+    view.innerHTML = html;
+    setActive(tabName);
+
+    if (push) {
+      const cleanUrl = url.replace(/(\?|&)partial=1\b/, '').replace(/[?&]$/, '');
+      history.pushState({ url, tabName }, '', cleanUrl || '/');
+    }
+  }
+
+  // Tab-Klicks
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mount(btn.dataset.url, btn.dataset.tab, true);
+    });
+  });
+
+  // Optional: beim Start aktiven Tab einmal nachladen (damit Partial-Mode getestet ist)
+  // Kannst du auch weglassen.
+  // const active = document.querySelector('.tabs .tab.active');
+  // if (active) mount(active.dataset.url, active.dataset.tab, false);
+
+  // Browser Back/Forward
+  window.addEventListener('popstate', (e) => {
+    if (e.state?.url && e.state?.tabName) {
+      mount(e.state.url, e.state.tabName, false);
+    } else {
+      location.reload();
+    }
+  });
 });
 </script>
 </body>
