@@ -4,105 +4,9 @@
     <meta charset="UTF-8">
     <title>{{ abstimmung.titel }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f3f4f6;
-            padding: 2rem;
-        }
-        .page {
-            max-width: 700px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 2rem 2.5rem;
-            border-radius: 14px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-        }
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: #111827;
-        }
-        .subtitle {
-            color: #6b7280;
-            margin-bottom: 1.5rem;
-        }
-        .meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 1.5rem;
-        }
-        .meta span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .error {
-            margin-bottom: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            background: #fef2f2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-            font-size: 0.9rem;
-        }
-        .buttons {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.75rem;
-        }
-        .vote-btn {
-            flex: 1;
-            padding: 0.85rem 1rem;
-            border-radius: 999px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #ffffff;
-            transition: transform 0.05s, box-shadow 0.1s, filter 0.1s;
-        }
-        .vote-ja   { background: linear-gradient(135deg, #10b981, #059669); }
-        .vote-nein { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-        .vote-ent  { background: linear-gradient(135deg, #6b7280, #4b5563); }
-        .vote-btn:hover {
-            filter: brightness(1.05);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-            transform: translateY(-1px);
-        }
-        .footer-actions {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 0.75rem;
-        }
-        .nav-btn {
-            border-radius: 999px;
-            border: 1px solid #d1d5db;
-            padding: 0.6rem 1.2rem;
-            background: #f9fafb;
-            color: #4b5563;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .nav-btn:hover {
-            background: #e5e7eb;
-        }
-        .login-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-            color: white !important;
-            border-color: #3b82f6 !important;
-            margin-top: 0.5rem;
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+
 </head>
 <body>
 <div class="page">
@@ -132,22 +36,22 @@
     <div class="error">
         <strong>Admin-Modus</strong><br>
         Nur Bürger dürfen abstimmen!<br>
-        <a href="/api/auth/" class="nav-btn login-btn">Als Bürger einloggen</a>
+        <a href="/api/auth/" class="btn-primary">Als Bürger einloggen</a>
     </div>
 {% else %}
     <!-- ❌ GAST: Login -->
     <div class="error">Bitte einloggen um abzustimmen!<br>
-        <a href="/api/auth/" class="nav-btn login-btn">Jetzt einloggen</a>
+        <a href="/api/auth/" class="btn-primary login-btn">Jetzt einloggen</a>
     </div>
 {% endif %}
 
 
     <div class="footer-actions">
-        <a class="nav-btn" href="/startseite">Startseite</a>
-        <a class="nav-btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
+        <a class="topic-button" href="/startseite">Startseite</a>
+        <a class="topic-button" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
 
         {% if abstimmung.stimmen | length > 0 %}
-            <a class="nav-btn"
+            <a class="topic-button"
                href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
                 Ergebnis anzeigen
             </a>

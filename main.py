@@ -28,7 +28,7 @@ app.include_router(abstimmung_router)
 app.mount("/static/common", StaticFiles(directory=BASE_DIR / "ui" / "common" / "static"), name="static_common")
 app.mount("/static/buergerverwaltung", StaticFiles(directory=BASE_DIR / "ui" / "buergerverwaltung" / "static"), name="static_buergerverwaltung")
 app.mount("/static/authentifizierung", StaticFiles(directory=BASE_DIR / "ui" / "authentifizierung" / "static"), name="static_authentifizierung")
-
+app.mount("/static/abstimmung", StaticFiles(directory=BASE_DIR / "ui" / "abstimmung" / "static"), name="static_abstimmung")
 
 
 # Health

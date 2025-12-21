@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eVote Hauptseite</title>
-    <link rel="stylesheet" href="{{ url_for('static_common', path='./static/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
 </head>
 <body>
 <div class="app">
@@ -97,13 +97,6 @@
             </ul>
         </section>
     </aside>
-</div>
-
-<!-- Sticky-Button -->
-<div class="postbar">
-    <button class="btn-post" onclick="window.location.href='/api/auth/'">
-        Zum Login
-    </button>
 </div>
 
 <!-- ✅ DYNAMISCHE NAVIGATION + AUTH-STATUS! -->

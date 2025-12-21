@@ -1,9 +1,10 @@
 /* =========================================
-   Registrierung – nutzt Tokens aus base.css
+   Login – nutzt Tokens aus base.css
+   orientiert an registration.css
    ========================================= */
 
 /* Wrapper zentriert die Karte */
-.registration-shell {
+.login-shell {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -11,71 +12,113 @@
   padding: 32px 16px;
 }
 
-/* Karte für das Formular – Look wie andere dunkle Karten */
-.registration-card {
+/* Karte – gleicher Look wie registration-card */
+.login-card {
   width: 100%;
   max-width: 520px;
-  background: rgba(15, 23, 42, 0.98);    /* sehr dunkles Blau, wie Status-Panel */
+  background: rgba(15, 23, 42, 0.98);
   border-radius: 30px;
   padding: 26px 28px 24px;
   border: 1px solid #111827;
   box-shadow:
     0 26px 80px rgba(0, 0, 0, 0.9),
-    0 0 60px rgba(34, 197, 94, 0.18);     /* leichter grüner Glow wie auf Startseite */
+    0 0 60px rgba(34, 197, 94, 0.18);
   color: var(--text);
 }
 
 /* Titel & Untertitel */
-.registration-card h1 {
+.login-card h1 {
   margin: 0 0 6px;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
-.registration-card .subtitle {
+.login-card .subtitle {
   margin: 0 0 18px;
   font-size: 13px;
   color: var(--muted);
 }
 
 /* =========================================
-   Formular-Layout
+   Rolle Tabs (Admin/Bürger)
    ========================================= */
 
-.registration-form {
+.role-tabs {
+  display: flex;
+  gap: 8px;
+  background: #020617;
+  border: 1px solid #111827;
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 14px;
+}
+
+.tab {
+  flex: 1;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+.tab:hover {
+  border-color: #111827;
+  background: rgba(148, 163, 184, 0.06);
+}
+
+.tab:active {
+  transform: translateY(1px);
+}
+
+.tab.active {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: var(--text);
+}
+
+/* Role Indicator */
+.role-indicator {
+  background: rgba(34, 197, 94, 0.10);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* =========================================
+   Formular-Layout (gleich wie Registrierung)
+   ========================================= */
+
+.login-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* Form-Gruppen */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.form-group-inline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.form-group-inline .form-group {
-  flex: 1 1 160px;
-}
-
-/* Labels */
 .form-label {
   font-size: 13px;
   font-weight: 500;
   color: var(--muted);
 }
 
-/* Inputs / Selects – dunkle Felder wie der Rest der App */
-.form-input,
-.form-select {
+.form-input {
   width: 100%;
   height: 42px;
   padding: 9px 12px;
@@ -91,84 +134,73 @@
     transform 0.05s ease;
 }
 
-/* Status-Boxen für Fehlermeldungen / Erfolgsmeldungen */
-.form-error {
-  color: #ef4444;
-  background: #fef2f2;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid #ef4444;
-}
-
-/* Erfolgs-Box */
-.form-success {
-  color: #10b981;
-  background: #ecfdf5;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid #10b981;
-}
-
 .form-input::placeholder {
   color: rgba(148, 163, 184, 0.6);
 }
 
-/* Fokuszustand */
-.form-input:focus,
-.form-select:focus {
+.form-input:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
   background: #020617;
 }
 
-/* Datum leicht monospaced (optional) */
-input[type="date"].form-input {
-  font-feature-settings: "tnum" 1, "lnum" 1;
-}
-
-/* Fehlermeldung */
+/* Fehlermeldung / Success (du hast form-error schon – hier kompatibel) */
 .form-error {
   font-size: 12px;
   color: #f97373;
+  background: rgba(127, 29, 29, 0.22);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 12px;
+  border-radius: 10px;
 }
 
-/* Aktionen unten rechts */
+/* Aktionen */
 .form-actions {
-  margin-top: 18px;
+  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
 }
 
-/* =========================================
-   Helpers
-   ========================================= */
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 10px;
-  text-decoration: none;
+/* Button im selben Stil (falls du keinen globalen Button hast) */
+.btn-primary {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.16);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.05s ease,
+    border-color 0.15s ease;
 }
 
-.back-link:hover {
-  color: var(--accent);
+.btn-primary:hover:not(:disabled) {
+  background: rgba(34, 197, 94, 0.22);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  .registration-card {
+  .login-card {
     padding: 22px 18px 20px;
     border-radius: 24px;
   }
 
-  .registration-card h1 {
+  .login-card h1 {
     font-size: 20px;
   }
 }
