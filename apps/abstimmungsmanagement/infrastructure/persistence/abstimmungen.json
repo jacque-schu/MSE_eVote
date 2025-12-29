@@ -2,7 +2,7 @@
   {
     "abstimmungsID": 1,
     "titel": "Kindergarten renovieren",
-    "beschreibung": "Soll der Kindergarten einen neuen Anstrich erhalten?",
+    "beschreibung": "Soll der Kindergarten 'Sonne' einen neuen Anstrich erhalten?",
     "startDatum": "2025-12-22",
     "endDatum": "2025-12-31",
     "teilnehmerliste": [],
@@ -10,12 +10,7 @@
       {
         "buergerId": 1,
         "option": "Ja",
-        "zeitpunkt": "2025-12-13"
-      },
-      {
-        "buergerId": 0,
-        "option": "Nein",
-        "zeitpunkt": "2025-12-13"
+        "zeitpunkt": "2025-12-23"
       }
     ],
     "status": "offen",
@@ -23,8 +18,8 @@
   },
   {
     "abstimmungsID": 2,
-    "titel": "Schulbeginn Sonnen-Grundschule an Winterzeit anpassen",
-    "beschreibung": "Soll der Schulbeginn in den Wintermonaten an der Sonnen-Grundschule erst um 9Uhr beginnen?",
+    "titel": "Schulbeginn Sonnen-Grundschule Winterzeit",
+    "beschreibung": "Soll der Schulunterricht in den Wintermonaten erst um 9 Uhr beginnen?",
     "startDatum": "2025-12-01",
     "endDatum": "2025-12-12",
     "teilnehmerliste": [],
@@ -32,7 +27,7 @@
       {
         "buergerId": 1,
         "option": "Nein",
-        "zeitpunkt": "2025-12-13"
+        "zeitpunkt": "2025-12-10"
       }
     ],
     "status": "geschlossen",
@@ -41,7 +36,7 @@
   {
     "abstimmungsID": 3,
     "titel": "Umbenennung Hans-Dieter-Str.",
-    "beschreibung": "Soll die Hans-Dieter-Str. in Simone-Selter-Str. umbenannt werden?",
+    "beschreibung": "Soll die Hans-Dieter-Str. in die Simone-Selter-Str. umbenannt werden?",
     "startDatum": "2025-12-08",
     "endDatum": "2026-01-28",
     "teilnehmerliste": [],
@@ -49,7 +44,388 @@
       {
         "buergerId": 0,
         "option": "Nein",
-        "zeitpunkt": "2025-12-13"
+        "zeitpunkt": "2025-12-15"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 4,
+    "titel": "Neuer Spielplatz Park Mitte",
+    "beschreibung": "Soll ein neuer Spielplatz im Park Mitte gebaut werden?",
+    "startDatum": "2025-12-15",
+    "endDatum": "2026-01-15",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 5,
+    "titel": "Öffnungszeiten Stadtbibliothek erweitern",
+    "beschreibung": "Soll die Stadtbibliothek samstags bis 20 Uhr geöffnet haben?",
+    "startDatum": "2025-11-20",
+    "endDatum": "2025-12-05",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 42,
+        "option": "Ja",
+        "zeitpunkt": "2025-11-28"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 6,
+    "titel": "Fahrradwege Hauptstrasse ausbauen",
+    "beschreibung": "Soll es breitere Fahrradwege entlang Hauptstrasse geben?",
+    "startDatum": "2025-12-10",
+    "endDatum": "2026-01-10",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 7,
+    "titel": "Seniorentreff erweitern",
+    "beschreibung": "Ist ein neuer Raum für das Seniorentreff nötig?",
+    "startDatum": "2025-12-05",
+    "endDatum": "2025-12-20",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 123,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-12"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 8,
+    "titel": "ÖPNV-Ticketpreise senken",
+    "beschreibung": "Soll der Preis der Monatskarte von 60 EUR auf 50 EUR gesenkt werden?",
+    "startDatum": "2025-12-18",
+    "endDatum": "2026-01-18",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 9,
+    "titel": "Grünanlagen Pflegebudget erhoehen",
+    "beschreibung": "Soll das jährliche Budget für Parks um 20.000 EUR erhöht werden?",
+    "startDatum": "2025-11-25",
+    "endDatum": "2025-12-10",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 67,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-03"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 10,
+    "titel": "E-Ladestationen ausbauen",
+    "beschreibung": "Sollen 10 neue E-Ladestationen in der Stadt gebaut werden?",
+    "startDatum": "2025-12-20",
+    "endDatum": "2026-01-20",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 11,
+    "titel": "Jugendzentrum modernisieren",
+    "beschreibung": "Soll das Jugendzentrum einen neuen Fitnessraum + Gaming-Bereich bekommen?",
+    "startDatum": "2025-12-12",
+    "endDatum": "2026-01-02",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 89,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-18"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 14
+  },
+  {
+    "abstimmungsID": 12,
+    "titel": "Mülltrennung Pfandcontainer",
+    "beschreibung": "Soll es Pfandcontainer für Plastikflaschen an 5 Standorten geben?",
+    "startDatum": "2025-11-28",
+    "endDatum": "2025-12-15",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 234,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-10"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 13,
+    "titel": "Strassenbeleuchtung LED",
+    "beschreibung": "Sollen alle Strassenlaternen auf LED umgestellt werden?",
+    "startDatum": "2025-12-25",
+    "endDatum": "2026-01-25",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 14,
+    "titel": "Hundewiese erweitern",
+    "beschreibung": "Soll eine neue Hundewiese am Stadtrand anlegt werden?",
+    "startDatum": "2025-12-03",
+    "endDatum": "2025-12-18",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 156,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-12"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 15,
+    "titel": "Schwimmbad beheizt",
+    "beschreibung": "Soll der Aussenbeckenbereich des Schwimmbad beheizbar gemacht werden (Winterbad)?",
+    "startDatum": "2025-12-16",
+    "endDatum": "2026-01-16",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 16,
+    "titel": "Digitales Bürgerportal",
+    "beschreibung": "Soll es eine neue App für Anliegen/Meldungen im Digitalen Bürgerportal geben?",
+    "startDatum": "2025-11-15",
+    "endDatum": "2025-12-01",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 301,
+        "option": "Ja",
+        "zeitpunkt": "2025-11-25"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 17,
+    "titel": "Bürgerbus Linie 9",
+    "beschreibung": "Soll es eine neue Buslinie 9 (im Gewerbegebiet) geben?",
+    "startDatum": "2025-12-28",
+    "endDatum": "2026-01-28",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 18,
+    "titel": "Kinderhort Plätze +20",
+    "beschreibung": "Sind 20 zusätzliche Plätze im Kinderhort nötig?",
+    "startDatum": "2025-12-08",
+    "endDatum": "2025-12-23",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 78,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-15"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 19,
+    "titel": "Weihnachtsmarkt 2026 länger",
+    "beschreibung": "Soll der Weihnachtsmarkt 2026 2 Tage länger gehen?",
+    "startDatum": "2025-12-30",
+    "endDatum": "2026-01-15",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 14
+  },
+  {
+    "abstimmungsID": 20,
+    "titel": "Fitnessgeraete Parks",
+    "beschreibung": "Soll es 3 neue Fitnessgeraete in Park geben?",
+    "startDatum": "2025-12-14",
+    "endDatum": "2026-01-14",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 21,
+    "titel": "Glasfaser Ausbau Wohngebiete",
+    "beschreibung": "Soll der Glasfaserausbau in allen Wohnungen ausgebaut werden?",
+    "startDatum": "2025-11-30",
+    "endDatum": "2025-12-20",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 345,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-10"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 22,
+    "titel": "Biergarten Erweiterung",
+    "beschreibung": "Soll es im Biergarten am Rathausplatz 20 zusätzliche Plätze geben?",
+    "startDatum": "2025-12-21",
+    "endDatum": "2026-01-21",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 23,
+    "titel": "Schulhof Sanierung Grundschule",
+    "beschreibung": "Soll ein neues Klettergerüst in der Grundschule aufgebaut werden?",
+    "startDatum": "2025-12-02",
+    "endDatum": "2025-12-17",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 412,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-12"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 24,
+    "titel": "Carsharing Stationen",
+    "beschreibung": "Soll es 5 Carsharing-Stationen im Wohngebieten geben?",
+    "startDatum": "2025-12-27",
+    "endDatum": "2026-01-27",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 25,
+    "titel": "Makerspace Jugendzentrum",
+    "beschreibung": "Soll ein 3D-Drucker für die Werkstatt im Jugendzentrum angeschafft werden?",
+    "startDatum": "2025-12-09",
+    "endDatum": "2026-01-09",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 289,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-20"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": 14
+  },
+  {
+    "abstimmungsID": 26,
+    "titel": "WLAN Hotspots öffentlich",
+    "beschreibung": "Soll es kostenloses WLAN an 20 Stadtplätzen geben?",
+    "startDatum": "2025-11-18",
+    "endDatum": "2025-12-08",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 167,
+        "option": "Ja",
+        "zeitpunkt": "2025-11-30"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 27,
+    "titel": "Tischtennisplatten Parks",
+    "beschreibung": "Soll es 5 neue Tischtennisplatten in Parks geben?",
+    "startDatum": "2025-12-29",
+    "endDatum": "2026-01-29",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 12
+  },
+  {
+    "abstimmungsID": 28,
+    "titel": "Bürgerbüro Öffnungszeiten",
+    "beschreibung": "Soll das Bürgerbüro montags bis 20 Uhr geöffnet haben?",
+    "startDatum": "2025-12-11",
+    "endDatum": "2026-01-01",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 456,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-20"
+      }
+    ],
+    "status": "geschlossen",
+    "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 29,
+    "titel": "Kreativwiese Stadtfest",
+    "beschreibung": "Soll die Kreativwiese für das Stadtfest 2026 reserviert werden?",
+    "startDatum": "2025-12-23",
+    "endDatum": "2026-01-23",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 16
+  },
+  {
+    "abstimmungsID": 30,
+    "titel": "Nachhaltigkeitsprämie Haushalte",
+    "beschreibung": "Soll es eine 50 EUR Prämie für Solarpaneele/Wärmepumpen geben?",
+    "startDatum": "2025-12-19",
+    "endDatum": "2026-02-19",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 378,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-25"
       }
     ],
     "status": "offen",
