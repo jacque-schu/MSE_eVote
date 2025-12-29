@@ -4,36 +4,223 @@
     <meta charset="UTF-8">
     <title>Abstimmungsübersicht</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+    <style>
+        :root {
+            --primary-green: #00d084;
+            --secondary-orange: #ff9500;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(255,255,255,0.05);
+            --text-light: #ffffff;
+            --text-muted: #b3b3b3;
+            --border-glow: rgba(0,208,132,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a1a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 24px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-green), #00a06b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.06);
+            color: var(--text-light);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--primary-green), #00a06b);
+            color: white;
+            border: none;
+        }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .topic-button {
+            display: block;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 14px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: left 0.6s;
+        }
+
+        .topic-button:hover::before {
+            left: 100%;
+        }
+
+        .topic-button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0,208,132,0.4);
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.4),
+                0 0 0 1px rgba(0,208,132,0.2),
+                0 0 20px var(--border-glow);
+        }
+
+        .topic-button div {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .label {
+            background: var(--primary-green);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0,208,132,0.15);
+            color: var(--primary-green);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(0,208,132,0.3);
+        }
+
+        .topic-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .actions {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="page">
     <header>
         <div>
-            <h1>Abstimmungsübersicht</h1>
+            <h1>🗳️ Abstimmungsübersicht</h1>
             <p class="subtitle">
                 Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.
             </p>
         </div>
         <div class="actions">
             <a class="btn" href="/startseite">Startseite</a>
-            {% if is_admin %}
-                <a class="btn primary" href="/ui/admin/abstimmungen/neu">Abstimmung erstellen</a>
-            {% endif %}
+            <a class="btn primary" href="/ui/admin/abstimmungen/neu">Abstimmung erstellen</a>
         </div>
     </header>
 
-
     <div class="topic-list">
         {% for a in abstimmungen %}
-            <a class="topic-button"
-               href="/ui/abstimmung/{{ a.abstimmungsID }}">
+            <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
+                <span class="status-badge">Neu</span>
                 <div>
                     <span class="label">Thema {{ loop.index }}:</span>
-                    {{ a.titel }}
+                    <div class="topic-title">{{ a.titel }}</div>
                 </div>
-
             </a>
         {% endfor %}
     </div>

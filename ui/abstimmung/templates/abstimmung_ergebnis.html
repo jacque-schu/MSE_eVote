@@ -5,64 +5,173 @@
     <title>Ergebnis der Abstimmung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f3f4f6;
-            padding: 2rem;
+        :root {
+            --primary-green: #00d084;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(255,255,255,0.05);
+            --text-light: #ffffff;
+            --text-muted: #b3b3b3;
+            --border-glow: rgba(0,208,132,0.3);
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a1a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 24px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
         .page {
             max-width: 700px;
             margin: 0 auto;
-            background: #ffffff;
-            padding: 2rem 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 32px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
+
         h1 {
-            margin-bottom: 0.5rem;
-            font-size: 1.7rem;
-            color: #111827;
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-green), #00a06b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
         }
+
         p {
-            margin-bottom: 0.75rem;
-            color: #374151;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
         }
+
         h2 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+            margin: 24px 0 16px 0;
             font-size: 1.2rem;
-            color: #111827;
+            font-weight: 600;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .balken-wrapper {
-            margin: 0.5rem 0 1rem 0;
+            margin: 16px 0;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
         }
+
         .balken-header {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-            color: #374151;
+            align-items: center;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 500;
         }
+
+        .balken-option {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
         .balken-hintergrund {
-            background: #e5e7eb;
+            background: rgba(255,255,255,0.06);
             border-radius: 999px;
             overflow: hidden;
-            height: 14px;
-            margin-top: 4px;
+            height: 16px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
         }
+
+        .balken-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balken-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
         .links {
-            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
         }
+
         .links a {
-            margin-right: 1rem;
+            flex: 1;
+            min-width: 160px;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-light);
             text-decoration: none;
-            color: #2563eb;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        /* Farben wie Discord-Screenshot */
+        .ja-fill { background: linear-gradient(90deg, #00d084, #00a06b); box-shadow: 0 0 20px rgba(0,208,132,0.4); }
+        .nein-fill { background: linear-gradient(90deg, #ef4444, #dc2626); box-shadow: 0 0 20px rgba(239,68,68,0.4); }
+        .ent-fill { background: linear-gradient(90deg, #9ca3af, #6b7280); box-shadow: 0 0 10px rgba(156,163,175,0.3); }
+
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .page { padding: 24px; }
+            .links { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 <div class="page">
-    <h1>Ergebnis: {{ abstimmung.titel }}</h1>
+    <h1>📊 Ergebnis: {{ abstimmung.titel }}</h1>
 
     <p>
         Beschreibung: {{ abstimmung.beschreibung }}<br>
@@ -72,28 +181,30 @@
     <h2>Stimmergebnis</h2>
 
     {% for eintrag in ergebnis %}
-        {% set farbe = "#6b7280" %}
+        {% set farbe_klasse = "ja-fill" %}
         {% if eintrag.Option == "Ja" %}
-            {% set farbe = "#3b82f6" %} {# blau #}
+            {% set farbe_klasse = "ja-fill" %}
         {% elif eintrag.Option == "Nein" %}
-            {% set farbe = "#ef4444" %} {# rot #}
+            {% set farbe_klasse = "nein-fill" %}
         {% elif eintrag.Option == "Enthaltung" %}
-            {% set farbe = "#9ca3af" %} {# grau #}
+            {% set farbe_klasse = "ent-fill" %}
         {% endif %}
 
         <div class="balken-wrapper">
             <div class="balken-header">
-                <span>{{ eintrag.Option }}</span>
+                <span class="balken-option">{{ eintrag.Option }}</span>
                 <span>{{ eintrag.Stimmen }} Stimmen ({{ eintrag.Prozent }} %)</span>
             </div>
             <div class="balken-hintergrund">
-                <div style="width: {{ eintrag.Prozent }}%; background: {{ farbe }}; height: 100%;"></div>
+                <div class="{{ farbe_klasse }} balken-fill" style="width: {{ eintrag.Prozent }}%"></div>
             </div>
         </div>
     {% endfor %}
 
     <div class="links">
-        <a href="/ui/abstimmungsuebersicht">Zurück zur Übersicht</a>
+        <a href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
         <a href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}">Zurück zur Abstimmung</a>
     </div>
-</div
+</div>
+</body>
+</html>

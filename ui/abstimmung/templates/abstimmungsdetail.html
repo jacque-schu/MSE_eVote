@@ -4,9 +4,178 @@
     <meta charset="UTF-8">
     <title>{{ abstimmung.titel }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+        <style>
+        :root {
+            --primary-green: #00d084;
+            --primary-red: #ff4444;
+            --primary-gray: #6b7280;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(255,255,255,0.05);
+            --text-light: #ffffff;
+            --text-muted: #b3b3b3;
+            --border-glow: rgba(0,208,132,0.3);
+            --red-glow: rgba(255,68,68,0.3);
+            --gray-glow: rgba(107,114,128,0.3);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a1a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 24px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .page { max-width: 700px; margin: 0 auto; }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-green), #00a06b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 24px;
+            max-width: 600px;
+        }
+
+        .meta {
+            display: flex; flex-wrap: wrap; gap: 16px;
+            margin-bottom: 32px; font-size: 0.9rem;
+        }
+
+        .meta span {
+            background: var(--bg-card);
+            padding: 12px 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .error {
+            background: rgba(220,38,38,0.15);
+            border: 1px solid rgba(220,38,38,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            color: #f87171;
+            backdrop-filter: blur(20px);
+        }
+
+        .btn-primary {
+            color: var(--primary-green);
+            background: rgba(0,208,132,0.15);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(0,208,132,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover { background: rgba(0,208,132,0.25); }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .vote-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 20px 24px;
+            border: 2px solid;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            font-family: inherit;
+        }
+
+        .vote-ja {
+            background: rgba(0,208,132,0.2);
+            color: var(--primary-green);
+            border-color: rgba(0,208,132,0.4);
+        }
+
+        .vote-ja:hover {
+            background: rgba(0,208,132,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px var(--border-glow);
+        }
+
+        .vote-nein {
+            background: rgba(239,68,68,0.2);
+            color: var(--primary-red);
+            border-color: rgba(239,68,68,0.4);
+        }
+
+        .vote-nein:hover {
+            background: rgba(239,68,68,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px var(--red-glow);
+        }
+
+        .vote-ent {
+            background: rgba(107,114,128,0.2);
+            color: var(--primary-gray);
+            border-color: rgba(107,114,128,0.4);
+        }
+
+        .vote-ent:hover {
+            background: rgba(107,114,128,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px var(--gray-glow);
+        }
+
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .topic-button {
+            flex: 1;
+            min-width: 160px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .topic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        @media (max-width: 768px) {
+            .buttons { flex-direction: column; }
+            .vote-btn { min-width: auto; }
+            .footer-actions { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 <div class="page">
