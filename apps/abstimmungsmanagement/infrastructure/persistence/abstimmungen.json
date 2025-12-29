@@ -62,7 +62,13 @@
     "startDatum": "2025-12-15",
     "endDatum": "2026-01-15",
     "teilnehmerliste": [],
-    "stimmen": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-29"
+      }
+    ],
     "status": "offen",
     "mindestalter": 16
   },
@@ -281,7 +287,13 @@
     "startDatum": "2025-12-30",
     "endDatum": "2026-01-15",
     "teilnehmerliste": [],
-    "stimmen": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-29"
+      }
+    ],
     "status": "offen",
     "mindestalter": 14
   },
@@ -348,7 +360,13 @@
     "startDatum": "2025-12-27",
     "endDatum": "2026-01-27",
     "teilnehmerliste": [],
-    "stimmen": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Nein",
+        "zeitpunkt": "2025-12-29"
+      }
+    ],
     "status": "offen",
     "mindestalter": 16
   },
@@ -441,5 +459,22 @@
     ],
     "status": "offen",
     "mindestalter": 18
+  },
+  {
+    "abstimmungsID": 31,
+    "titel": "Große Gartenstraße umbennen",
+    "beschreibung": "Soll die Große Gartenstraße umbenannt werden?",
+    "startDatum": "2025-12-17",
+    "endDatum": "2025-12-31",
+    "teilnehmerliste": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Ja",
+        "zeitpunkt": "2025-12-29"
+      }
+    ],
+    "status": "offen",
+    "mindestalter": null
   }
 ]

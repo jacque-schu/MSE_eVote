@@ -5,14 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eVote Hauptseite</title>
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+<style>
+    /* Tabs wie vorher, aber besser */
+    .tabs {
+        margin: 32px 0 40px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* ✅ TAB-FIX: Alle Tabs DUNKEL wie Übersicht! */
+    .tab {
+        flex: 1 !important;
+        padding: 16px 24px !important;
+        background: rgba(15, 23, 42, 0.9) !important;     /* EXAKT base.css .tabs */
+        border: none !important;
+        color: #d1d5db !important;                         /* var(--text-soft) */
+        font-weight: 500 !important;
+        font-size: 0.95rem !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .tab:hover {
+        background: rgba(15, 23, 42, 0.95) !important;    /* ETWAS dunkler */
+        color: #f9fafb !important;                         /* var(--text) */
+    }
+
+    .tab.active {
+        background: rgba(148, 163, 184, 0.18) !important; /* base.css .tab.active */
+        color: #ffffff !important;                         /* var(--text-strong) */
+        font-weight: 600 !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    }
+
+    .tab-content {
+        animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Übersicht: Doppelte Buttons ausblenden */
+    [data-tab="uebersicht"] .options,
+    [data-tab="uebersicht"] .btn-primary { display: none !important; }
+
+    /* Karten-Hover wie vorher */
+    .card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    }
+
+    /* Erstellen-Tab prominent */
+    [data-tab="erstellen"] .card.mint {
+        border: 2px solid rgba(0,208,132,0.3);
+        box-shadow: 0 20px 40px rgba(0,208,132,0.2);
+    }
+
+    /* Topbar wie vorher */
+    .topbar { padding: 28px 0; }
+
+    /* Sidebar wie vorher */
+    .side section { margin-bottom: 24px; }
+</style>
+
 </head>
 <body>
 <div class="app">
-    <!-- =======================
-         Linke Spalte (Feed)
-         ======================= -->
     <main class="feed">
-        <!-- Topbar mit dynamischem User-Status -->
+        <!-- Topbar (GENAU wie vorher) -->
         <header class="topbar">
             <div class="brand">
                 <div class="title">eVote</div>
@@ -27,62 +88,99 @@
             </div>
         </header>
 
+        <!-- Tabs (GENAU wie vorher) -->
         <div class="tabs">
-            <div class="tab active">Übersicht</div>
-            <div class="tab">Erstellen</div>
-            <div class="tab">Abstimmungen</div>
+            <button class="tab active" data-tab="uebersicht">📋 Übersicht</button>
+            <button class="tab" data-tab="erstellen">➕ Erstellen</button>
+            <button class="tab" data-tab="abstimmungen">📊 Abstimmungen</button>
         </div>
 
-        <!-- Willkommenskarte mit korrekten Links! -->
-        <section class="card mint is-relative">
-            <div class="meta">
-                <span>Willkommen</span>
-                <span>·</span>
-                <span>eVote System</span>
-            </div>
-            <h1 class="question">Willkommen beim eVote System</h1>
-            <p>
-                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
-                oder neue Teilnehmende zu registrieren.
-            </p>
+        <!-- TAB ÜBERSICHT (DEINE KARTEN, nur Options-BTN versteckt) -->
+        <div class="tab-content active" data-tab="uebersicht">
+            <section class="card mint is-relative">
+                <div class="meta">
+                    <span>Willkommen</span>
+                    <span>·</span>
+                    <span>eVote System</span>
+                </div>
+                <h1 class="question">Willkommen beim eVote System</h1>
+                <p>
+                    Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+                    oder neue Teilnehmende zu registrieren.
+                </p>
+                <!-- Options bleiben, aber CSS macht sie unsichtbar -->
+                <div class="options">
+                    <a href="/api/auth/" class="option">
+                        <span>👤 Login</span>
+                        <span class="count">Admin / Bürger</span>
+                    </a>
+                    <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
+                        <span>🛡️ Bürger registrieren</span>
+                        <span class="count">Admin-only</span>
+                    </a>
+                    <a href="/ui/abstimmungsuebersicht" class="option">
+                        <span>📊 Abstimmungen</span>
+                        <span class="count">Laufende Votes</span>
+                    </a>
+                </div>
+            </section>
 
-            <!-- ✅ DDD-KORREKTE NAVIGATION! -->
-            <div class="options" style="margin-top: 16px;">
-                <!-- Immer sichtbar: Login -->
-                <a href="/api/auth/" class="option">
-                    <span>👤 Login</span>
-                    <span class="count">Admin / Bürger</span>
-                </a>
-                
-                <!-- Nur für Admins! -->
-                <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
-                    <span>🛡️ Bürger registrieren</span>
-                    <span class="count">Admin-only</span>
-                </a>
-                
-                <!-- Abstimmung (zukünftig) -->
-                <a href="/ui/abstimmungsuebersicht" class="option">
-                    <span>📊 Abstimmungen</span>
-                    <span class="count">Laufende Votes</span>
-                </a>
-            </div>
-        </section>
+            <section class="card salmon">
+                <div class="meta"><span>Warum eVote?</span></div>
+                <div class="question" style="font-size: 20px;">
+                    Digitale Abstimmungen, die sich anfühlen wie eine moderne App
+                </div>
+                <p>
+                    eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
+                    Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
+                    sich schnell zurecht und können mit wenigen Klicks abstimmen.
+                </p>
+            </section>
+        </div>
 
-        <!-- Info-Karte -->
-        <section class="card salmon">
-            <div class="meta"><span>Warum eVote?</span></div>
-            <div class="question" style="font-size: 20px;">
-                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
-            </div>
-            <p>
-                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
-                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
-                sich schnell zurecht und können mit wenigen Klicks abstimmen.
-            </p>
-        </section>
+        <!-- TAB ERSTELLEN (PROMINENT) -->
+        <div class="tab-content" data-tab="erstellen">
+            <section class="card mint">
+                <div class="meta">
+                    <span>Admin-Funktion</span>
+                    <span>·</span>
+                    <span>Erstellen</span>
+                </div>
+                <h1 class="question">➕ Neue Abstimmung erstellen</h1>
+                <p>Admin-only Funktion. Erstelle schnell eine neue Abstimmung für deine Community.</p>
+                {% if current_user and current_user.role == "admin" %}
+                    <a href="/ui/admin/abstimmungen/neu" class="btn" style="margin-top: 24px;">
+                        🚀 Abstimmung jetzt erstellen
+                    </a>
+                {% else %}
+                    <div style="margin-top: 24px; padding: 20px; background: rgba(239,68,68,0.15); border-radius: 12px; border-left: 4px solid #ef4444;">
+                        <strong>🔒 Nur für Administratoren</strong><br>
+                        <small>Melde dich als Admin an, um Abstimmungen zu erstellen.</small>
+                        <br><br>
+                        <a href="/api/auth/" class="btn ghost" style="padding: 10px 20px; font-size: 0.9rem;">👑 Admin Login</a>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- TAB ABSTIMMUNGEN (EINFACH) -->
+        <div class="tab-content" data-tab="abstimmungen">
+            <section class="card mint">
+                <div class="meta">
+                    <span>Öffentlich</span>
+                    <span>·</span>
+                    <span>Abstimmungen</span>
+                </div>
+                <h1 class="question">📊 Aktuelle Abstimmungen</h1>
+                <p>Alle laufenden und abgeschlossenen Abstimmungen an einem Ort.</p>
+                <a href="/ui/abstimmungsuebersicht" class="btn" style="margin-top: 24px;">
+                    👀 Abstimmungen öffnen
+                </a>
+            </section>
+        </div>
     </main>
 
-    <!-- Rechte Spalte -->
+    <!-- Sidebar (GENAU wie vorher) -->
     <aside class="side">
         <section class="card profile">
             <span class="badge">Systemstatus</span>
@@ -98,34 +196,116 @@
         </section>
     </aside>
 </div>
-
-<!-- ✅ DYNAMISCHE NAVIGATION + AUTH-STATUS! -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 🔐 EINZIGES Event Listener
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const targetTab = this.dataset.tab;
+
+            switch(targetTab) {
+                case 'uebersicht':
+                    return;
+
+                case 'erstellen':
+                    // ✅ GLOBAL verwenden!
+                    window.checkAdminAccess('/ui/admin/abstimmungen/neu', 'Abstimmung erstellen');
+                    break;
+
+                case 'abstimmungen':
+                    window.location.href = '/ui/abstimmungsuebersicht';
+                    break;
+            }
+        });
+    });
+
+    // 🔐 Auth-Status
     const token = localStorage.getItem('access_token');
     const role = localStorage.getItem('user_role');
-    
+
     if (token && role) {
-        // Eingeloggt! User-Status aktualisieren
-        document.getElementById('user-name').textContent = 
-            role === 'admin' ? 'Admin' : 'Bürger';
+        document.getElementById('user-name').textContent = role === 'admin' ? 'Admin' : 'Bürger';
         document.getElementById('login-link').textContent = 'Abmelden';
         document.getElementById('login-link').href = '#';
         document.getElementById('login-link').onclick = function() {
             localStorage.clear();
             location.reload();
         };
-        
-        // Admin-Features freischalten!
         if (role === 'admin') {
             document.getElementById('admin-reg-link').style.display = 'block';
         }
-    } else {
-        // Gast: Nur Login sichtbar
-        document.getElementById('login-link').textContent = 'Anmelden';
-        document.getElementById('login-link').href = '/api/auth/';
     }
 });
+
+// 🌐 GLOBALE ADMIN FUNCTIONS (EINMALIG!)
+window.checkAdminAccess = async function(url, action) {
+    try {
+        const token = localStorage.getItem('access_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            window.showAdminPopup(action);
+            return;
+        }
+        window.location.href = url;
+    } catch (error) {
+        window.showAdminPopup(action);
+    }
+};
+
+window.showAdminPopup = function(action) {
+    const overlay = document.createElement('div');
+    overlay.id = 'admin-overlay';
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+    `;
+
+    overlay.innerHTML = `
+        <div style="
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 40px; max-width: 420px; width: 90%;
+            text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        ">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
+            <h2 style="color: white; font-size: 24px; margin: 0 0 12px 0; font-weight: 700;">
+                Admin-Rechte erforderlich
+            </h2>
+            <p style="color: #94a3b8; font-size: 16px; margin: 0 0 24px 0; line-height: 1.6;">
+                ${action} ist nur für Administratoren freigeschaltet.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <a href="/api/auth/" style="
+                    padding: 12px 28px; background: linear-gradient(135deg, #22c55e, #16a34a);
+                    color: white; text-decoration: none; border-radius: 12px;
+                    font-weight: 600; font-size: 14px;
+                ">👑 Admin Login</a>
+                <button onclick="document.getElementById('admin-overlay').remove()" style="
+                    padding: 12px 28px; background: rgba(255,255,255,0.1);
+                    color: white; border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 12px; font-weight: 600; font-size: 14px;
+                    backdrop-filter: blur(10px); cursor: pointer;
+                ">Schließen</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+};
 </script>
+
 </body>
 </html>
