@@ -531,5 +531,16 @@
     "stimmen": [],
     "status": "offen",
     "mindestalter": 17
+  },
+  {
+    "abstimmungsID": 37,
+    "titel": "TestAbstimmung30122025",
+    "beschreibung": "Kurzer Test ob es geht",
+    "startDatum": "2025-12-17",
+    "endDatum": "2025-12-25",
+    "teilnehmerliste": [],
+    "stimmen": [],
+    "status": "offen",
+    "mindestalter": 18
   }
 ]

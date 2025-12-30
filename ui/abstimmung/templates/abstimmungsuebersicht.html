@@ -7,6 +7,15 @@
 
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
+
+    <!-- Optional: falls .topic-dates noch nicht in abstimmung.css existiert -->
+    <style>
+        .topic-dates{
+            margin-top: 6px;
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,13 +38,33 @@
     </header>
 
     <div class="topic-list">
-        {% for a in abstimmungen %}
-            <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
-                <span class="status-badge">Neu</span>
-                <span class="label">Thema {{ loop.index }}:</span>
-                <div class="topic-title">{{ a.titel }}</div>
-            </a>
-        {% endfor %}
+        {% if abstimmungen and abstimmungen|length > 0 %}
+            {% for a in abstimmungen %}
+                <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
+                    <span class="status-badge">Neu</span>
+                    <span class="label">Thema {{ loop.index }}:</span>
+
+                    <div class="topic-title">{{ a.titel }}</div>
+
+                    <div class="topic-dates">
+                        Start:
+                        {% if a.startdatum %}
+                            {{ a.startdatum.strftime('%d.%m.%Y') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        · Ablauf:
+                        {% if a.ablaufdatum %}
+                            {{ a.ablaufdatum.strftime('%d.%m.%Y') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="mute">Aktuell sind keine offenen Abstimmungen vorhanden.</div>
+        {% endif %}
     </div>
 </div>
 

@@ -81,11 +81,31 @@ async def abstimmungsuebersicht(request: Request,
     except HTTPException:
         is_admin = False
 
+    # ✅ NEU: Sortierung nach Ablaufdatum (endDatum) -> nächstes Ende zuerst
+    # und Mapping auf startdatum/ablaufdatum für das Template.
+    def end_key(a):
+        end_dt = getattr(a, "endDatum", None)
+        return end_dt if end_dt is not None else date.max
+
+    abstimmungen_sorted = sorted(abstimmungen, key=end_key)  # [web:108]
+
+    abstimmungen_view = []
+    for a in abstimmungen_sorted:
+        abstimmungen_view.append({
+            "abstimmungsID": a.abstimmungsID,
+            "titel": a.titel,
+
+            # Template kann dann nutzen:
+            # {{ a.startdatum.strftime('%d.%m.%Y') }}
+            # {{ a.ablaufdatum.strftime('%d.%m.%Y') }}
+            "startdatum": getattr(a, "startDatum", None),
+            "ablaufdatum": getattr(a, "endDatum", None),
+        })
+
     return templates_abst.TemplateResponse(
         "abstimmungsuebersicht.html",
-        {"request": request, "abstimmungen": abstimmungen, "is_admin": is_admin}
+        {"request": request, "abstimmungen": abstimmungen_view, "is_admin": is_admin},
     )
-
 
 # Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
 @router.get("/ui/abstimmung/{abstimmungs_id}", response_class=HTMLResponse)
