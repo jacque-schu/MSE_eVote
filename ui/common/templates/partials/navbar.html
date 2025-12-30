@@ -1,0 +1,17 @@
+<header class="topbar">
+  <div class="brand">
+    <h1 class="title">eVote System</h1>
+    <p class="mute">Digitale Abstimmungen</p>
+  </div>
+
+  <nav class="tabs">
+    <a class="tab {% if active_page == 'uebersicht' %}active{% endif %}"
+       href="/startseite">📋 Übersicht</a>
+
+    <a class="tab {% if active_page == 'erstellen' %}active{% endif %} js-admin-only is-hidden"
+       href="/ui/admin/abstimmungen/neu">➕ Erstellen</a>
+
+    <a class="tab {% if active_page == 'abstimmungen' %}active{% endif %}"
+       href="/ui/abstimmungsuebersicht">📊 Abstimmungen</a>
+  </nav>
+</header>

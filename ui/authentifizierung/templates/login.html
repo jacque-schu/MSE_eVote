@@ -132,7 +132,7 @@
                     document.cookie = `auth_token=${data.access_token}; path=/; max-age=3600; SameSite=Lax`;
 
                     const redirectUrl = currentRole === 'admin'
-                        ? '/api/buergerverwaltung/registrierung'
+                        ? '/startseite'
                         : '/ui/abstimmungsuebersicht';
 
                     window.location.href = redirectUrl;

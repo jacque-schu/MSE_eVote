@@ -4,182 +4,22 @@
     <meta charset="UTF-8">
     <title>Abstimmungsübersicht</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            --primary-green: #00d084;
-            --secondary-orange: #ff9500;
-            --bg-dark: #0a0a0a;
-            --bg-card: rgba(255,255,255,0.05);
-            --text-light: #ffffff;
-            --text-muted: #b3b3b3;
-            --border-glow: rgba(0,208,132,0.3);
-        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a1a 100%);
-            color: var(--text-light);
-            min-height: 100vh;
-            padding: 24px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .page { max-width: 900px; margin: 0 auto; }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 32px;
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--primary-green), #00a06b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 4px;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 400;
-        }
-
-        .actions { display: flex; gap: 8px; }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            background: rgba(255,255,255,0.06);
-            color: var(--text-light);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn.primary {
-            background: linear-gradient(135deg, var(--primary-green), #00a06b);
-            color: white;
-            border: none;
-        }
-
-        .topic-list { display: flex; flex-direction: column; gap: 12px; }
-
-        .topic-button {
-            display: block;
-            text-decoration: none;
-            padding: 20px;
-            border-radius: 14px;
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .topic-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            transition: left 0.6s;
-        }
-
-        .topic-button:hover::before { left: 100%; }
-
-        .topic-button:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0,208,132,0.4);
-            box-shadow:
-                0 12px 30px rgba(0,0,0,0.4),
-                0 0 0 1px rgba(0,208,132,0.2),
-                0 0 20px var(--border-glow);
-        }
-
-        .topic-button div { display: flex; align-items: flex-start; gap: 10px; }
-
-        .label {
-            background: var(--primary-green);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(0,208,132,0.15);
-            color: var(--primary-green);
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: 1px solid rgba(0,208,132,0.3);
-        }
-
-        .topic-title {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-light);
-            line-height: 1.4;
-            margin-top: 2px;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 16px; }
-
-            header {
-                flex-direction: column;
-                gap: 16px;
-                align-items: stretch;
-            }
-
-            .actions { justify-content: center; }
-
-            h1 { font-size: 1.4rem; text-align: center; }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
 </head>
 <body>
+
 <div class="page">
-    <header>
-        <div>
-            <h1>🗳️ Abstimmungsübersicht</h1>
-            <p class="subtitle">Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.</p>
+    <header class="topbar">
+        <div class="brand">
+            <h1 class="title">🗳️ Abstimmungsübersicht</h1>
+            <p class="mute">Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.</p>
         </div>
 
         <div class="actions">
             <a class="btn" href="/startseite">Startseite</a>
 
-            <!-- ✅ HIER ist die Funktionalität: ID hinzufügen -->
             <a class="btn primary"
                id="btn-create-vote"
                href="/ui/admin/abstimmungen/neu">
@@ -192,10 +32,8 @@
         {% for a in abstimmungen %}
             <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
                 <span class="status-badge">Neu</span>
-                <div>
-                    <span class="label">Thema {{ loop.index }}:</span>
-                    <div class="topic-title">{{ a.titel }}</div>
-                </div>
+                <span class="label">Thema {{ loop.index }}:</span>
+                <div class="topic-title">{{ a.titel }}</div>
             </a>
         {% endfor %}
     </div>
@@ -203,18 +41,16 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ✅ wie startseite.html: Klick abfangen -> checkAdminAccess
     const btn = document.getElementById('btn-create-vote');
     if (btn) {
         btn.addEventListener('click', function(e) {
-            e.preventDefault(); // verhindert die Link-Navigation [web:31]
+            e.preventDefault();
             e.stopPropagation();
             window.checkAdminAccess(btn.getAttribute('href'), 'Abstimmung erstellen');
         });
     }
 });
 
-// 🌐 GLOBALE ADMIN FUNCTIONS (wie in startseite.html)
 window.checkAdminAccess = async function(url, action) {
     try {
         const token = localStorage.getItem('access_token');
@@ -235,43 +71,23 @@ window.showAdminPopup = function(action) {
 
     const overlay = document.createElement('div');
     overlay.id = 'admin-overlay';
-    overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-    `;
+    overlay.className = 'admin-overlay';
 
     overlay.innerHTML = `
-        <div style="
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 24px; padding: 40px; max-width: 420px; width: 90%;
-            text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-        ">
-            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
-            <h2 style="color: white; font-size: 24px; margin: 0 0 12px 0; font-weight: 700;">
-                Admin-Rechte erforderlich
-            </h2>
-            <p style="color: #94a3b8; font-size: 16px; margin: 0 0 24px 0; line-height: 1.6;">
-                ${action} ist nur für Administratoren freigeschaltet.
-            </p>
-            <div style="display: flex; gap: 12px; justify-content: center;">
-                <a href="/api/auth/" style="
-                    padding: 12px 28px; background: linear-gradient(135deg, #22c55e, #16a34a);
-                    color: white; text-decoration: none; border-radius: 12px;
-                    font-weight: 600; font-size: 14px;
-                ">👑 Admin Login</a>
-                <button onclick="document.getElementById('admin-overlay').remove()" style="
-                    padding: 12px 28px; background: rgba(255,255,255,0.1);
-                    color: white; border: 1px solid rgba(255,255,255,0.2);
-                    border-radius: 12px; font-weight: 600; font-size: 14px;
-                    backdrop-filter: blur(10px); cursor: pointer;
-                ">Schließen</button>
+        <div class="admin-modal">
+            <div class="admin-modal__icon">🔒</div>
+            <h2 class="admin-modal__title">Admin-Rechte erforderlich</h2>
+            <p class="admin-modal__text">${action} ist nur für Administratoren freigeschaltet.</p>
+            <div class="admin-modal__actions">
+                <a href="/api/auth/" class="btn primary">👑 Admin Login</a>
+                <button type="button" class="btn" id="admin-close">Schließen</button>
             </div>
         </div>
     `;
 
     document.body.appendChild(overlay);
+
+    document.getElementById('admin-close')?.addEventListener('click', () => overlay.remove());
 
     const escHandler = (e) => {
         if (e.key === 'Escape') {

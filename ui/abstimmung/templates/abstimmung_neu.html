@@ -4,148 +4,78 @@
     <meta charset="UTF-8">
     <title>Neue Abstimmung anlegen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f3f4f6;
-            padding: 2rem;
-        }
-        .page {
-            max-width: 700px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 2rem 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
-        }
-        h1 {
-            margin-bottom: 0.5rem;
-            font-size: 1.7rem;
-            color: #111827;
-        }
-        p.subtitle {
-            margin-bottom: 1.5rem;
-            color: #6b7280;
-        }
-        .form-grid {
-            display: grid;
-            gap: 1.2rem;
-            margin-top: 1rem;
-        }
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-        }
-        label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #374151;
-        }
-        .hint {
-            font-size: 0.8rem;
-            color: #9ca3af;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        textarea {
-            padding: 0.7rem 0.85rem;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            font: inherit;
-            transition: border-color 0.15s, box-shadow 0.15s, transform 0.05s;
-        }
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
-            transform: translateY(-1px);
-        }
-        .row-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-        }
-        .actions {
-            margin-top: 2rem;
-            display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
-        }
-        .btn {
-            border: none;
-            border-radius: 999px;
-            padding: 0.7rem 1.4rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            color: white;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
-        }
-        .btn-outline {
-            background: transparent;
-            color: #4b5563;
-            border: 1px solid #d1d5db;
-        }
-        .btn-primary:hover { filter: brightness(1.05); }
-        .btn-outline:hover { background: #f3f4f6; }
-    </style>
+
+    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
 </head>
 <body>
-<div class="page">
-    <h1>Neue Abstimmung anlegen</h1>
-    <p class="subtitle">
-        Erfasse die Eckdaten der Abstimmung. Die Felder werden im Backend validiert.
-    </p>
 
-    <form method="post" action="/ui/admin/abstimmungen/neu">
-        <div class="form-grid">
-            <div class="field">
-                <label for="titel">Titel</label>
-                <input type="text" id="titel" name="titel" required>
-                <div class="hint">Mindestens 3 Zeichen</div>
-            </div>
-        </div>
-
-        <div class="field">
-            <label for="beschreibung">Beschreibung</label>
-            <textarea id="beschreibung" name="beschreibung" required></textarea>
-            <div class="hint">Kurz beschreiben, worum es in der Abstimmung geht</div>
-        </div>
-
-        <div class="row-2">
-            <div class="field">
-                <label for="startDatum">Startdatum</label>
-                <input type="date" id="startDatum" name="startDatum" required>
-            </div>
-            <div class="field">
-                <label for="endDatum">Enddatum</label>
-                <input type="date" id="endDatum" name="endDatum" required>
-                <div class="hint">Darf nicht vor dem Startdatum liegen</div>
-            </div>
-        </div>
-
-        <div class="field">
-            <label for="minAlter">Mindestalter der Wähler</label>
-            <input type="number" id="minAlter" name="minAlter" min="0" placeholder="z.B. 18">
-            <div class="hint">Optional: Mindestalter in Jahren (z.B. 16 oder 18)</div>
+<div class="page page--narrow">
+    <header class="topbar">
+        <div class="brand">
+            <h1 class="title">Neue Abstimmung anlegen</h1>
+            <p class="mute">Erfasse die Eckdaten der Abstimmung. Die Felder werden im Backend validiert.</p>
         </div>
 
         <div class="actions">
-            <button type="button" class="btn btn-outline" onclick="history.back()">Abbrechen</button>
-            <button type="submit" class="btn btn-primary">Abstimmung anlegen</button>
+            <a class="btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
+            <a class="btn" href="/startseite">Startseite</a>
         </div>
-    </form>
+    </header>
+
+    <!-- Wir nutzen die Base-Form-Card, damit es im Design bleibt -->
+    <div class="registration-card">
+        <form method="post" action="/ui/admin/abstimmungen/neu" class="registration-form">
+
+            <div>
+                <div class="field-label">
+                    <label for="titel">Titel</label>
+                </div>
+                <input class="input" type="text" id="titel" name="titel" required placeholder="Titel der Abstimmung">
+                <div class="mute" style="margin-top: 6px;">Mindestens 3 Zeichen</div>
+            </div>
+
+            <div>
+                <div class="field-label">
+                    <label for="beschreibung">Beschreibung</label>
+                </div>
+                <textarea class="input" id="beschreibung" name="beschreibung" required placeholder="Kurz beschreiben, worum es in der Abstimmung geht"></textarea>
+                <div class="mute" style="margin-top: 6px;">Kurz beschreiben, worum es in der Abstimmung geht</div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <div class="field-label">
+                        <label for="startDatum">Startdatum</label>
+                    </div>
+                    <input class="input" type="date" id="startDatum" name="startDatum" required>
+                </div>
+
+                <div>
+                    <div class="field-label">
+                        <label for="endDatum">Enddatum</label>
+                    </div>
+                    <input class="input" type="date" id="endDatum" name="endDatum" required>
+                    <div class="mute" style="margin-top: 6px;">Darf nicht vor dem Startdatum liegen</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="field-label">
+                    <label for="minAlter">Mindestalter der Wähler</label>
+                </div>
+                <input class="input" type="number" id="minAlter" name="minAlter" min="0" placeholder="z.B. 18">
+                <div class="mute" style="margin-top: 6px;">Optional: Mindestalter in Jahren (z.B. 16 oder 18)</div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn" onclick="history.back()">Abbrechen</button>
+                <button type="submit" class="btn primary">Abstimmung anlegen</button>
+            </div>
+
+        </form>
+    </div>
 </div>
+
 </body>
 </html>
