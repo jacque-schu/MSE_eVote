@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eVote Hauptseite</title>
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
-
-
 </head>
 <body>
 <div class="app">
@@ -62,8 +60,6 @@
                     </a>
                 </div>
             </section>
-
-
         </div>
 
         <!-- TAB ERSTELLEN (PROMINENT) -->
@@ -76,18 +72,18 @@
                 </div>
                 <h1 class="question">➕ Neue Abstimmung erstellen</h1>
                 <p>Admin-only Funktion. Erstelle schnell eine neue Abstimmung für deine Community.</p>
-              {% if current_user and current_user.role == "admin" %}
-          <a href="/ui/admin/abstimmungen/neu" class="btn" style="margin-top: 24px;">
-              🚀 Abstimmung jetzt erstellen
-          </a>
-        {% else %}
-          <div class="notice danger" style="margin-top: 24px;">
-              <strong>🔒 Nur für Administratoren</strong><br>
-              <small class="mute">Melde dich als Admin an, um Abstimmungen zu erstellen.</small>
-              <br><br>
-              <a href="/api/auth/" class="btn ghost">👑 Admin Login</a>
-          </div>
-        {% endif %}
+                {% if current_user and current_user.role == "admin" %}
+                    <a href="/ui/admin/abstimmungen/neu" class="btn" style="margin-top: 24px;">
+                        🚀 Abstimmung jetzt erstellen
+                    </a>
+                {% else %}
+                    <div class="notice danger" style="margin-top: 24px;">
+                        <strong>🔒 Nur für Administratoren</strong><br>
+                        <small class="mute">Melde dich als Admin an, um Abstimmungen zu erstellen.</small>
+                        <br><br>
+                        <a href="/api/auth/" class="btn ghost">👑 Admin Login</a>
+                    </div>
+                {% endif %}
             </section>
         </div>
 
@@ -108,22 +104,36 @@
         </div>
     </main>
 
-    <!-- Sidebar (GENAU wie vorher) -->
+    <!-- Sidebar (angepasst) -->
     <aside class="side">
         <section class="card profile">
             <span class="badge">Systemstatus</span>
-            <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
+            <h2 style="margin: 6px 0 4px;">Laufende Abstimmungen</h2>
             <p class="mute" style="margin-bottom: 14px;">
-                Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
+                Abstimmungen, die in den nächsten 7 Tagen ablaufen.
             </p>
+
             <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
-                <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
-                <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
+                {% if laufende_7tage and laufende_7tage|length > 0 %}
+                    {% for a in laufende_7tage %}
+                        <li>
+                            • {{ a.titel }} –
+                            <strong>Ablauf:</strong>
+                            {% if a.endDatum %}
+                                {{ a.endDatum.strftime('%d.%m.%Y') }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>• Keine Abstimmungen laufen in den nächsten 7 Tagen ab.</li>
+                {% endif %}
             </ul>
         </section>
     </aside>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 🔐 EINZIGES Event Listener
