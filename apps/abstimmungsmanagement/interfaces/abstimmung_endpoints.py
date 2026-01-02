@@ -71,9 +71,12 @@ async def stimme_abgeben_endpoint(
 
 # Zeigt eine HTML‑Übersicht aller offenen Abstimmungen.
 @router.get("/ui/abstimmungsuebersicht", response_class=HTMLResponse)
-async def abstimmungsuebersicht(request: Request,
-                                service: AbstimmungsUebersichtsService = Depends(get_uebersichts_service)):
-    abstimmungen = service.alle_offenen_abstimmungen()
+async def abstimmungsuebersicht(
+    request: Request,
+    service: AbstimmungsUebersichtsService = Depends(get_uebersichts_service),
+):
+    offene = service.alle_offenen_abstimmungen()
+    geschlossene = service.alle_abgeschlossenen_abstimmungen()
 
     try:
         user = await require_login(request)
@@ -81,31 +84,33 @@ async def abstimmungsuebersicht(request: Request,
     except HTTPException:
         is_admin = False
 
-    # ✅ NEU: Sortierung nach Ablaufdatum (endDatum) -> nächstes Ende zuerst
-    # und Mapping auf startdatum/ablaufdatum für das Template.
     def end_key(a):
         end_dt = getattr(a, "endDatum", None)
         return end_dt if end_dt is not None else date.max
 
-    abstimmungen_sorted = sorted(abstimmungen, key=end_key)  # [web:108]
-
-    abstimmungen_view = []
-    for a in abstimmungen_sorted:
-        abstimmungen_view.append({
-            "abstimmungsID": a.abstimmungsID,
-            "titel": a.titel,
-
-            # Template kann dann nutzen:
-            # {{ a.startdatum.strftime('%d.%m.%Y') }}
-            # {{ a.ablaufdatum.strftime('%d.%m.%Y') }}
-            "startdatum": getattr(a, "startDatum", None),
-            "ablaufdatum": getattr(a, "endDatum", None),
-        })
+    def to_view(items):
+        items_sorted = sorted(items, key=end_key)
+        view = []
+        for a in items_sorted:
+            view.append({
+                "abstimmungsID": a.abstimmungsID,
+                "titel": a.titel,
+                "startdatum": getattr(a, "startDatum", None),
+                "ablaufdatum": getattr(a, "endDatum", None),
+                "status": (a.status.value if getattr(a, "status", None) else "neu"),
+            })
+        return view
 
     return templates_abst.TemplateResponse(
         "abstimmungsuebersicht.html",
-        {"request": request, "abstimmungen": abstimmungen_view, "is_admin": is_admin},
+        {
+            "request": request,
+            "abstimmungen_offen": to_view(offene),
+            "abstimmungen_geschlossen": to_view(geschlossene),
+            "is_admin": is_admin,
+        },
     )
+
 
 # Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
 @router.get("/ui/abstimmung/{abstimmungs_id}", response_class=HTMLResponse)

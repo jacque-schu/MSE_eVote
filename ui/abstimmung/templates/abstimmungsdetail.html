@@ -54,11 +54,13 @@
         <a class="btn" href="/startseite">Startseite</a>
         <a class="btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
 
-        {% if abstimmung.stimmen | length > 0 %}
-            <a class="btn primary" href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
-                Ergebnis anzeigen
-            </a>
+        {% set status_str = abstimmung.status.value if abstimmung.status else '' %}
+        {% if status_str == 'geschlossen' %}
+          <a class="btn primary" href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
+            Ergebnis anzeigen
+          </a>
         {% endif %}
+
     </div>
 </div>
 
