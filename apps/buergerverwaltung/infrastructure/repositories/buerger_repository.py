@@ -59,6 +59,12 @@ class BuergerRepository:
                 indent=4,
             )
 
+    def naechste_buerger_id(self) -> int:
+        alle = self.lade_alle()
+        if not alle:
+            return 0  # oder 1, wenn ihr bei 1 starten wollt
+        return max(b.buergerID for b in alle) + 1
+
     def fuege_hinzu(self, neuer_buerger: Buerger):
         alte_liste = self.lade_alle()
         neue_liste = hinzufuegen(alte_liste, neuer_buerger)
