@@ -24,12 +24,21 @@
             </div>
         </header>
 
-        <!-- Tabs (GENAU wie vorher) -->
-        <div class="tabs">
-            <button class="tab active" data-tab="uebersicht">📋 Übersicht</button>
-            <button class="tab" data-tab="erstellen">➕ Erstellen</button>
-            <button class="tab" data-tab="abstimmungen">📊 Abstimmungen</button>
-        </div>
+        <div class="tabs tabs-bar">
+  <div class="tabs-left">
+    <button class="tab active" data-tab="uebersicht">📋 Übersicht</button>
+    <button class="tab" data-tab="erstellen">➕ Erstellen</button>
+    <button class="tab" data-tab="abstimmungen">📊 Abstimmungen</button>
+  </div>
+
+  <a href="/api/buergerverwaltung/ui/registrierung"
+     class="tab admin-tab"
+     id="admin-register-tab"
+     style="display:none;">
+    🛡️ Bürger registrieren
+  </a>
+</div>
+
 
         <!-- TAB ÜBERSICHT (DEINE KARTEN, nur Options-BTN versteckt) -->
         <div class="tab-content active" data-tab="uebersicht">
@@ -72,7 +81,7 @@
                 </div>
                 <h1 class="question">➕ Neue Abstimmung erstellen</h1>
                 <p>Admin-only Funktion. Erstelle schnell eine neue Abstimmung für deine Community.</p>
-                {% if current_user and current_user.role == "admin" %}
+                {% if current_user and current_user.get("role") == "admin" %}
                     <a href="/ui/admin/abstimmungen/neu" class="btn" style="margin-top: 24px;">
                         🚀 Abstimmung jetzt erstellen
                     </a>
@@ -136,20 +145,20 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 🔐 EINZIGES Event Listener
-    document.querySelectorAll('.tab').forEach(tab => {
+
+    // Tabs: nur für echte TAB-BUTTONS, nicht für den Admin-Link
+    document.querySelectorAll('button.tab').forEach(tab => {
         tab.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             const targetTab = this.dataset.tab;
 
-            switch(targetTab) {
+            switch (targetTab) {
                 case 'uebersicht':
                     return;
 
                 case 'erstellen':
-                    // ✅ GLOBAL verwenden!
                     window.checkAdminAccess('/ui/admin/abstimmungen/neu', 'Abstimmung erstellen');
                     break;
 
@@ -162,23 +171,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 🔐 Auth-Status
     const token = localStorage.getItem('access_token');
-    const role = localStorage.getItem('user_role');
+    const role  = localStorage.getItem('user_role');
 
     if (token && role) {
-        document.getElementById('user-name').textContent = role === 'admin' ? 'Admin' : 'Bürger';
-        document.getElementById('login-link').textContent = 'Abmelden';
-        document.getElementById('login-link').href = '#';
-        document.getElementById('login-link').onclick = function() {
+        document.getElementById('user-name').textContent =
+            (role === 'admin') ? 'Admin' : 'Bürger';
+
+        const loginLink = document.getElementById('login-link');
+        loginLink.textContent = 'Abmelden';
+        loginLink.href = '#';
+        loginLink.onclick = function() {
             localStorage.clear();
             location.reload();
         };
-        if (role === 'admin') {
-            document.getElementById('admin-reg-link').style.display = 'block';
-        }
+    }
+
+    // ✅ OBEN neben "Abstimmungen"
+    const adminTab = document.getElementById('admin-register-tab');
+    if (adminTab) {
+        adminTab.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
+    }
+
+    // Optional: ✅ unten in Optionen (wenn du ihn behalten willst)
+    const adminLink = document.getElementById('admin-reg-link');
+    if (adminLink) {
+        adminLink.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
     }
 });
 
-// 🌐 GLOBALE ADMIN FUNCTIONS (EINMALIG!)
+// 🌐 GLOBALE ADMIN FUNCTIONS
 window.checkAdminAccess = async function(url, action) {
     try {
         const token = localStorage.getItem('access_token');
@@ -244,6 +265,7 @@ window.showAdminPopup = function(action) {
     document.addEventListener('keydown', escHandler);
 };
 </script>
+
 
 </body>
 </html>
