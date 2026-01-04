@@ -4516,5 +4516,23 @@
         "email": "TestBuerger@test.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "$2b$12$8dTPJt7RuL.Wirtuo.3UZeEH0B/y1Bhv0dyrBBQ3Ga7V/qz7/2nNK"
+    },
+    {
+        "buergerID": 0,
+        "name": "nola lona",
+        "adresse": "nolalona str. 5",
+        "geburtsdatum": "1990-01-01",
+        "email": "nola@lona.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$8YjKHTGlIaov9L/PAnOdv.yMRw0Ac/T6/7KQPIUxFTFbyCEZsS91a"
+    },
+    {
+        "buergerID": 500,
+        "name": "ona mona",
+        "adresse": "onamona str.5",
+        "geburtsdatum": "1990-01-01",
+        "email": "ona@mona.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$4y9dx/I.jc3Lhk7Ly/f3QezTAsI1kO4ftc187CTDfCPJM17C640s6"
     }
 ]

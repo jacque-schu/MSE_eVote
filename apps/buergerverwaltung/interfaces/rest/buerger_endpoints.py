@@ -46,8 +46,11 @@ async def registriere_buerger_api(
 
     pw_hash = hash_password(authentifizierungsdaten)
 
+    # ID aus Repository holen
+    neue_id = repo.naechste_buerger_id()
+
     buerger = Buerger(
-        buergerID=0,
+        buergerID=neue_id,
         name=name,
         adresse=adresse,
         geburtsdatum=geburtsdatum,

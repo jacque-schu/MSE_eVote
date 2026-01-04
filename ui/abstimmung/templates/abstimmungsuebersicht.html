@@ -37,6 +37,13 @@
         </div>
     </header>
 
+<!-- OFFENE Abstimmungen -->
+<details class="open-section">
+    <summary class="summary-toggle open-summary">
+    <span class="summary-label">Offene Abstimmungen</span>
+    <span class="summary-pill summary-pill--open">offen</span>
+    </summary>
+
    <div class="topic-list">
   {% if abstimmungen_offen and abstimmungen_offen|length > 0 %}
     {% for a in abstimmungen_offen %}
@@ -64,11 +71,13 @@
     <div class="mute">Aktuell sind keine offenen Abstimmungen vorhanden.</div>
   {% endif %}
 </div>
+</details>
 
 <!-- ✅ unten: aufklappbare abgeschlossene -->
 <details class="closed-section">
-  <summary class="closed-summary">
-    Abgeschlossene Abstimmungen anzeigen ({{ abstimmungen_geschlossen|length }})
+  <summary class="summary-toggle closed-summary">
+    <span class="summary-label">Geschlossene Abstimmungen</span>
+    <span class="summary-pill summary-pill--closed">geschlossen</span>
   </summary>
 
   <div class="topic-list closed-list">
