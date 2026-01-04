@@ -64,4 +64,8 @@ async def registrierung_seite(request: Request):
     templates = Jinja2Templates(directory="ui/buergerverwaltung/templates")
     return templates.TemplateResponse("registrierung.html", {"request": request})
 
+@router.get("/ui/registrierung", response_class=HTMLResponse)
+async def registrierung_ui(request: Request):
+    templates = Jinja2Templates(directory="ui/buergerverwaltung/templates")
+    return templates.TemplateResponse("registrierung.html", {"request": request})
 

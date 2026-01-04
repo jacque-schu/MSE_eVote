@@ -4507,5 +4507,14 @@
         "email": "f.meintzer@test.de",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "$2b$12$E7shBr6QycRJ0QGl4aDxZern6BAnEjIsia6U9kjpN8ZRpMmV4KYXO"
+    },
+    {
+        "buergerID": 0,
+        "name": "TestBuerger TestBuerger",
+        "adresse": "Musterstraße 12",
+        "geburtsdatum": "1990-01-01",
+        "email": "TestBuerger@test.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$8dTPJt7RuL.Wirtuo.3UZeEH0B/y1Bhv0dyrBBQ3Ga7V/qz7/2nNK"
     }
 ]

@@ -96,7 +96,13 @@
     "startDatum": "2025-12-10",
     "endDatum": "2026-01-10",
     "teilnehmerliste": [],
-    "stimmen": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Ja",
+        "zeitpunkt": "2026-01-04"
+      }
+    ],
     "status": "offen",
     "mindestalter": 16
   },
@@ -304,7 +310,13 @@
     "startDatum": "2025-12-14",
     "endDatum": "2026-01-14",
     "teilnehmerliste": [],
-    "stimmen": [],
+    "stimmen": [
+      {
+        "buergerId": 0,
+        "option": "Ja",
+        "zeitpunkt": "2026-01-04"
+      }
+    ],
     "status": "offen",
     "mindestalter": 16
   },
