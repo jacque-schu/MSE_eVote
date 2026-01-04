@@ -20,3 +20,6 @@ __pycache__/
 # .env files
 .env
 *.env
+
+# ignoriere buerger_db.json
+apps/buergerverwaltung/infrastructure/persistence/buerger_db.json
