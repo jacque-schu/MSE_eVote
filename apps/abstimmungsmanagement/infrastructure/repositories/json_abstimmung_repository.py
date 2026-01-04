@@ -36,7 +36,7 @@ class JsonAbstimmungRepository:
     def _save(self):
         self._file_path.parent.mkdir(parents=True, exist_ok=True)
         data = [abstimmung.model_dump(mode='json') for abstimmung in self._store.values()]
-        self._file_path.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        self._file_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding='utf-8')
 
     def get(self, abstimmungs_id: int) -> Abstimmung:
         if abstimmungs_id not in self._store:

@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <title>{{ abstimmung.titel }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
 
+    <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
 </head>
 <body>
-<div class="page">
-    <h1>{{ abstimmung.titel }}</h1>
-    <p class="subtitle">{{ abstimmung.beschreibung }}</p>
+
+<div class="page page--narrow">
+    <header class="topbar">
+        <div class="brand">
+            <h1 class="title">{{ abstimmung.titel }}</h1>
+            <p class="subtitle">{{ abstimmung.beschreibung }}</p>
+        </div>
+    </header>
 
     <div class="meta">
         <span>🗳️ <strong>{{ abstimmung.stimmen | length }}</strong> abgegebene Stimmen</span>
@@ -23,7 +28,6 @@
     {% endif %}
 
     {% if current_user and current_user.role == "buerger" %}
-    <!-- ✅ NUR BÜRGER: Buttons -->
     <form method="post" action="/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
         <div class="buttons">
             <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">Ja</button>
@@ -31,33 +35,34 @@
             <button type="submit" name="wahl" value="ENTHALTUNG" class="vote-btn vote-ent">Enthaltung</button>
         </div>
     </form>
-{% elif current_user %}
-    <!-- ❌ ADMIN: Block + Meldung -->
+
+    {% elif current_user %}
     <div class="error">
         <strong>Admin-Modus</strong><br>
         Nur Bürger dürfen abstimmen!<br>
-        <a href="/api/auth/" class="btn-primary">Als Bürger einloggen</a>
+        <a href="/api/auth/" class="btn btn-soft">Als Bürger einloggen</a>
     </div>
-{% else %}
-    <!-- ❌ GAST: Login -->
-    <div class="error">Bitte einloggen um abzustimmen!<br>
-        <a href="/api/auth/" class="btn-primary login-btn">Jetzt einloggen</a>
-    </div>
-{% endif %}
 
+    {% else %}
+    <div class="error">
+        Bitte einloggen um abzustimmen!<br>
+        <a href="/api/auth/" class="btn btn-soft login-btn">Jetzt einloggen</a>
+    </div>
+    {% endif %}
 
     <div class="footer-actions">
-        <a class="topic-button" href="/startseite">Startseite</a>
-        <a class="topic-button" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
+        <a class="btn" href="/startseite">Startseite</a>
+        <a class="btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
 
-        {% if abstimmung.stimmen | length > 0 %}
-            <a class="topic-button"
-               href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
-                Ergebnis anzeigen
-            </a>
+        {% set status_str = abstimmung.status.value if abstimmung.status else '' %}
+        {% if status_str == 'geschlossen' %}
+          <a class="btn primary" href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
+            Ergebnis anzeigen
+          </a>
         {% endif %}
-    </div>
 
+    </div>
 </div>
+
 </body>
 </html>

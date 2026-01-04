@@ -8,11 +8,8 @@
 </head>
 <body>
 <div class="app">
-    <!-- =======================
-         Linke Spalte (Feed)
-         ======================= -->
     <main class="feed">
-        <!-- Topbar mit dynamischem User-Status -->
+        <!-- Topbar (GENAU wie vorher) -->
         <header class="topbar">
             <div class="brand">
                 <div class="title">eVote</div>
@@ -27,105 +24,226 @@
             </div>
         </header>
 
+        <!-- Tabs (GENAU wie vorher) -->
         <div class="tabs">
-            <div class="tab active">Übersicht</div>
-            <div class="tab">Erstellen</div>
-            <div class="tab">Abstimmungen</div>
+            <button class="tab active" data-tab="uebersicht">📋 Übersicht</button>
+            <button class="tab" data-tab="erstellen">➕ Erstellen</button>
+            <button class="tab" data-tab="abstimmungen">📊 Abstimmungen</button>
         </div>
 
-        <!-- Willkommenskarte mit korrekten Links! -->
-        <section class="card mint is-relative">
-            <div class="meta">
-                <span>Willkommen</span>
-                <span>·</span>
-                <span>eVote System</span>
-            </div>
-            <h1 class="question">Willkommen beim eVote System</h1>
-            <p>
-                Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
-                oder neue Teilnehmende zu registrieren.
-            </p>
+        <!-- TAB ÜBERSICHT (DEINE KARTEN, nur Options-BTN versteckt) -->
+        <div class="tab-content active" data-tab="uebersicht">
+            <section class="card mint is-relative">
+                <div class="meta">
+                    <span>Willkommen</span>
+                    <span>·</span>
+                    <span>eVote System</span>
+                </div>
+                <h1 class="question">Willkommen beim eVote System</h1>
+                <p>
+                    Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
+                    oder neue Teilnehmende zu registrieren.
+                </p>
+                <!-- Options bleiben, aber CSS macht sie unsichtbar -->
+                <div class="options">
+                    <a href="/api/auth/" class="option">
+                        <span>👤 Login</span>
+                        <span class="count">Admin / Bürger</span>
+                    </a>
+                    <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
+                        <span>🛡️ Bürger registrieren</span>
+                        <span class="count">Admin-only</span>
+                    </a>
+                    <a href="/ui/abstimmungsuebersicht" class="option">
+                        <span>📊 Abstimmungen</span>
+                        <span class="count">Laufende Votes</span>
+                    </a>
+                </div>
+            </section>
+        </div>
 
-            <!-- ✅ DDD-KORREKTE NAVIGATION! -->
-            <div class="options" style="margin-top: 16px;">
-                <!-- Immer sichtbar: Login -->
-                <a href="/api/auth/" class="option">
-                    <span>👤 Login</span>
-                    <span class="count">Admin / Bürger</span>
-                </a>
-                
-                <!-- Nur für Admins! -->
-                <a href="/api/buergerverwaltung/registrierung" class="option" id="admin-reg-link" style="display:none;">
-                    <span>🛡️ Bürger registrieren</span>
-                    <span class="count">Admin-only</span>
-                </a>
-                
-                <!-- Abstimmung (zukünftig) -->
-                <a href="/ui/abstimmungsuebersicht" class="option">
-                    <span>📊 Abstimmungen</span>
-                    <span class="count">Laufende Votes</span>
-                </a>
-            </div>
-        </section>
+        <!-- TAB ERSTELLEN (PROMINENT) -->
+        <div class="tab-content" data-tab="erstellen">
+            <section class="card mint">
+                <div class="meta">
+                    <span>Admin-Funktion</span>
+                    <span>·</span>
+                    <span>Erstellen</span>
+                </div>
+                <h1 class="question">➕ Neue Abstimmung erstellen</h1>
+                <p>Admin-only Funktion. Erstelle schnell eine neue Abstimmung für deine Community.</p>
+                {% if current_user and current_user.role == "admin" %}
+                    <a href="/ui/admin/abstimmungen/neu" class="btn" style="margin-top: 24px;">
+                        🚀 Abstimmung jetzt erstellen
+                    </a>
+                {% else %}
+                    <div class="notice danger" style="margin-top: 24px;">
+                        <strong>🔒 Nur für Administratoren</strong><br>
+                        <small class="mute">Melde dich als Admin an, um Abstimmungen zu erstellen.</small>
+                        <br><br>
+                        <a href="/api/auth/" class="btn ghost">👑 Admin Login</a>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
 
-        <!-- Info-Karte -->
-        <section class="card salmon">
-            <div class="meta"><span>Warum eVote?</span></div>
-            <div class="question" style="font-size: 20px;">
-                Digitale Abstimmungen, die sich anfühlen wie eine moderne App
-            </div>
-            <p>
-                eVote kombiniert eine klare Benutzeroberfläche mit sicheren Prozessen.
-                Ob Vereinswahl, Umfrage oder Projektentscheid – Teilnehmende finden
-                sich schnell zurecht und können mit wenigen Klicks abstimmen.
-            </p>
-        </section>
+        <!-- TAB ABSTIMMUNGEN (EINFACH) -->
+        <div class="tab-content" data-tab="abstimmungen">
+            <section class="card mint">
+                <div class="meta">
+                    <span>Öffentlich</span>
+                    <span>·</span>
+                    <span>Abstimmungen</span>
+                </div>
+                <h1 class="question">📊 Aktuelle Abstimmungen</h1>
+                <p>Alle laufenden und abgeschlossenen Abstimmungen an einem Ort.</p>
+                <a href="/ui/abstimmungsuebersicht" class="btn" style="margin-top: 24px;">
+                    👀 Abstimmungen öffnen
+                </a>
+            </section>
+        </div>
     </main>
 
-    <!-- Rechte Spalte -->
+    <!-- Sidebar (angepasst) -->
     <aside class="side">
         <section class="card profile">
             <span class="badge">Systemstatus</span>
-            <h2 style="margin: 6px 0 4px;">Bisherige Abstimmungen</h2>
+            <h2 style="margin: 6px 0 4px;">Laufende Abstimmungen</h2>
             <p class="mute" style="margin-bottom: 14px;">
-                Eine Auswahl der zuletzt abgeschlossenen eVote-Abstimmungen.
+                Abstimmungen, die in den nächsten 7 Tagen ablaufen.
             </p>
+
             <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                <li>• Vorstandswahl Sportverein – <strong>abgeschlossen</strong></li>
-                <li>• Projektpriorisierung IT – <strong>Ergebnis veröffentlicht</strong></li>
-                <li>• Mitarbeiterbefragung 2025 – <strong>Auswertung läuft</strong></li>
+                {% if laufende_7tage and laufende_7tage|length > 0 %}
+                    {% for a in laufende_7tage %}
+                        <li>
+                            • {{ a.titel }} –
+                            <strong>Ablauf:</strong>
+                            {% if a.endDatum %}
+                                {{ a.endDatum.strftime('%d.%m.%Y') }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>• Keine Abstimmungen laufen in den nächsten 7 Tagen ab.</li>
+                {% endif %}
             </ul>
         </section>
     </aside>
 </div>
 
-<!-- ✅ DYNAMISCHE NAVIGATION + AUTH-STATUS! -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 🔐 EINZIGES Event Listener
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const targetTab = this.dataset.tab;
+
+            switch(targetTab) {
+                case 'uebersicht':
+                    return;
+
+                case 'erstellen':
+                    // ✅ GLOBAL verwenden!
+                    window.checkAdminAccess('/ui/admin/abstimmungen/neu', 'Abstimmung erstellen');
+                    break;
+
+                case 'abstimmungen':
+                    window.location.href = '/ui/abstimmungsuebersicht';
+                    break;
+            }
+        });
+    });
+
+    // 🔐 Auth-Status
     const token = localStorage.getItem('access_token');
     const role = localStorage.getItem('user_role');
-    
+
     if (token && role) {
-        // Eingeloggt! User-Status aktualisieren
-        document.getElementById('user-name').textContent = 
-            role === 'admin' ? 'Admin' : 'Bürger';
+        document.getElementById('user-name').textContent = role === 'admin' ? 'Admin' : 'Bürger';
         document.getElementById('login-link').textContent = 'Abmelden';
         document.getElementById('login-link').href = '#';
         document.getElementById('login-link').onclick = function() {
             localStorage.clear();
             location.reload();
         };
-        
-        // Admin-Features freischalten!
         if (role === 'admin') {
             document.getElementById('admin-reg-link').style.display = 'block';
         }
-    } else {
-        // Gast: Nur Login sichtbar
-        document.getElementById('login-link').textContent = 'Anmelden';
-        document.getElementById('login-link').href = '/api/auth/';
     }
 });
+
+// 🌐 GLOBALE ADMIN FUNCTIONS (EINMALIG!)
+window.checkAdminAccess = async function(url, action) {
+    try {
+        const token = localStorage.getItem('access_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            window.showAdminPopup(action);
+            return;
+        }
+        window.location.href = url;
+    } catch (error) {
+        window.showAdminPopup(action);
+    }
+};
+
+window.showAdminPopup = function(action) {
+    const overlay = document.createElement('div');
+    overlay.id = 'admin-overlay';
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+    `;
+
+    overlay.innerHTML = `
+        <div style="
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 40px; max-width: 420px; width: 90%;
+            text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        ">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
+            <h2 style="color: white; font-size: 24px; margin: 0 0 12px 0; font-weight: 700;">
+                Admin-Rechte erforderlich
+            </h2>
+            <p style="color: #94a3b8; font-size: 16px; margin: 0 0 24px 0; line-height: 1.6;">
+                ${action} ist nur für Administratoren freigeschaltet.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <a href="/api/auth/" style="
+                    padding: 12px 28px; background: linear-gradient(135deg, #22c55e, #16a34a);
+                    color: white; text-decoration: none; border-radius: 12px;
+                    font-weight: 600; font-size: 14px;
+                ">👑 Admin Login</a>
+                <button onclick="document.getElementById('admin-overlay').remove()" style="
+                    padding: 12px 28px; background: rgba(255,255,255,0.1);
+                    color: white; border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 12px; font-weight: 600; font-size: 14px;
+                    backdrop-filter: blur(10px); cursor: pointer;
+                ">Schließen</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+};
 </script>
+
 </body>
 </html>

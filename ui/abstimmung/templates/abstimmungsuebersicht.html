@@ -4,39 +4,166 @@
     <meta charset="UTF-8">
     <title>Abstimmungsübersicht</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
+
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
+
+    <!-- Optional: falls .topic-dates noch nicht in abstimmung.css existiert -->
+    <style>
+        .topic-dates{
+            margin-top: 6px;
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+    </style>
 </head>
 <body>
+
 <div class="page">
-    <header>
-        <div>
-            <h1>Abstimmungsübersicht</h1>
-            <p class="subtitle">
-                Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.
-            </p>
+    <header class="topbar">
+        <div class="brand">
+            <h1 class="title">🗳️ Abstimmungsübersicht</h1>
+            <p class="mute">Hier sehen Sie eine Übersicht über aktuelle Abstimmungsthemen.</p>
         </div>
+
         <div class="actions">
             <a class="btn" href="/startseite">Startseite</a>
-            {% if is_admin %}
-                <a class="btn primary" href="/ui/admin/abstimmungen/neu">Abstimmung erstellen</a>
-            {% endif %}
+
+            <a class="btn primary"
+               id="btn-create-vote"
+               href="/ui/admin/abstimmungen/neu">
+                Abstimmung erstellen
+            </a>
         </div>
     </header>
 
+   <div class="topic-list">
+  {% if abstimmungen_offen and abstimmungen_offen|length > 0 %}
+    {% for a in abstimmungen_offen %}
+      <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
+        {% set raw_status = (a.status or 'neu')|lower %}
+        <span class="status-badge status-{{ raw_status }}">
+          {% if raw_status == 'offen' %}Offen
+          {% elif raw_status == 'geschlossen' %}Geschlossen
+          {% else %}{{ raw_status|capitalize }}
+          {% endif %}
+        </span>
 
-    <div class="topic-list">
-        {% for a in abstimmungen %}
-            <a class="topic-button"
-               href="/ui/abstimmung/{{ a.abstimmungsID }}">
-                <div>
-                    <span class="label">Thema {{ loop.index }}:</span>
-                    {{ a.titel }}
-                </div>
+        <span class="label">Thema {{ loop.index }}:</span>
+        <div class="topic-title">{{ a.titel }}</div>
 
-            </a>
-        {% endfor %}
-    </div>
+        <div class="topic-dates">
+          Start:
+          {% if a.startdatum %}{{ a.startdatum.strftime('%d.%m.%Y') }}{% else %}-{% endif %}
+          · Ablauf:
+          {% if a.ablaufdatum %}{{ a.ablaufdatum.strftime('%d.%m.%Y') }}{% else %}-{% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  {% else %}
+    <div class="mute">Aktuell sind keine offenen Abstimmungen vorhanden.</div>
+  {% endif %}
 </div>
+
+<!-- ✅ unten: aufklappbare abgeschlossene -->
+<details class="closed-section">
+  <summary class="closed-summary">
+    Abgeschlossene Abstimmungen anzeigen ({{ abstimmungen_geschlossen|length }})
+  </summary>
+
+  <div class="topic-list closed-list">
+    {% if abstimmungen_geschlossen and abstimmungen_geschlossen|length > 0 %}
+      {% for a in abstimmungen_geschlossen %}
+        <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
+          {% set raw_status = (a.status or 'geschlossen')|lower %}
+          <span class="status-badge status-{{ raw_status }}">
+            {% if raw_status == 'offen' %}Offen
+            {% elif raw_status == 'geschlossen' %}Geschlossen
+            {% else %}{{ raw_status|capitalize }}
+            {% endif %}
+          </span>
+
+          <span class="label">Abgeschlossen {{ loop.index }}:</span>
+          <div class="topic-title">{{ a.titel }}</div>
+
+          <div class="topic-dates">
+            Start:
+            {% if a.startdatum %}{{ a.startdatum.strftime('%d.%m.%Y') }}{% else %}-{% endif %}
+            · Ablauf:
+            {% if a.ablaufdatum %}{{ a.ablaufdatum.strftime('%d.%m.%Y') }}{% else %}-{% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    {% else %}
+      <div class="mute">Keine abgeschlossenen Abstimmungen vorhanden.</div>
+    {% endif %}
+  </div>
+</details>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('btn-create-vote');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.checkAdminAccess(btn.getAttribute('href'), 'Abstimmung erstellen');
+        });
+    }
+});
+
+window.checkAdminAccess = async function(url, action) {
+    try {
+        const token = localStorage.getItem('access_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            window.showAdminPopup(action);
+            return;
+        }
+        window.location.href = url;
+    } catch (error) {
+        window.showAdminPopup(action);
+    }
+};
+
+window.showAdminPopup = function(action) {
+    if (document.getElementById('admin-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'admin-overlay';
+    overlay.className = 'admin-overlay';
+
+    overlay.innerHTML = `
+        <div class="admin-modal">
+            <div class="admin-modal__icon">🔒</div>
+            <h2 class="admin-modal__title">Admin-Rechte erforderlich</h2>
+            <p class="admin-modal__text">${action} ist nur für Administratoren freigeschaltet.</p>
+            <div class="admin-modal__actions">
+                <a href="/api/auth/" class="btn primary">👑 Admin Login</a>
+                <button type="button" class="btn" id="admin-close">Schließen</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById('admin-close')?.addEventListener('click', () => overlay.remove());
+
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+    });
+};
+</script>
+
 </body>
 </html>

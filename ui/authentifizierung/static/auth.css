@@ -68,7 +68,7 @@
         }
 
         .tab-login.active-login {
-            background: linear-gradient(135deg, #5EEAD4 0%, #5EEAD8 100%);
+            background: #00d084;
             color: black;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
