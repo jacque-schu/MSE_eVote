@@ -27,7 +27,7 @@
       <div class="error">{{ fehlermeldung }}</div>
     {% endif %}
 
-    {% if current_user and current_user.role == "buerger" %}
+    {% if current_user and current_user.role == "buerger" and abstimmung.status.value == "offen" %}
     <form method="post" action="/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
         <div class="buttons">
             <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">Ja</button>
@@ -36,11 +36,16 @@
         </div>
     </form>
 
-    {% elif current_user %}
+    {% elif current_user  and abstimmung.status.value == "offen" %}
     <div class="error">
         <strong>Admin-Modus</strong><br>
         Nur Bürger dürfen abstimmen!<br>
         <a href="/api/auth/" class="btn btn-soft">Als Bürger einloggen</a>
+    </div>
+
+        {% elif abstimmung.status.value == "geschlossen" %}
+    <div class="error">
+        <strong>Abstimmung beendet</strong>
     </div>
 
     {% else %}
