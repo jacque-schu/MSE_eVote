@@ -23,8 +23,28 @@
         </div>
     </header>
 
+
+
     <!-- Wir nutzen die Base-Form-Card, damit es im Design bleibt -->
     <div class="registration-card">
+
+
+        {% if error %}
+  <div class="form-alert form-alert--error">
+    <div class="form-alert__title">Bitte prüfen</div>
+    <div class="form-alert__text">{{ error }}</div>
+
+    {% if details %}
+      <ul class="form-alert__list">
+        {% for d in details %}
+          <li>
+            <strong>{{ d.loc[-1] }}</strong>: {{ d.msg }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}
         <form method="post" action="/ui/admin/abstimmungen/neu" class="registration-form">
 
             <div>

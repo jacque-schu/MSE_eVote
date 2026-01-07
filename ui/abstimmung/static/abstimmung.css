@@ -563,6 +563,44 @@ details[open] > .summary-toggle:after{
   margin-top: 12px;
 }
 
+/* Alert BOX */
+.form-alert{
+  margin: 14px 0 18px 0;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(14px);
+}
+
+.form-alert--error{
+  border-color: rgba(239,68,68,0.35);
+  background: rgba(239,68,68,0.12);
+  color: #fecaca;
+}
+
+.form-alert__title{
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.form-alert__text{
+  color: #fca5a5;
+  margin-bottom: 8px;
+}
+
+.form-alert__list{
+  margin: 0;
+  padding-left: 18px;
+  color: #fecaca;
+}
+
+.form-alert__list li{
+  margin: 4px 0;
+}
+
+
 /* ------------------------
    Responsive
    ------------------------ */
