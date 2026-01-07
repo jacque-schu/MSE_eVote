@@ -44,7 +44,11 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-*(Passe die Befehle an eure tatsächliche Struktur an, z.B. Ordnername oder Tooling.)*
+## App starten
+```bash
+# Terminal (PyCharm) in `main`
+uvicorn main:app --reload
+```
 
 ## Entwicklung & Tests
 
@@ -53,7 +57,7 @@ pip install -r requirements.txt
 pytest
 
 # Optional: Coverage
-pytest --cov=evote
+pytest --cov=apps --cov-report xml:coverage.xml
 ```
 
 Die CI‑Pipeline führt bei jedem Push oder Pull Request auf `main` automatisch Linting, Tests und SonarCloud‑Scan aus.
