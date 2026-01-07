@@ -128,25 +128,4 @@ Methoden: getGesamtergebnis(), getErgebnisDetails()
 
 
 
-# Übung 5: Software- und Architekturmetriken für Codequalität und Architekturoptimierung
 
-### Allgemein: GitHub-Projekt in SonarCloud integrieren
-**Schritte zur erfolgreichen Integration**
-- Projekt auf SonarCloud anlegen und mit dem GitHub Repo verbinden
-- Dies ermöglicht, dass alle Commits und Pull Requests automatisch analysiert werden.
-- Erstellung der Datei sonar-project.properties im Repository-Root: Hier werden Projektschlüssel,
-Organisation, Source-/Test-Pfade und weitere Einstellungen zentral hinterlegt
-
-**Konfiguration der GitHub Actions Pipeline**
-- Coverage-Bericht (coverage.xml) wird nach Testausführung erzeugt (z.B. mit pytest-cov)
-- SonarCloud-Scan wird anschließend als eigener Schritt gestartet
-
-**SonarCloud-Token generieren und als Secret in GitHub speichern**
-- Ein persönlicher Token von SonarCloud wird als Secret SONAR_TOKEN im GitHub-Repository hinterlegt,
-damit die Analyse authentisiert abläuft.
-
-**Vorteile dieser Maßnahme**
-- Transparenz: Codequalität, Testabdeckung und Schwachstellen werden kontinuierlich sichtbar und nachvollziehbar.
-- Schnelles Feedback: Fehler und Verbesserungen werden früh erkannt und können gezielt angegangen werden.
-- Automatisierung: Die Pipeline prüft automatisch bei jedem Push, so dass manuelle CodeReviews effizienter werden.
-- Teamorientierung: Alle Teammitglieder profitieren von konsistenten Qualitätsstandards und automatischem PR-Feedback.
