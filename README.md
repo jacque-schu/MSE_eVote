@@ -8,7 +8,7 @@ eVote ist eine **digitale Bürgerabstimmungsplattform** für Online‑Bürgerbef
 - Übersicht über laufende und vergangene Abstimmungen  
 - Sicherer Abstimmungsmechanismus („eine Person, eine Stimme“)  
 - Ergebnisübersicht mit detaillierten Resultaten  
-- Hoher Fokus auf Datenintegrität und Abstimmungssicherheit[1]
+- Hoher Fokus auf Datenintegrität und Abstimmungssicherheit
 
 ## Tech Stack
 
@@ -22,7 +22,7 @@ eVote ist eine **digitale Bürgerabstimmungsplattform** für Online‑Bürgerbef
 
 - Domain‑Driven Design mit zwei Bounded Contexts:  
   - Bürgerverwaltung (Registrierung, Validierung von Bürgerdaten)  
-  - Abstimmungsmanagement (Abstimmung, Ergebnis, Stimmenzählung)[1]
+  - Abstimmungsmanagement (Abstimmung, Ergebnis, Stimmenzählung)
 - Fachlogik über Aggregate (Bürger, Abstimmung, Ergebnis) und Policies wie „Nur wahlberechtigte Bürger“.
 
 ## Qualitätssicherung
