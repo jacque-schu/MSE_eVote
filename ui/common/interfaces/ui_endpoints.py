@@ -31,7 +31,7 @@ async def startseite(
     grenze = heute + timedelta(days=7)
 
     laufende_7tage = [
-        {"titel": a.titel, "endDatum": a.endDatum}
+        {"abstimmungsID": a.abstimmungsID,"titel": a.titel, "endDatum": a.endDatum}
         for a in offene
         if getattr(a, "endDatum", None) is not None and heute <= a.endDatum <= grenze
     ]

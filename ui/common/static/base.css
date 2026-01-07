@@ -534,6 +534,56 @@ a.card {
   gap: 10px;
   margin-top: 14px;
 }
+/* Sidebar-Liste: sauber */
+.side ul { margin: 0; padding: 0; }
+.side li { margin: 0; padding: 0; }
+
+/* Sidebar-Liste: stabil (Flex statt Grid) */
+.sidebar-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.sidebar-list li{
+  width: 100%;
+}
+
+/* Link als feste Zeile – kein Springen */
+.sidebar-vote-link{
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  text-decoration: none;
+  color: inherit;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+
+  /* wichtig: nie verschieben/keine globale Effekte */
+  transform: none;
+  box-shadow: none;
+  outline: none;
+
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-vote-link:hover{
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.12);
+
+  transform: none !important;
+  box-shadow: none !important;
+}
 
 /* ========================================================================
    Tab-spezifische Regeln (wie gehabt)
