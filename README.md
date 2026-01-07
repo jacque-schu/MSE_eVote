@@ -35,12 +35,10 @@ eVote ist eine **digitale Bürgerabstimmungsplattform** für Online‑Bürgerbef
 
 ```bash
 # Repository klonen
-git clone <REPO_URL>
-cd <REPO_ORDNER>
+https://github.com/jacque-schu/MSE_eVote.wiki.git
 
 # Virtuelle Umgebung anlegen (optional, Beispiel für venv)
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
 # Abhängigkeiten installieren
 pip install -r requirements.txt
