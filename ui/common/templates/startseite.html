@@ -122,23 +122,22 @@
                 Abstimmungen, die in den nächsten 7 Tagen ablaufen.
             </p>
 
-            <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px; font-size:14px;">
-                {% if laufende_7tage and laufende_7tage|length > 0 %}
-                    {% for a in laufende_7tage %}
-                        <li>
-                            • {{ a.titel }} –
-                            <strong>Ablauf:</strong>
-                            {% if a.endDatum %}
-                                {{ a.endDatum.strftime('%d.%m.%Y') }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                {% else %}
-                    <li>• Keine Abstimmungen laufen in den nächsten 7 Tagen ab.</li>
-                {% endif %}
-            </ul>
+           <ul class="sidebar-list" >
+  {% if laufende_7tage and laufende_7tage|length > 0 %}
+     {% for a in laufende_7tage %}
+      <li>
+        <a class="sidebar-vote-link" href="/ui/abstimmung/{{ a.abstimmungsID }}">
+          {{ a.titel }} – <strong>Ablauf:</strong>
+          {{ a.endDatum.strftime('%d.%m.%Y') }}
+        </a>
+      </li>
+    {% endfor %}
+
+  {% else %}
+    <li>• Keine Abstimmungen laufen in den nächsten 7 Tagen ab.</li>
+  {% endif %}
+</ul>
+
         </section>
     </aside>
 </div>
