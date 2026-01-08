@@ -4534,5 +4534,50 @@
         "email": "ona@mona.com",
         "registrierungsstatus": "neu",
         "authentifizierungsdaten": "$2b$12$4y9dx/I.jc3Lhk7Ly/f3QezTAsI1kO4ftc187CTDfCPJM17C640s6"
+    },
+    {
+        "buergerID": 501,
+        "name": "Max Mustermann",
+        "adresse": "Musterstraße 1",
+        "geburtsdatum": "1990-01-01",
+        "email": "max@example.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$Fa6o4cG/G491sfW8rb1yaO8EfqLoF.5vJyGL7aXuFVMv.DYN6IHrW"
+    },
+    {
+        "buergerID": 502,
+        "name": "efcewc ewcewc",
+        "adresse": "wedd 34",
+        "geburtsdatum": "1990-01-01",
+        "email": "hs-fritz@web.com",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$zFPWUyt3pY9ySRPUY6Mk5OAqdf1tyuhiKFjIR/bE135FxlTVLcHye"
+    },
+    {
+        "buergerID": 503,
+        "name": "hedod ednled",
+        "adresse": "dx3d4 34",
+        "geburtsdatum": "1990-01-01",
+        "email": "hs-fritz@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$oChRAwKr2xmNc/jrD.g/euNzGg4X9C/X1.tamiU9Bf.0LmHQDjTgq"
+    },
+    {
+        "buergerID": 504,
+        "name": "efrerf ewferf",
+        "adresse": "erfefr 33",
+        "geburtsdatum": "1990-01-01",
+        "email": "web@web.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$OpmrKB7p5Dn3SEaKpcsk3ebWrCUvdK.aPAqByi2tg1a5z9QH3wbsG"
+    },
+    {
+        "buergerID": 505,
+        "name": "wed wdwedw",
+        "adresse": "wdwedwed 444",
+        "geburtsdatum": "1990-01-01",
+        "email": "edwe@wdwed.de",
+        "registrierungsstatus": "neu",
+        "authentifizierungsdaten": "$2b$12$BEeIPkYtw21j30Ak395T/urfBu37aYs4glD0pwLcAG8bnrIgvxNhe"
     }
 ]

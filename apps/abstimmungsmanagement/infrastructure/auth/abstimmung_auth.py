@@ -1,16 +1,51 @@
-from fastapi import Depends, HTTPException, Request
+from fastapi import Request, HTTPException, status
 import jwt
-from apps.shared.aspects.auth_aspect import is_token_valid, SECRET_KEY, ALGORITHM
 
-#Diese Datei ist dein zentraler Auth-Schutz für ALLE Endpunkte
+# -----------------------------
+# Zentrale Auth-Logik für Abstimmungen
+# -----------------------------
 
+SECRET_KEY = "your-super-secret-key-must-change"
+ALGORITHM = "HS256"
+
+# ---------------------------------
+# Hilfsfunktion: Token dekodieren
+# ---------------------------------
+def decode_token(token: str) -> dict:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        if payload.get("role") not in ["buerger", "admin"]:
+            raise HTTPException(status.HTTP_403_FORBIDDEN, detail="Falsche Rolle")
+        return payload
+    except jwt.PyJWTError:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Ungültiges Token")
+
+
+# ---------------------------------
+# Für zwingend eingeloggte Endpunkte
+# ---------------------------------
 async def require_login(request: Request):
-    token = request.cookies.get('auth_token')
-    if not token or not is_token_valid(token):
-        raise HTTPException(status_code=401, detail="Login fehlt")
+    """
+    Prüft, ob ein gültiges Token vorhanden ist.
+    Wirft HTTPException 401, wenn nicht.
+    """
+    token = request.cookies.get("auth_token")
+    if not token:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Nicht eingeloggt")
+    return decode_token(token)
 
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    user_id = payload["sub"]
-    role = "admin" if user_id == "admin" or user_id.startswith("admin_") else "buerger"
 
-    return {"user_id": user_id, "role": role}
+# ---------------------------------
+# Optionaler Login für Templates
+# ---------------------------------
+async def require_login_optional(request: Request):
+    """
+    Prüft optional Cookie. Rückgabe payload dict oder None.
+    """
+    token = request.cookies.get("auth_token")
+    if not token:
+        return None
+    try:
+        return decode_token(token)
+    except HTTPException:
+        return None

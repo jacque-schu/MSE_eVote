@@ -1,0 +1,13 @@
+from abc import ABC, abstractmethod
+from typing import List, Optional
+from ..models.buerger import Buerger
+
+class IBuergerRepository(ABC):
+    @abstractmethod
+    def lade_alle(self) -> List[Buerger]: ...
+    @abstractmethod
+    def finde_nach_email(self, email: str) -> Optional[Buerger]: ...
+    @abstractmethod
+    def naechste_buerger_id(self) -> int: ...
+    @abstractmethod
+    def fuege_hinzu(self, buerger: Buerger) -> None: ...

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import date, timedelta
 from pathlib import Path
 from fastapi import APIRouter, Request, Depends
@@ -8,23 +9,28 @@ from apps.abstimmungsmanagement.application.services.abstimmungsuebersichts_serv
 from apps.abstimmungsmanagement.infrastructure.container.container import get_uebersichts_service
 from apps.abstimmungsmanagement.infrastructure.auth.abstimmung_auth import require_login
 
+# Domain/Infra für Services
+from apps.buergerverwaltung.domain.repositories.i_buerger_repository import IBuergerRepository
+# ✅ KRITISCH: Für AbstimmungsUebersichtsService & Dependencies
+from apps.abstimmungsmanagement.application.services.abstimmungsuebersichts_service import AbstimmungsUebersichtsService
+# ✅ Domain Interfaces (für Type-Hints/Services)
+from apps.buergerverwaltung.domain.repositories.i_buerger_repository import IBuergerRepository  # Falls Auth benötigt
+from apps.abstimmungsmanagement.infrastructure.auth.abstimmung_auth import require_login_optional
+
+
 router = APIRouter(tags=["ui"])
 
-BASE_DIR = Path(__file__).resolve().parents[3]  # ggf. anpassen
-templates = Jinja2Templates(directory=BASE_DIR / "ui" / "common" / "templates")
+BASE_DIR = Path(__file__).resolve().parents[3]  # MSE_eVote Root
+templates = Jinja2Templates(directory=BASE_DIR / "ui" / "common" / "templates")  # ui/common/templates/
+
 
 @router.get("/", response_class=HTMLResponse)
 @router.get("/startseite", response_class=HTMLResponse)
 async def startseite(
     request: Request,
     uebersicht: AbstimmungsUebersichtsService = Depends(get_uebersichts_service),
+    current_user=Depends(require_login_optional),
 ):
-    current_user = None
-    try:
-        current_user = await require_login(request)
-    except Exception:
-        pass
-
     offene = uebersicht.alle_offenen_abstimmungen()
 
     heute = date.today()
@@ -38,7 +44,10 @@ async def startseite(
     laufende_7tage.sort(key=lambda x: x["endDatum"])
 
     return templates.TemplateResponse(
-        name="startseite.html",
-        request=request,
-        context={"request": request, "current_user": current_user, "laufende_7tage": laufende_7tage},
+        "startseite.html",
+        {
+            "request": request,
+            "current_user": current_user,
+            "laufende_7tage": laufende_7tage,
+        },
     )

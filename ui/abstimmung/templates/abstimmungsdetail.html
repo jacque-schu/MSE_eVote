@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>{{ abstimmung.titel }}</title>
+    <title>{{ abstimmung.titel if abstimmung else 'Abstimmungsdetail' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
@@ -13,22 +13,24 @@
 <div class="page page--narrow">
     <header class="topbar">
         <div class="brand">
-            <h1 class="title">{{ abstimmung.titel }}</h1>
-            <p class="subtitle">{{ abstimmung.beschreibung }}</p>
+            <h1 class="title">{{ abstimmung.titel if abstimmung else '-' }}</h1>
+            <p class="subtitle">{{ abstimmung.beschreibung if abstimmung and abstimmung.beschreibung else '-' }}</p>
         </div>
     </header>
 
     <div class="meta">
-        <span>🗳️ <strong>{{ abstimmung.stimmen | length }}</strong> abgegebene Stimmen</span>
-        <span>📅 Von {{ abstimmung.startDatum }} bis {{ abstimmung.endDatum }}</span>
+        <span>🗳️ <strong>{{ abstimmung.stimmen | length if abstimmung and abstimmung.stimmen else 0 }}</strong> abgegebene Stimmen</span>
+        <span>📅 Von {{ abstimmung.startDatum.strftime('%d.%m.%Y') if abstimmung and abstimmung.startDatum else '-' }} bis {{ abstimmung.endDatum.strftime('%d.%m.%Y') if abstimmung and abstimmung.endDatum else '-' }}</span>
     </div>
+
+    {% set status = abstimmung.status.value if abstimmung and abstimmung.status is not none else 'neu' %}
 
     {% if fehlermeldung %}
       <div class="error">{{ fehlermeldung }}</div>
     {% endif %}
 
-    {% if current_user and current_user.role == "buerger" %}
-    <form method="post" action="/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
+    {% if current_user and current_user.role == "buerger" and status == "offen" %}
+    <form method="post" action="/ui/abstimmungen/{{ abstimmung.abstimmungsID }}/stimme">
         <div class="buttons">
             <button type="submit" name="wahl" value="JA" class="vote-btn vote-ja">Ja</button>
             <button type="submit" name="wahl" value="NEIN" class="vote-btn vote-nein">Nein</button>
@@ -36,11 +38,16 @@
         </div>
     </form>
 
-    {% elif current_user %}
+    {% elif current_user and current_user.role != "buerger" and status == "offen" %}
     <div class="error">
         <strong>Admin-Modus</strong><br>
         Nur Bürger dürfen abstimmen!<br>
         <a href="/api/auth/" class="btn btn-soft">Als Bürger einloggen</a>
+    </div>
+
+    {% elif status == "geschlossen" %}
+    <div class="error">
+        <strong>Abstimmung beendet</strong>
     </div>
 
     {% else %}
@@ -54,13 +61,11 @@
         <a class="btn" href="/startseite">Startseite</a>
         <a class="btn" href="/ui/abstimmungsuebersicht">Abstimmungsübersicht</a>
 
-        {% set status_str = abstimmung.status.value if abstimmung.status else '' %}
-        {% if status_str == 'geschlossen' %}
+        {% if status == 'geschlossen' %}
           <a class="btn primary" href="/ui/abstimmung/{{ abstimmung.abstimmungsID }}/ergebnis">
             Ergebnis anzeigen
           </a>
         {% endif %}
-
     </div>
 </div>
 

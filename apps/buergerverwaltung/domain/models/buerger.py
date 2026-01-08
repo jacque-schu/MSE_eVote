@@ -72,3 +72,11 @@ class Buerger(BaseModel):
         if not email or email.strip() == '':
             raise ValueError("E-Mail-Adresse ist erforderlich.")
         return email
+    
+    @classmethod
+    def erstelle_neu(cls, vorname: str, nachname: str, email: str, passwort: str):
+    # Vollname = f"{vorname} {nachname}"
+    # hashed_pw = hash_passwort(passwort)
+    # id = repo.naechste_id()  # Repo via DI im Service
+        return cls(id=0, vollname=..., email=email, hashed_passwort=hashed_pw)  # ID später
+

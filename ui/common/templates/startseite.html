@@ -31,7 +31,7 @@
     <button class="tab" data-tab="abstimmungen">📊 Abstimmungen</button>
   </div>
 
-  <a href="/api/buergerverwaltung/ui/registrierung"
+  <a href="/api/buergerverwaltung/registrierung"
      class="tab admin-tab"
      id="admin-register-tab"
      style="display:none;">
@@ -63,7 +63,7 @@
                         <span>🛡️ Bürger registrieren</span>
                         <span class="count">Admin-only</span>
                     </a>
-                    <a href="/ui/abstimmungsuebersicht" class="option">
+                    <a href="/ui/abstimmungen/abstimmungen" class="option">
                         <span>📊 Abstimmungen</span>
                         <span class="count">Laufende Votes</span>
                     </a>
@@ -146,12 +146,46 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Tabs: nur für echte TAB-BUTTONS, nicht für den Admin-Link
+    // --- Auth: aus Cookie lesen ---
+    function getAuthToken() {
+        const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+        return match ? match[2] : null;
+    }
+
+    const token = getAuthToken();
+    const role = localStorage.getItem('user_role');
+
+    // --- User-Pill updaten ---
+    const userNameEl = document.getElementById('user-name');
+    const loginLink = document.getElementById('login-link');
+
+    if (token && role) {
+        userNameEl.textContent = (role === 'admin') ? 'Admin' : 'Bürger';
+        loginLink.textContent = 'Abmelden';
+        loginLink.href = '#';
+        loginLink.onclick = function() {
+            localStorage.clear();
+            document.cookie = "auth_token=; path=/; max-age=0"; // Cookie löschen
+            location.reload();
+        };
+    }
+
+    // --- Admin-Register Tab ---
+    const adminTab = document.getElementById('admin-register-tab');
+    if (adminTab) {
+        adminTab.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
+    }
+
+    const adminLink = document.getElementById('admin-reg-link');
+    if (adminLink) {
+        adminLink.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
+    }
+
+    // --- TAB Buttons ---
     document.querySelectorAll('button.tab').forEach(tab => {
         tab.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-
             const targetTab = this.dataset.tab;
 
             switch (targetTab) {
@@ -163,108 +197,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
 
                 case 'abstimmungen':
+                    // Bürger-Login prüfen
+                    if (!token) {
+                        showLoginOverlay();
+                        return;
+                    }
                     window.location.href = '/ui/abstimmungsuebersicht';
                     break;
             }
         });
     });
 
-    // 🔐 Auth-Status
-    const token = localStorage.getItem('access_token');
-    const role  = localStorage.getItem('user_role');
+    // --- Login Overlay ---
+    function showLoginOverlay() {
+        if (document.getElementById('login-overlay')) return;
 
-    if (token && role) {
-        document.getElementById('user-name').textContent =
-            (role === 'admin') ? 'Admin' : 'Bürger';
+        const overlay = document.createElement('div');
+        overlay.id = 'login-overlay';
+        overlay.className = 'login-overlay';
+        overlay.style.cssText = `
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.6); display:flex;
+            align-items:center; justify-content:center; z-index:1000;
+        `;
+        overlay.innerHTML = `
+            <div class="login-modal">
+                <h2>Login erforderlich</h2>
+                <p>Bitte loggen Sie sich ein, um Abstimmungen zu sehen oder abzustimmen.</p>
+                <a href="/api/auth/" class="btn primary">Jetzt einloggen</a>
+                <button type="button" class="btn" id="login-overlay-close">Schließen</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
 
-        const loginLink = document.getElementById('login-link');
-        loginLink.textContent = 'Abmelden';
-        loginLink.href = '#';
-        loginLink.onclick = function() {
-            localStorage.clear();
-            location.reload();
-        };
-    }
-
-    // ✅ OBEN neben "Abstimmungen"
-    const adminTab = document.getElementById('admin-register-tab');
-    if (adminTab) {
-        adminTab.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
-    }
-
-    // Optional: ✅ unten in Optionen (wenn du ihn behalten willst)
-    const adminLink = document.getElementById('admin-reg-link');
-    if (adminLink) {
-        adminLink.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
+        document.getElementById('login-overlay-close').addEventListener('click', () => overlay.remove());
+        overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.remove(); });
+        document.addEventListener('keydown', (e) => { if(e.key==='Escape') overlay.remove(); });
     }
 });
-
-// 🌐 GLOBALE ADMIN FUNCTIONS
-window.checkAdminAccess = async function(url, action) {
-    try {
-        const token = localStorage.getItem('access_token');
-        const role = localStorage.getItem('user_role');
-
-        if (!token || role !== 'admin') {
-            window.showAdminPopup(action);
-            return;
-        }
-        window.location.href = url;
-    } catch (error) {
-        window.showAdminPopup(action);
-    }
-};
-
-window.showAdminPopup = function(action) {
-    const overlay = document.createElement('div');
-    overlay.id = 'admin-overlay';
-    overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-    `;
-
-    overlay.innerHTML = `
-        <div style="
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 24px; padding: 40px; max-width: 420px; width: 90%;
-            text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-        ">
-            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
-            <h2 style="color: white; font-size: 24px; margin: 0 0 12px 0; font-weight: 700;">
-                Admin-Rechte erforderlich
-            </h2>
-            <p style="color: #94a3b8; font-size: 16px; margin: 0 0 24px 0; line-height: 1.6;">
-                ${action} ist nur für Administratoren freigeschaltet.
-            </p>
-            <div style="display: flex; gap: 12px; justify-content: center;">
-                <a href="/api/auth/" style="
-                    padding: 12px 28px; background: linear-gradient(135deg, #22c55e, #16a34a);
-                    color: white; text-decoration: none; border-radius: 12px;
-                    font-weight: 600; font-size: 14px;
-                ">👑 Admin Login</a>
-                <button onclick="document.getElementById('admin-overlay').remove()" style="
-                    padding: 12px 28px; background: rgba(255,255,255,0.1);
-                    color: white; border: 1px solid rgba(255,255,255,0.2);
-                    border-radius: 12px; font-weight: 600; font-size: 14px;
-                    backdrop-filter: blur(10px); cursor: pointer;
-                ">Schließen</button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    const escHandler = (e) => {
-        if (e.key === 'Escape') {
-            overlay.remove();
-            document.removeEventListener('keydown', escHandler);
-        }
-    };
-    document.addEventListener('keydown', escHandler);
-};
 </script>
+
 
 
 </body>

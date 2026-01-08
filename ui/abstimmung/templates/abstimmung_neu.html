@@ -7,6 +7,47 @@
 
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
+
+    <style>
+        /* Overlay Styles */
+        .admin-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .admin-modal {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .admin-modal__icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .admin-modal__title {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .admin-modal__text {
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .admin-modal__actions .btn {
+            margin: 4px;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,47 +64,36 @@
         </div>
     </header>
 
-    <!-- Wir nutzen die Base-Form-Card, damit es im Design bleibt -->
     <div class="registration-card">
         <form method="post" action="/ui/admin/abstimmungen/neu" class="registration-form">
 
             <div>
-                <div class="field-label">
-                    <label for="titel">Titel</label>
-                </div>
+                <div class="field-label"><label for="titel">Titel</label></div>
                 <input class="input" type="text" id="titel" name="titel" required placeholder="Titel der Abstimmung">
                 <div class="mute" style="margin-top: 6px;">Mindestens 3 Zeichen</div>
             </div>
 
             <div>
-                <div class="field-label">
-                    <label for="beschreibung">Beschreibung</label>
-                </div>
+                <div class="field-label"><label for="beschreibung">Beschreibung</label></div>
                 <textarea class="input" id="beschreibung" name="beschreibung" required placeholder="Kurz beschreiben, worum es in der Abstimmung geht"></textarea>
                 <div class="mute" style="margin-top: 6px;">Kurz beschreiben, worum es in der Abstimmung geht</div>
             </div>
 
             <div class="form-row">
                 <div>
-                    <div class="field-label">
-                        <label for="startDatum">Startdatum</label>
-                    </div>
+                    <div class="field-label"><label for="startDatum">Startdatum</label></div>
                     <input class="input" type="date" id="startDatum" name="startDatum" required>
                 </div>
 
                 <div>
-                    <div class="field-label">
-                        <label for="endDatum">Enddatum</label>
-                    </div>
+                    <div class="field-label"><label for="endDatum">Enddatum</label></div>
                     <input class="input" type="date" id="endDatum" name="endDatum" required>
                     <div class="mute" style="margin-top: 6px;">Darf nicht vor dem Startdatum liegen</div>
                 </div>
             </div>
 
             <div>
-                <div class="field-label">
-                    <label for="minAlter">Mindestalter der Wähler</label>
-                </div>
+                <div class="field-label"><label for="minAlter">Mindestalter der Wähler</label></div>
                 <input class="input" type="number" id="minAlter" name="minAlter" min="0" placeholder="z.B. 18">
                 <div class="mute" style="margin-top: 6px;">Optional: Mindestalter in Jahren (z.B. 16 oder 18)</div>
             </div>
@@ -76,6 +106,65 @@
         </form>
     </div>
 </div>
+
+<script>
+function getAuthToken() {
+    const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+    return match ? match[2] : null;
+}
+
+// Prüfen, ob der Benutzer eingeloggt und Admin ist
+function checkAdminAccess() {
+    const token = getAuthToken();
+    const role = localStorage.getItem('user_role');
+
+    if (!token || role !== 'admin') {
+        showAdminOverlay();
+        return false;
+    }
+    return true;
+}
+
+// Overlay anzeigen, falls kein Admin
+function showAdminOverlay() {
+    if (document.getElementById('admin-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'admin-overlay';
+    overlay.className = 'admin-overlay';
+
+    overlay.innerHTML = `
+        <div class="admin-modal">
+            <div class="admin-modal__icon">🔒</div>
+            <h2 class="admin-modal__title">Admin-Rechte erforderlich</h2>
+            <p class="admin-modal__text">Du musst als Administrator eingeloggt sein, um diese Seite zu sehen.</p>
+            <div class="admin-modal__actions">
+                <a href="/ui/login" class="btn primary">👑 Login</a>
+                <button type="button" class="btn" id="admin-close">Schließen</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById('admin-close')?.addEventListener('click', () => overlay.remove());
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') overlay.remove();
+    });
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+    });
+}
+
+// Seite prüfen, bevor alles geladen wird
+document.addEventListener('DOMContentLoaded', () => {
+    if (!checkAdminAccess()) {
+        document.querySelector('.page')?.remove(); // verstecke die Seite, falls kein Admin
+    }
+});
+</script>
 
 </body>
 </html>

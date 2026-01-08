@@ -1,59 +1,52 @@
-from fastapi import APIRouter, Request, Form, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Request, Form, HTTPException, Depends
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from pathlib import Path
-from apps.shared.aspects.auth_aspect import create_token, verify_password
-from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
 
-# ✅ ROUTER DEFINIEREN!
+# ✅ KORREKTER IMPORT per DDD-Struktur (Application Layer von Bürgerverwaltung)
+from apps.authentifizierung.application.services.auth_service import AuthApplicationService
+from apps.buergerverwaltung.domain.repositories.i_buerger_repository import IBuergerRepository
+
 router = APIRouter(prefix="/api/auth", tags=["Authentifizierung"])
 
-DB_DATEIPFAD = Path(__file__).parent.parent.parent.parent.parent / "apps" / "buergerverwaltung" / "infrastructure" / "persistence" / "buerger_db.json"
-repo = None
+# ✅ Lokale Repo-Funktion (keine Imports-Probleme)
+def get_local_repo() -> IBuergerRepository:
+    from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent  # MSE_eVote root
+    db_path = BASE_DIR / "apps" / "buergerverwaltung" / "infrastructure" / "persistence" / "buerger_db.json"
+    return BuergerRepository(str(db_path))
 
-def init_repo():
-    global repo
-    if repo is None:
-        repo = BuergerRepository(str(DB_DATEIPFAD))
+def get_auth_service(repo: IBuergerRepository = Depends(get_local_repo)):
+    return AuthApplicationService(repo)
 
-# 1. LOGIN-SEITE
+# Templates-Pfad
+TEMPLATES_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "ui" / "authentifizierung" / "templates"
+templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
 @router.get("/", response_class=HTMLResponse)
 async def login_seite(request: Request):
-    templates = Jinja2Templates(directory="ui/authentifizierung/templates")
-    return templates.TemplateResponse(request, "login.html", {})
+    return templates.TemplateResponse("login.html", {"request": request})
 
-# 2. ADMIN-LOGIN
 @router.post("/buergerverwaltung/admin")
-async def admin_login(username: str = Form(...), password: str = Form(...)):
-    print(f"🔍 Admin-Login: {username}")  # DEBUG
-    VALID_ADMINS = {"admin": "admin123"}
-    if username not in VALID_ADMINS or VALID_ADMINS[username] != password:
-        print(f"❌ Login fehlgeschlagen: {username}")  # DEBUG
+async def admin_login(username: str = Form(...), password: str = Form(...), service: AuthApplicationService = Depends(get_auth_service)):
+    print(f"🔍 Admin-Login: {username}")
+    try:
+        result = service.login_admin(username, password)
+        print(f"✅ Admin erfolgreich!")
+        return result
+    except ValueError:
         raise HTTPException(status_code=401, detail="Ungültige Admin-Daten")
-    
-    token = create_token(user_id=username)
-    print(f"✅ Admin-Token: {token[:20]}...")  # DEBUG
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "role": "admin"
-    }
 
-# 3. BÜRGER-LOGIN
 @router.post("/buergerverwaltung/buerger")
-async def buerger_login(email: str = Form(...), password: str = Form(...)):
-    print(f"🔍 Bürger-Login: {email}")  # DEBUG
-    init_repo()
-    buerger = next((b for b in repo.lade_alle() if b.email == email), None)
-    if not buerger or not verify_password(password, buerger.authentifizierungsdaten):
-        print(f"❌ Bürger-Login fehlgeschlagen: {email}")  # DEBUG
-        raise HTTPException(status_code=401, detail="Bürger oder Passwort falsch")
-    
-    token = create_token(user_id=f"buerger_{buerger.buergerID}")
-    print(f"✅ Bürger-Token: {token[:20]}...")  # DEBUG
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "role": "buerger",
-        "name": buerger.name
-    }
+async def buerger_login(
+    email: str = Form(...), 
+    password: str = Form(...), 
+    service: AuthApplicationService = Depends(get_auth_service)
+):
+    try:
+        result = service.login_buerger(email, password)
+        print("🔍 Bürger-Login:", email)
+        print("✅ Bürger erfolgreich!")
+        return result
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Ungültige Credentials")
