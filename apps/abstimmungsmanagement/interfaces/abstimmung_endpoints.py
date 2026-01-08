@@ -4,7 +4,7 @@ from typing import List
 from fastapi import APIRouter, Depends, Request, Form, HTTPException
 from fastapi.responses import RedirectResponse, HTMLResponse
 from urllib.parse import urlencode
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from apps.abstimmungsmanagement.application.services.abstimmungs_service import AbstimmungsService
 from apps.abstimmungsmanagement.application.services.abstimmungsuebersichts_service import AbstimmungsUebersichtsService
@@ -201,6 +201,7 @@ async def abstimmung_neu_form(request: Request):
 # POST-Endpunkt (Form-Verarbeitung + Date-Parsing)
 @router.post("/ui/admin/abstimmungen/neu")
 async def abstimmung_neu_submit(
+        request: Request,
         abstimmungsID: int | None = Form(None),
         titel: str = Form(...),
         beschreibung: str = Form(...),
@@ -214,15 +215,26 @@ async def abstimmung_neu_submit(
         vorhandene = service.liste_abstimmungen()
         max_id = max((a.abstimmungsID for a in vorhandene), default=0)
         abstimmungsID = max_id + 1
-
-    service.erstelle_abstimmung(
-        abstimmungsID=abstimmungsID,
-        titel=titel,
-        beschreibung=beschreibung,
-        startDatum=date.fromisoformat(startDatum),
-        endDatum=date.fromisoformat(endDatum),
-        teilnehmerliste=[],
-        stimmen=[],
-        mindestalter=minAlter,
-    )
+    try:
+        service.erstelle_abstimmung(
+            abstimmungsID=abstimmungsID,
+            titel=titel,
+            beschreibung=beschreibung,
+            startDatum=date.fromisoformat(startDatum),
+            endDatum=date.fromisoformat(endDatum),
+            teilnehmerliste=[],
+            stimmen=[],
+            mindestalter=minAlter,
+        )
+    except ValidationError as e:
+        # Formular wieder anzeigen + Fehlermeldung
+        return templates_abst.TemplateResponse(
+            "abstimmung_neu.html",
+            {
+                "request": request,
+                "error": "Bitte Titel (min. 3 Zeichen) und Beschreibung (min. 5 Zeichen) korrekt ausfüllen.",
+                "details": e.errors(),
+            },
+            status_code=400,
+        )
     return RedirectResponse(url="/ui/abstimmungsuebersicht", status_code=303)
