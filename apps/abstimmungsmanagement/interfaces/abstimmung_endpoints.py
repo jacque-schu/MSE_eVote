@@ -45,7 +45,7 @@ async def get_abstimmung_ergebnis(
         abstimmungs_id: int,
         ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
 ):
-    await require_login(request)
+    require_login(request)
     return ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
 # Nimmt eine Stimme zu einer Abstimmung entgegen (Form‑POST) und leitet zurück zur HTML-Detailseite.
@@ -79,7 +79,7 @@ async def abstimmungsuebersicht(
     geschlossene = service.alle_abgeschlossenen_abstimmungen()
 
     try:
-        user = await require_login(request)
+        user = require_login(request)
         is_admin = user["role"] == "admin"
     except HTTPException:
         is_admin = False
@@ -113,19 +113,21 @@ async def abstimmungsuebersicht(
 
 
 # Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
+# Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
 @router.get("/ui/abstimmung/{abstimmungs_id}", response_class=HTMLResponse)
 async def abstimmungs_detail(
-        request: Request,
-        abstimmungs_id: int,
-        service: AbstimmungsService = Depends(get_abstimmungs_service),
+    request: Request,
+    abstimmungs_id: int,
+    service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.abst_repo.get(abstimmungs_id)
     fehlermeldung = request.query_params.get("error")
 
     user = None
     try:
-        user = await require_login(request)
-    except HTTPException:
+        user = require_login(request)
+    except HTTPException as exc:
+        print("DETAIL DEBUG: require_login failed with", exc.status_code, exc.detail)
         pass
 
     return templates_abst.TemplateResponse(
@@ -135,7 +137,7 @@ async def abstimmungs_detail(
             "abstimmung": abstimmung,
             "fehlermeldung": fehlermeldung,
             "is_logged_in": user is not None,
-            "current_user": user
+            "current_user": user,
         },
     )
 
@@ -149,7 +151,7 @@ async def abstimmungs_ergebnis_view(
 
 ):
     # 1. Login erzwingen
-    user = await require_login(request)
+    user = require_login(request)
 
     # 2. Daten laden
     abstimmung = abstimmungs_service.abst_repo.get(abstimmungs_id)
@@ -189,7 +191,7 @@ def create_abstimmung(
 # GET-Endpunkt (Admin-Check + Formular)
 @router.get("/ui/admin/abstimmungen/neu", response_class=HTMLResponse)
 async def abstimmung_neu_form(request: Request):
-    user = await require_login(request)
+    user = require_login(request)
     if user["role"] != "admin":
         raise HTTPException(403, "Admin-Zugriff erforderlich")
     return templates_abst.TemplateResponse(
