@@ -128,7 +128,6 @@ async def abstimmungs_detail(
         user = require_login(request)
     except HTTPException as exc:
         print("DETAIL DEBUG: require_login failed with", exc.status_code, exc.detail)
-        pass
 
     return templates_abst.TemplateResponse(
         "abstimmungsdetail.html",
