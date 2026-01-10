@@ -1,6 +1,7 @@
 import pytest
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -42,11 +43,11 @@ class DummyAbstimmungsService:
     def liste_abstimmungen(self):
         return [DummyAbstimmung(1), DummyAbstimmung(2)]
 
-    # Platzhalter-Methode für das Abgeben einer Stimme (tut im Test nichts).
+    # Platzhalter-Methode für das Abgeben einer Stimme (tut im Test nichts)
     def stimme_abgeben(self, abstimmungs_id, buerger_id, option, stimmdatum):
         return
 
-    # Erzeugt eine neue Dummy-Abstimmung für Tests.
+    # Erzeugt eine neue Dummy-Abstimmung für Tests
     def erstelle_abstimmung(self, **kwargs):
         return DummyAbstimmung(abstimmungsID=kwargs["abstimmungsID"])
 
@@ -66,7 +67,7 @@ class DummyErgebnisService:
         return [{"abstimmungsID": abstimmungs_id, "stimmenJa": 10, "stimmenNein": 5}]
 
 
-# Baut für jeden Test eine FastAPI-Testclient-Instanz mit Dummy-Services und Login-Override auf
+# Baut für jeden Test eine FastAPI-Testclient-Instanz mit Dummy-Services
 @pytest.fixture
 def client():
     app = FastAPI()
@@ -76,12 +77,6 @@ def client():
     app.dependency_overrides[get_abstimmungs_service] = lambda: DummyAbstimmungsService()
     app.dependency_overrides[get_uebersichts_service] = lambda: DummyUebersichtsService()
     app.dependency_overrides[get_ergebnis_service] = lambda: DummyErgebnisService()
-
-    # Async-Login-Override, kompatibel mit require_login(request)
-    async def override_require_login(request=None):
-        return {"user_id": "buerger_1", "role": "buerger"}
-
-    app.dependency_overrides[require_login] = override_require_login
 
     # Static-Routen, damit url_for(...) in Templates funktioniert
     static_dir = Path("ui") / "static"
@@ -109,7 +104,7 @@ def test_liste_abstimmungen_returns_list_of_dicts(client: TestClient):
     assert data[0]["abstimmungsID"] == 1
 
 
-# Prüft, prüft, ob der Detail‑Endpoint für eine einzelne Abstimmung korrekt funktioniert
+# prüft, ob der Detail‑Endpoint für eine einzelne Abstimmung korrekt funktioniert
 def test_get_abstimmung_returns_single_abstimmung(client: TestClient):
     response = client.get("/abstimmungen/1")
     assert response.status_code == 200
@@ -118,17 +113,32 @@ def test_get_abstimmung_returns_single_abstimmung(client: TestClient):
     assert data["titel"] == "Test"
 
 
-# Prüft, dass die Ergebnis-API nur mit Login erreichbar ist und eine Ergebnisliste zurückgibt
+# prüft, dass die Ergebnis-API nur mit Login erreichbar ist und eine Ergebnisliste zurückgibt
 def test_get_abstimmung_ergebnis_requires_login_and_returns_data(client: TestClient):
-    response = client.get("/abstimmungen/1/ergebnis")
+    async def _fake_login(request=None):
+        return {"user_id": "buerger_1", "role": "buerger"}
+
+    # Endpoint ruft await require_login(request) direkt auf → im Modul patchen
+    with patch(
+        "apps.abstimmungsmanagement.interfaces.abstimmung_endpoints.require_login",
+        new=_fake_login,
+    ):
+        response = client.get("/abstimmungen/1/ergebnis")
+
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
     assert data[0]["abstimmungsID"] == 1
 
 
-# Prüft, ob der „Stimme abgeben“-Endpoint nach einer erfolgreichen Stimmabgabe korrekt mit einem Redirect auf die Detailseite reagiert
+# prüft, ob der „Stimme abgeben“-Endpoint nach einer erfolgreichen Stimmabgabe korrekt mit einem Redirect auf die Detailseite reagiert
 def test_stimme_abgeben_endpoint_redirects_on_success(client: TestClient):
+    async def _fake_login(request=None):
+        return {"user_id": "buerger_1", "role": "buerger"}
+
+    # Hier greift Depends(require_login) → dependency_overrides nutzen
+    client.app.dependency_overrides[require_login] = _fake_login
+
     response = client.post(
         "/abstimmungen/1/stimme",
         data={"wahl": Stimmoption.JA.name},
@@ -138,22 +148,37 @@ def test_stimme_abgeben_endpoint_redirects_on_success(client: TestClient):
     assert response.headers["location"] == "/ui/abstimmung/1"
 
 
-# Prüft, dass die Abstimmungsübersicht als HTML gerendert wird
+# prüft, dass die Abstimmungsübersicht als HTML gerendert wird
 def test_abstimmungsuebersicht_renders_html(client: TestClient):
-    response = client.get("/ui/abstimmungsuebersicht")
+    def _fake_login(request=None):
+        return {"user_id": "buerger_1", "role": "buerger"}
+
+    with patch(
+        "apps.abstimmungsmanagement.interfaces.abstimmung_endpoints.require_login",
+        new=_fake_login,
+    ):
+        response = client.get("/ui/abstimmungsuebersicht")
+
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
     assert "<html" in response.text.lower()
 
-
-# Prüft, dass die Detailansicht einer Abstimmung als HTML gerendert wird
+# prüft, dass die Detailansicht einer Abstimmung als HTML gerendert wird
 def test_abstimmungs_detail_renders_html(client: TestClient):
-    response = client.get("/ui/abstimmung/1")
+    async def _fake_login(request=None):
+        return {"user_id": "buerger_1", "role": "buerger"}
+
+    with patch(
+        "apps.abstimmungsmanagement.interfaces.abstimmung_endpoints.require_login",
+        new=_fake_login,
+    ):
+        response = client.get("/ui/abstimmung/1")
+
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
 
 
-# Prüft, dass der JSON-POST zum Anlegen einer Abstimmung erfolgreich ist und die ID übernommen wird
+# prüft, dass der JSON-POST zum Anlegen einer Abstimmung erfolgreich ist und die ID 5 im Ergebnis übernommen wird
 def test_create_abstimmung_returns_json(client: TestClient):
     payload = {
         "abstimmungsID": 5,
@@ -170,34 +195,41 @@ def test_create_abstimmung_returns_json(client: TestClient):
     assert data["titel"] == "Test"
 
 
-# Liefert für Tests einen eingeloggten Admin-Benutzer zurück
-async def _override_require_login_admin(request=None):
+# liefert für Tests einen eingeloggten Admin-Benutzer zurück
+def _override_require_login_admin(request=None):
     return {"user_id": "admin_1", "role": "admin"}
 
-
-# Prüft, dass das Admin-Formular nur mit Admin-Login erreichbar ist und HTML liefert
+# prüft, dass das Admin-Formular nur mit Admin-Login erreichbar ist und HTML liefert
 def test_abstimmung_neu_form_requires_admin(client: TestClient):
-    client.app.dependency_overrides[require_login] = _override_require_login_admin
-    response = client.get("/ui/admin/abstimmungen/neu")
+    with patch(
+        "apps.abstimmungsmanagement.interfaces.abstimmung_endpoints.require_login",
+        new=_override_require_login_admin,
+    ):
+        response = client.get("/ui/admin/abstimmungen/neu")
+
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
 
 
-# Prüft, dass das Admin-Formular beim erfolgreichen Absenden zur Übersicht weiterleitet
+# prüft, dass das Admin-Formular beim erfolgreichen Absenden zur Übersicht weiterleitet
 def test_abstimmung_neu_submit_redirects_on_success(client: TestClient):
-    client.app.dependency_overrides[require_login] = _override_require_login_admin
-    form_data = {
-        "abstimmungsID": "",
-        "titel": "Titel",
-        "beschreibung": "Beschreibung",
-        "startDatum": "2025-01-01",
-        "endDatum": "2025-12-31",
-        "minAlter": "",
-    }
-    response = client.post(
-        "/ui/admin/abstimmungen/neu",
-        data=form_data,
-        follow_redirects=False,
-    )
+    with patch(
+        "apps.abstimmungsmanagement.interfaces.abstimmung_endpoints.require_login",
+        new=_override_require_login_admin,
+    ):
+        form_data = {
+            "abstimmungsID": "",
+            "titel": "Titel",
+            "beschreibung": "Beschreibung",
+            "startDatum": "2025-01-01",
+            "endDatum": "2025-12-31",
+            "minAlter": "",
+        }
+        response = client.post(
+            "/ui/admin/abstimmungen/neu",
+            data=form_data,
+            follow_redirects=False,
+        )
+
     assert response.status_code == 303
     assert response.headers["location"] == "/ui/abstimmungsuebersicht"

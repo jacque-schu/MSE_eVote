@@ -18,12 +18,12 @@ from apps.abstimmungsmanagement.infrastructure.container.container import (
 )
 from apps.abstimmungsmanagement.infrastructure.auth.abstimmung_auth import require_login
 
-# Die Datei bündelt alle HTTP-Endpunkte („Routen“) rund um Abstimmungen.
+# Die Datei bündelt alle HTTP‑Endpunkte („Routen“) rund um Abstimmungen.
 
 router = APIRouter(tags=["abstimmungen"])
 
 
-# Listet alle Abstimmungen als JSON auf (für API-Nutzung).
+# Listet alle Abstimmungen als JSON auf (für API‑Nutzung).
 @router.get("/abstimmungen", response_model=List[dict])
 def liste_abstimmungen(service: AbstimmungsService = Depends(get_abstimmungs_service)):
     return [a.__dict__ for a in service.liste_abstimmungen()]
@@ -32,30 +32,29 @@ def liste_abstimmungen(service: AbstimmungsService = Depends(get_abstimmungs_ser
 # Liefert die Details einer einzelnen Abstimmung als JSON.
 @router.get("/abstimmungen/{abstimmungs_id}")
 def get_abstimmung(
-    abstimmungs_id: int,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        abstimmungs_id: int,
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.abst_repo.get(abstimmungs_id)
     return abstimmung.__dict__
 
-
-# Liefert das Ergebnis einer Abstimmung als JSON (API, Login erforderlich).
+# Liefert das Ergebnis einer Abstimmung als JSON (API).
 @router.get("/abstimmungen/{abstimmungs_id}/ergebnis", response_model=List[dict])
 async def get_abstimmung_ergebnis(
-    abstimmungs_id: int,
-    ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
-    current_user=Depends(require_login),
+        request: Request,
+        abstimmungs_id: int,
+        ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
 ):
+    require_login(request)
     return ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
-
-# Nimmt eine Stimme zu einer Abstimmung entgegen (Form-POST) und leitet zurück zur HTML-Detailseite.
+# Nimmt eine Stimme zu einer Abstimmung entgegen (Form‑POST) und leitet zurück zur HTML-Detailseite.
 @router.post("/abstimmungen/{abstimmungs_id}/stimme")
 async def stimme_abgeben_endpoint(
-    abstimmungs_id: int,
-    wahl: str = Form(...),
-    current_user=Depends(require_login),
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        abstimmungs_id: int,
+        wahl: str = Form(...),
+        current_user=Depends(require_login),  # ← FERTIG!
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     if current_user["role"] != "buerger":
         raise HTTPException(403, "Nur Bürger dürfen abstimmen! Bitte als Bürger einloggen.")
@@ -70,17 +69,20 @@ async def stimme_abgeben_endpoint(
         return RedirectResponse(url=f"/ui/abstimmung/{abstimmungs_id}?{params}", status_code=303)
 
 
-# Zeigt eine HTML-Übersicht aller offenen Abstimmungen.
+# Zeigt eine HTML‑Übersicht aller offenen Abstimmungen.
 @router.get("/ui/abstimmungsuebersicht", response_class=HTMLResponse)
 async def abstimmungsuebersicht(
     request: Request,
     service: AbstimmungsUebersichtsService = Depends(get_uebersichts_service),
-    current_user=Depends(require_login),
 ):
     offene = service.alle_offenen_abstimmungen()
     geschlossene = service.alle_abgeschlossenen_abstimmungen()
 
-    is_admin = bool(current_user and current_user.get("role") == "admin")
+    try:
+        user = require_login(request)
+        is_admin = user["role"] == "admin"
+    except HTTPException:
+        is_admin = False
 
     def end_key(a):
         end_dt = getattr(a, "endDatum", None)
@@ -90,15 +92,13 @@ async def abstimmungsuebersicht(
         items_sorted = sorted(items, key=end_key)
         view = []
         for a in items_sorted:
-            view.append(
-                {
-                    "abstimmungsID": a.abstimmungsID,
-                    "titel": a.titel,
-                    "startdatum": getattr(a, "startDatum", None),
-                    "ablaufdatum": getattr(a, "endDatum", None),
-                    "status": (a.status.value if getattr(a, "status", None) else "neu"),
-                }
-            )
+            view.append({
+                "abstimmungsID": a.abstimmungsID,
+                "titel": a.titel,
+                "startdatum": getattr(a, "startDatum", None),
+                "ablaufdatum": getattr(a, "endDatum", None),
+                "status": (a.status.value if getattr(a, "status", None) else "neu"),
+            })
         return view
 
     return templates_abst.TemplateResponse(
@@ -112,18 +112,23 @@ async def abstimmungsuebersicht(
     )
 
 
-# Zeigt die HTML-Detailansicht einer Abstimmung, optional mit Fehlermeldung.
+# Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
+# Zeigt die HTML‑Detailansicht einer Abstimmung, optional mit Fehlermeldung.
 @router.get("/ui/abstimmung/{abstimmungs_id}", response_class=HTMLResponse)
 async def abstimmungs_detail(
     request: Request,
     abstimmungs_id: int,
     service: AbstimmungsService = Depends(get_abstimmungs_service),
-    current_user=Depends(require_login),
 ):
     abstimmung = service.abst_repo.get(abstimmungs_id)
     fehlermeldung = request.query_params.get("error")
 
-    is_logged_in = current_user is not None
+    user = None
+    try:
+        user = require_login(request)
+    except HTTPException as exc:
+        print("DETAIL DEBUG: require_login failed with", exc.status_code, exc.detail)
+        pass
 
     return templates_abst.TemplateResponse(
         "abstimmungsdetail.html",
@@ -131,24 +136,28 @@ async def abstimmungs_detail(
             "request": request,
             "abstimmung": abstimmung,
             "fehlermeldung": fehlermeldung,
-            "is_logged_in": is_logged_in,
-            "current_user": current_user,
+            "is_logged_in": user is not None,
+            "current_user": user,
         },
     )
 
-
-# Zeigt die HTML-Ergebnisansicht einer Abstimmung (Login erforderlich).
+# Zeigt die HTML‑Ergebnisansicht einer Abstimmung.
 @router.get("/ui/abstimmung/{abstimmungs_id}/ergebnis", response_class=HTMLResponse)
 async def abstimmungs_ergebnis_view(
-    request: Request,
-    abstimmungs_id: int,
-    abstimmungs_service: AbstimmungsService = Depends(get_abstimmungs_service),
-    ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
-    current_user=Depends(require_login),
+        request: Request,
+        abstimmungs_id: int,
+        abstimmungs_service: AbstimmungsService = Depends(get_abstimmungs_service),
+        ergebnis_service: ErgebnisService = Depends(get_ergebnis_service),
+
 ):
+    # 1. Login erzwingen
+    user = require_login(request)
+
+    # 2. Daten laden
     abstimmung = abstimmungs_service.abst_repo.get(abstimmungs_id)
     ergebnis_details = ergebnis_service.hole_ergebnis_details_fuer_abstimmung(abstimmungs_id)
 
+    #3. Template laden
     return templates_abst.TemplateResponse(
         "abstimmung_ergebnis.html",
         {
@@ -156,10 +165,9 @@ async def abstimmungs_ergebnis_view(
             "abstimmung": abstimmung,
             "ergebnis": ergebnis_details,
             "is_logged_in": True,
-            "current_user": current_user,
+            "current_user": user,
         },
     )
-
 
 class AbstimmungCreate(BaseModel):
     abstimmungsID: int
@@ -170,40 +178,41 @@ class AbstimmungCreate(BaseModel):
     mindestalter: int | None = None
 
 
-# JSON-API: Admin legt eine neue Abstimmung an und bekommt sie als JSON zurück.
+# JSON‑API: Admin legt eine neue Abstimmung an und bekommt sie als JSON zurück.
 @router.post("/abstimmungen", response_model=dict)
 def create_abstimmung(
-    payload: AbstimmungCreate,
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        payload: AbstimmungCreate,
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
     abstimmung = service.erstelle_abstimmung(**payload.dict(), stimmen=[])
     return abstimmung.__dict__
 
 
-# GET-Endpunkt (Admin-Check + Formular).
+# GET-Endpunkt (Admin-Check + Formular)
 @router.get("/ui/admin/abstimmungen/neu", response_class=HTMLResponse)
-async def abstimmung_neu_form(
-    request: Request,
-    current_user=Depends(require_login),
-):
-    if current_user["role"] != "admin":
+async def abstimmung_neu_form(request: Request):
+    user = require_login(request)
+    if user["role"] != "admin":
         raise HTTPException(403, "Admin-Zugriff erforderlich")
-    return templates_abst.TemplateResponse("abstimmung_neu.html", {"request": request})
+    return templates_abst.TemplateResponse(
+        "abstimmung_neu.html",
+        {"request": request}
+    )
 
 
-# POST-Endpunkt (Form-Verarbeitung + Date-Parsing).
+# POST-Endpunkt (Form-Verarbeitung + Date-Parsing)
 @router.post("/ui/admin/abstimmungen/neu")
 async def abstimmung_neu_submit(
-    request: Request,
-    abstimmungsID: int | None = Form(None),
-    titel: str = Form(...),
-    beschreibung: str = Form(...),
-    startDatum: str = Form(...),
-    endDatum: str = Form(...),
-    minAlter: int | None = Form(None),
-    service: AbstimmungsService = Depends(get_abstimmungs_service),
+        request: Request,
+        abstimmungsID: int | None = Form(None),
+        titel: str = Form(...),
+        beschreibung: str = Form(...),
+        startDatum: str = Form(...),  # ← STRING aus HTML-Form
+        endDatum: str = Form(...),  # ← STRING aus HTML-Form
+        minAlter: int | None = Form(None),
+        service: AbstimmungsService = Depends(get_abstimmungs_service),
 ):
-    # Auto-ID falls keine angegeben.
+    # Auto-ID falls keine angegeben
     if abstimmungsID is None:
         vorhandene = service.liste_abstimmungen()
         max_id = max((a.abstimmungsID for a in vorhandene), default=0)
@@ -220,6 +229,7 @@ async def abstimmung_neu_submit(
             mindestalter=minAlter,
         )
     except ValidationError as e:
+        # Formular wieder anzeigen + Fehlermeldung
         return templates_abst.TemplateResponse(
             "abstimmung_neu.html",
             {

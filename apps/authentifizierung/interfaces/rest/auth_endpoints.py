@@ -2,6 +2,10 @@ from fastapi import APIRouter, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+
+
+from starlette.responses import JSONResponse
+
 from apps.shared.aspects.auth_aspect import create_token, verify_password
 from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
 
@@ -30,14 +34,22 @@ async def admin_login(username: str = Form(...), password: str = Form(...)):
     if username not in VALID_ADMINS or VALID_ADMINS[username] != password:
         print(f"❌ Login fehlgeschlagen: {username}")  # DEBUG
         raise HTTPException(status_code=401, detail="Ungültige Admin-Daten")
-    
+
     token = create_token(user_id=username)
     print(f"✅ Admin-Token: {token[:20]}...")  # DEBUG
-    return {
+
+    response = JSONResponse({
         "access_token": token,
         "token_type": "bearer",
-        "role": "admin"
-    }
+        "role": "admin",
+    })
+    response.set_cookie(
+        key="auth_token",
+        value=token,
+        httponly=True,
+        samesite="lax",
+    )
+    return response
 
 # 3. BÜRGER-LOGIN
 @router.post("/buergerverwaltung/buerger")
@@ -48,12 +60,25 @@ async def buerger_login(email: str = Form(...), password: str = Form(...)):
     if not buerger or not verify_password(password, buerger.authentifizierungsdaten):
         print(f"❌ Bürger-Login fehlgeschlagen: {email}")  # DEBUG
         raise HTTPException(status_code=401, detail="Bürger oder Passwort falsch")
-    
+
     token = create_token(user_id=f"buerger_{buerger.buergerID}")
     print(f"✅ Bürger-Token: {token[:20]}...")  # DEBUG
-    return {
+
+    response = JSONResponse({
         "access_token": token,
         "token_type": "bearer",
         "role": "buerger",
-        "name": buerger.name
-    }
+        "name": buerger.name,
+    })
+    response.set_cookie(
+        key="auth_token",
+        value=token,
+        httponly=True,
+        samesite="lax",
+    )
+    return response
+
+
+
+
+
