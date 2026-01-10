@@ -35,7 +35,7 @@ eVote ist eine **digitale Bürgerabstimmungsplattform** für Online‑Bürgerbef
 
 ```bash
 # Repository klonen
-https://github.com/jacque-schu/MSE_eVote.wiki.git
+https://github.com/jacque-schu/MSE_eVote
 
 # Virtuelle Umgebung anlegen (optional, Beispiel für venv)
 python -m venv .venv
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 ## App starten
 ```bash
-# Terminal (PyCharm) in `main`
+# Terminal (in PyCharm) in `main`
 uvicorn main:app --reload
 ```
 
