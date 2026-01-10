@@ -63,7 +63,7 @@ pytest --cov=apps --cov-report xml:coverage.xml
 Die CI‑Pipeline führt bei jedem Push oder Pull Request auf `main` automatisch Linting, Tests und SonarCloud‑Scan aus.
 
 ## Details zu Features, Tech Stack, Architektur & Qualitätssicherung
-siehe Wiki
+siehe Wiki: https://github.com/jacque-schu/MSE_eVote/wiki
 
 
 
