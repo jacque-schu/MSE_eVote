@@ -1,4 +1,4 @@
-from ..domain.services.auth_service import AuthDomainService
+from ...domain.services.auth_service import AuthService
 from apps.shared.aspects.auth_aspect import create_token, verify_password
 from apps.buergerverwaltung.infrastructure.repositories.buerger_repository import BuergerRepository
 
@@ -6,7 +6,7 @@ class AuthApplicationService:
     """Application Layer: Koordiniert Login-Use-Cases."""
     
     def __init__(self, buerger_repo: BuergerRepository):
-        self.domain_service = AuthDomainService()
+        self.domain_service = AuthService()
         self.buerger_repo = buerger_repo
     
     def login_admin(self, username: str, password: str) -> dict:
