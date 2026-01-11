@@ -108,7 +108,7 @@
         "zeitpunkt": "2026-01-04"
       }
     ],
-    "status": "offen",
+    "status": "geschlossen",
     "mindestalter": 16
   },
   {
@@ -433,7 +433,7 @@
         "zeitpunkt": "2026-01-04"
       }
     ],
-    "status": "offen",
+    "status": "geschlossen",
     "mindestalter": 14
   },
   {

@@ -1,3 +1,5 @@
+<!-- Basis-Layout für die eVote-Webanwendung, Template für die U -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -17,7 +19,6 @@
   </main>
 
   <script>
-  // Admin-only Links einmal global steuern (kein inline-style nötig)
   document.addEventListener('DOMContentLoaded', () => {
     const role = localStorage.getItem('user_role');
     document.querySelectorAll('.js-admin-only').forEach(el => {

@@ -1,10 +1,6 @@
-/* ========================================================================
-   eVote – Base CSS (projektweit)
-   ======================================================================== */
+/* eVote – Base CSS (projektweit) */
 
-/* ------------------------
-   Theme-Variablen
-   ------------------------ */
+/* Theme-Variablen */
 :root {
   --primary-green: #00d084;
   --secondary-orange: #ff9500;
@@ -18,7 +14,7 @@
 
   --border-glow: rgba(0, 208, 132, 0.3);
 
-  /* Kompatibilität (alte Variablennamen) */
+  /* Kompatibilität */
   --bg: var(--bg-dark);
   --bg-elevated: var(--bg-dark);
   --bg-soft: var(--bg-dark);
@@ -43,9 +39,7 @@
   --pill-soft: rgba(255, 255, 255, 0.05);
 }
 
-/* ------------------------
-   Global Reset
-   ------------------------ */
+/* Global Reset */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -69,16 +63,14 @@ a:hover { text-decoration: none; }
 /* kleine Utility-Klasse */
 .is-relative { position: relative; }
 
-/* ========================================================================
-   Generische Page-Struktur (für Seiten ohne .app-Grid)
-   ======================================================================== */
+/* Generische Page-Struktur  */
 
 .page {
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* Header-Pattern für Seiten wie “Übersicht + Actions rechts” */
+/* Header-Pattern für Seiten */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -107,9 +99,7 @@ a:hover { text-decoration: none; }
   justify-content: flex-end;
 }
 
-/* ========================================================================
-   Layout (wie gehabt)
-   ======================================================================== */
+/* Layout */
 
 .app {
   max-width: 1180px;
@@ -123,9 +113,7 @@ a:hover { text-decoration: none; }
 .feed { display: flex; flex-direction: column; gap: 20px; }
 .side { display: flex; flex-direction: column; gap: 24px; }
 
-/* ========================================================================
-   Topbar / Branding
-   ======================================================================== */
+/* Topbar / Branding */
 
 .topbar {
   display: flex;
@@ -187,9 +175,7 @@ a:hover { text-decoration: none; }
 }
 .user-link:hover { text-decoration: none; }
 
-/* ========================================================================
-   Tabs
-   ======================================================================== */
+/* Tabs */
 
 .tabs {
   display: inline-flex;
@@ -235,9 +221,7 @@ a:hover { text-decoration: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========================================================================
-   Cards
-   ======================================================================== */
+/* Cards */
 
 .card {
   background: var(--bg-card);
@@ -318,16 +302,14 @@ a.card {
   border: 1px solid rgba(0, 208, 132, 0.3);
 }
 
-/* “gefülltes” Badge (für Labels wie “Thema 1”) */
+/* gefülltes Badge  */
 .badge.solid {
   background: var(--primary-green);
   border: none;
   color: #fff;
 }
 
-/* ========================================================================
-   Optionen / Pills
-   ======================================================================== */
+/* Optionen / Pills */
 
 .options { display: flex; flex-wrap: wrap; gap: 10px; }
 
@@ -361,9 +343,7 @@ a.card {
   color: var(--text-muted);
 }
 
-/* ========================================================================
-   Buttons
-   ======================================================================== */
+/* Buttons */
 
 .btn,
 .btn-secondary,
@@ -423,9 +403,7 @@ a.card {
 .btn-primary:active,
 .btn-post:active { transform: translateY(0); }
 
-/* ========================================================================
-   Notice / Alert (global, statt Inline-Styles)
-   ======================================================================== */
+/* Notice / Alert (global, statt Inline-Styles) */
 
 .notice {
   padding: 20px;
@@ -440,9 +418,7 @@ a.card {
   border-left: 4px solid #ef4444;
 }
 
-/* ========================================================================
-   Sticky Postbar unten
-   ======================================================================== */
+/* Sticky Postbar unten */
 
 .postbar {
   position: fixed;
@@ -459,9 +435,7 @@ a.card {
   justify-content: center;
 }
 
-/* ========================================================================
-   Auth / Registrierung
-   ======================================================================== */
+/* Auth / Registrierung */
 
 .registration-shell {
   min-height: 100vh;
@@ -534,11 +508,10 @@ a.card {
   gap: 10px;
   margin-top: 14px;
 }
-/* Sidebar-Liste: sauber */
+/* Sidebar-Liste */
 .side ul { margin: 0; padding: 0; }
 .side li { margin: 0; padding: 0; }
 
-/* Sidebar-Liste: stabil (Flex statt Grid) */
 .sidebar-list{
   list-style: none;
   padding: 0;
@@ -559,21 +532,15 @@ a.card {
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-
   padding: 10px 12px;
   border-radius: 12px;
-
   text-decoration: none;
   color: inherit;
-
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.06);
-
-  /* wichtig: nie verschieben/keine globale Effekte */
   transform: none;
   box-shadow: none;
   outline: none;
-
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -585,9 +552,7 @@ a.card {
   box-shadow: none !important;
 }
 
-/* ========================================================================
-   Tab-spezifische Regeln (wie gehabt)
-   ======================================================================== */
+/* Tab-spezifische Regeln */
 
 [data-tab="uebersicht"] .options,
 [data-tab="uebersicht"] .btn-primary { display: none !important; }
@@ -599,9 +564,7 @@ a.card {
 
 .side section { margin-bottom: 24px; }
 
-/* ========================================================================
-   Responsive
-   ======================================================================== */
+/* Responsive */
 
 @media (max-width: 960px) {
   .app { grid-template-columns: minmax(0, 1fr); gap: 24px; }
@@ -609,7 +572,7 @@ a.card {
   .postbar { left: 16px; right: 16px; transform: none; }
 }
 
-/* Page-Header mobil */
+
 @media (max-width: 768px) {
   .page-header { flex-direction: column; align-items: stretch; }
   .header-actions { justify-content: center; }

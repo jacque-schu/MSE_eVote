@@ -12,9 +12,7 @@
   --gray-glow: rgba(107,114,128,0.3);
 }
 
-/* ------------------------
-   Page Container
-   ------------------------ */
+/* Page Container */
 .page {
   max-width: 900px;
   margin: 0 auto;
@@ -23,7 +21,7 @@
 
 .page--narrow { max-width: 700px; }
 
-/* Ergebnis: Glas-Panel */
+/* Ergebnis als Glas-Panel */
 .page--card {
   max-width: 700px;
   background: var(--bg-card);
@@ -34,7 +32,6 @@
   box-shadow: 0 25px 50px rgba(0,0,0,0.4);
 }
 
-/* Wenn du im Header (topbar) deine .subtitle nutzt, soll sie dort nicht extra Abstand machen */
 .topbar .subtitle { margin: 0; }
 
 /* Header-Actions rechts (Startseite/Übersicht-Style) */
@@ -55,9 +52,7 @@
   max-width: 600px;
 }
 
-/* ------------------------
-   Abstimmungsübersicht (Topic-Liste)
-   ------------------------ */
+/* Abstimmungsübersicht (Topic-Liste) */
 .topic-list {
   display: flex;
   flex-direction: column;
@@ -138,9 +133,7 @@
   line-height: 1.35;
 }
 
-/* ------------------------
-   Abstimmungsdetail (Meta, Fehlerbox, Voting-Buttons, Footer)
-   ------------------------ */
+/* Abstimmungsdetail (Meta, Fehlerbox, Voting-Buttons, Footer) */
 .meta {
   display: flex;
   flex-wrap: wrap;
@@ -168,7 +161,7 @@
   backdrop-filter: blur(20px);
 }
 
-/* kleiner “grüner Link-Button” (ersetzt dein altes .btn-primary) */
+/* Link-Button */
 .btn.btn-soft {
   background: rgba(0,208,132,0.15);
   border: 1px solid rgba(0,208,132,0.3);
@@ -179,7 +172,7 @@
   background: rgba(0,208,132,0.25);
 }
 
-/* Vote Buttons */
+/* Vote-Button */
 .buttons {
   display: flex;
   gap: 12px;
@@ -244,7 +237,7 @@
   margin-top: 32px;
 }
 
-/* Footer Links wie vorher “groß” */
+/* Footer Links */
 .footer-actions .btn {
   flex: 1;
   min-width: 160px;
@@ -253,9 +246,7 @@
   justify-content: center;
 }
 
-/* ------------------------
-   Ergebnis-Seite (Meta + Balken)
-   ------------------------ */
+/* Ergebnis-Seite (Meta + Balken) */
 .result-meta {
   color: var(--text-muted);
   font-size: 0.95rem;
@@ -351,9 +342,7 @@
   box-shadow: 0 0 10px rgba(156,163,175,0.3);
 }
 
-/* ------------------------
-   Admin Overlay (ohne Inline-CSS im JS)
-   ------------------------ */
+/* Admin Overlay */
 .admin-overlay{
   position: fixed;
   inset: 0;
@@ -408,10 +397,7 @@
 .error a{
 margin-top: 20px;
 }
-/* =========================================================
-   ÜBERSCHREIBUNGEN: klare Trennung + Statusfarben
-   (ganz ans Ende der abstimmung.css setzen)
-   ========================================================= */
+
 
 /* Status-Badges je Status */
 .status-badge{
@@ -465,6 +451,7 @@ margin-top: 20px;
   justify-content: space-between;
   gap: 12px;
 }
+
 /* leichten Glow je nach Status */
 .open-summary{
   box-shadow:
@@ -515,6 +502,7 @@ margin-top: 20px;
   border: 1px solid rgba(255,68,68,0.5);
   box-shadow: 0 0 10px rgba(255,68,68,0.35);
 }
+
 /* Marker-Dreieck des Browsers ausblenden */
 .summary-toggle::-webkit-details-marker{
   display: none;
@@ -534,10 +522,9 @@ details[open] > .summary-toggle:after{
 
 /* Geschlossene Summary kann optional noch leicht angepasst werden */
 .closed-summary{
-  /* aktuell keine Unterschiede nötig, falls gleich aussehen soll */
 }
 
-/* Closed-List Cards: leicht „rot“ absetzen */
+/* Closed-List Cards leicht rot absetzen */
 .closed-list .topic-button{
   background: rgba(255,255,255,0.035);
   border-color: rgba(255, 68, 68, 0.16);
@@ -558,12 +545,12 @@ details[open] > .summary-toggle:after{
   color: #fff;
 }
 
-/* Optional: Abstände in der geschlossenen Liste etwas kompakter */
+/* Abstände in der geschlossenen Liste etwas kompakter */
 .closed-list{
   margin-top: 12px;
 }
 
-/* Alert BOX */
+/* Alert Box */
 .form-alert{
   margin: 14px 0 18px 0;
   padding: 16px 18px;
@@ -601,9 +588,7 @@ details[open] > .summary-toggle:after{
 }
 
 
-/* ------------------------
-   Responsive
-   ------------------------ */
+/* Responsive machen */
 @media (max-width: 768px) {
   .buttons { flex-direction: column; }
   .vote-btn { min-width: auto; }
