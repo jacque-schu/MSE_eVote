@@ -50,8 +50,8 @@
       <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
         {% set raw_status = (a.status or 'neu')|lower %}
         <span class="status-badge status-{{ raw_status }}">
-          {% if raw_status == 'offen' %}Offen
-          {% elif raw_status == 'geschlossen' %}Geschlossen
+          {% if raw_status == 'offen' %}offen
+          {% elif raw_status == 'geschlossen' %}geschlossen
           {% else %}{{ raw_status|capitalize }}
           {% endif %}
         </span>
