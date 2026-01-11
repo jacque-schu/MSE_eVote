@@ -1,3 +1,5 @@
+<<! Abstimmungsübersicht-Seite -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -8,7 +10,6 @@
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
 
-    <!-- Optional: falls .topic-dates noch nicht in abstimmung.css existiert -->
     <style>
         .topic-dates{
             margin-top: 6px;
@@ -37,7 +38,6 @@
         </div>
     </header>
 
-<!-- OFFENE Abstimmungen -->
 <details class="open-section">
     <summary class="summary-toggle open-summary">
     <span class="summary-label">Offene Abstimmungen</span>
@@ -50,8 +50,8 @@
       <a class="topic-button" href="/ui/abstimmung/{{ a.abstimmungsID }}">
         {% set raw_status = (a.status or 'neu')|lower %}
         <span class="status-badge status-{{ raw_status }}">
-          {% if raw_status == 'offen' %}Offen
-          {% elif raw_status == 'geschlossen' %}Geschlossen
+          {% if raw_status == 'offen' %}offen
+          {% elif raw_status == 'geschlossen' %}geschlossen
           {% else %}{{ raw_status|capitalize }}
           {% endif %}
         </span>
@@ -73,7 +73,6 @@
 </div>
 </details>
 
-<!-- ✅ unten: aufklappbare abgeschlossene -->
 <details class="closed-section">
   <summary class="summary-toggle closed-summary">
     <span class="summary-label">Geschlossene Abstimmungen</span>

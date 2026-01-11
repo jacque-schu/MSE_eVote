@@ -1,3 +1,5 @@
+<!-- Ergebnis Seite zeigt die Auswertung einer Abstimmung als Balkendiagramm -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,11 +7,13 @@
     <title>Ergebnis der Abstimmung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS aus static files -->
     <link rel="stylesheet" href="{{ url_for('static_common', path='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static_abstimmung', path='abstimmung.css') }}">
 </head>
 <body>
 
+<!-- Card-Layout Container -->
 <div class="page page--card">
     <header class="topbar">
         <div class="brand">

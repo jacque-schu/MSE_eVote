@@ -1,3 +1,10 @@
+<!-- startseite.html: Startseite/Landing Page von eVote
+ Sie zeigt:
+     - Header mit “Gast/Admin/Bürger”-Status
+     - Tabs für Übersicht / Erstellen / Abstimmungen
+     - Sidebar mit Abstimmungen, die in den nächsten 7 Tagen enden
+     - JavaScript für Tab-Navigation, Login/Logout-Anzeige und Admin-Gating-->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -9,7 +16,6 @@
 <body>
 <div class="app">
     <main class="feed">
-        <!-- Topbar (GENAU wie vorher) -->
         <header class="topbar">
             <div class="brand">
                 <div class="title">eVote</div>
@@ -39,8 +45,7 @@
   </a>
 </div>
 
-
-        <!-- TAB ÜBERSICHT (DEINE KARTEN, nur Options-BTN versteckt) -->
+        <!-- Tab "Übersicht" -->
         <div class="tab-content active" data-tab="uebersicht">
             <section class="card mint is-relative">
                 <div class="meta">
@@ -53,7 +58,6 @@
                     Wählen Sie eine Aktion, um mit der Teilnahme an digitalen Abstimmungen zu starten
                     oder neue Teilnehmende zu registrieren.
                 </p>
-                <!-- Options bleiben, aber CSS macht sie unsichtbar -->
                 <div class="options">
                     <a href="/api/auth/" class="option">
                         <span>👤 Login</span>
@@ -71,7 +75,7 @@
             </section>
         </div>
 
-        <!-- TAB ERSTELLEN (PROMINENT) -->
+        <!-- Tab "Erstellen" -->
         <div class="tab-content" data-tab="erstellen">
             <section class="card mint">
                 <div class="meta">
@@ -96,7 +100,7 @@
             </section>
         </div>
 
-        <!-- TAB ABSTIMMUNGEN (EINFACH) -->
+        <!-- Tab "Abstimmungen" -->
         <div class="tab-content" data-tab="abstimmungen">
             <section class="card mint">
                 <div class="meta">
@@ -113,7 +117,7 @@
         </div>
     </main>
 
-    <!-- Sidebar (angepasst) -->
+    <!-- Sidebar -->
     <aside class="side">
         <section class="card profile">
             <span class="badge">Systemstatus</span>
@@ -121,8 +125,8 @@
             <p class="mute" style="margin-bottom: 14px;">
                 Abstimmungen, die in den nächsten 7 Tagen ablaufen.
             </p>
-
            <ul class="sidebar-list" >
+           <!-- Funktion zum Anzeigen der laufenden Abstimmungen -->
   {% if laufende_7tage and laufende_7tage|length > 0 %}
      {% for a in laufende_7tage %}
       <li>
@@ -132,7 +136,7 @@
         </a>
       </li>
     {% endfor %}
-
+ <!-- wenn keine Abstimmungen laufen, dann: -->
   {% else %}
     <li>• Keine Abstimmungen laufen in den nächsten 7 Tagen ab.</li>
   {% endif %}
@@ -144,8 +148,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
-    // Tabs: nur für echte TAB-BUTTONS, nicht für den Admin-Link
     document.querySelectorAll('button.tab').forEach(tab => {
         tab.addEventListener('click', function(e) {
             e.preventDefault();
@@ -168,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 🔐 Auth-Status
     const token = localStorage.getItem('access_token');
     const role  = localStorage.getItem('user_role');
 
@@ -185,20 +186,17 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // ✅ OBEN neben "Abstimmungen"
     const adminTab = document.getElementById('admin-register-tab');
     if (adminTab) {
         adminTab.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
     }
 
-    // Optional: ✅ unten in Optionen (wenn du ihn behalten willst)
     const adminLink = document.getElementById('admin-reg-link');
     if (adminLink) {
         adminLink.style.display = (token && role === 'admin') ? 'inline-flex' : 'none';
     }
 });
 
-// 🌐 GLOBALE ADMIN FUNCTIONS
 window.checkAdminAccess = async function(url, action) {
     try {
         const token = localStorage.getItem('access_token');
@@ -264,7 +262,5 @@ window.showAdminPopup = function(action) {
     document.addEventListener('keydown', escHandler);
 };
 </script>
-
-
 </body>
 </html>
